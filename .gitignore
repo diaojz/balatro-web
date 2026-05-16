@@ -39,4 +39,7 @@ coverage/
 *.swp
 *.swo
 
+# Claude Code 本地配置
+.claude/settings.local.json
+
 # 锁文件保留策略：默认提交，如需忽略请按团队约定调整
