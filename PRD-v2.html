@@ -32,11 +32,6 @@
     font-size: 12px; font-weight: 600; padding: 4px 12px;
     border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.3px;
   }
-  .badge-blue {
-    display: inline-block; background: #eff6ff; color: #2563eb;
-    font-size: 12px; font-weight: 600; padding: 4px 12px;
-    border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.3px; margin-left: 8px;
-  }
   h1 { font-size: 28px; font-weight: 700; color: #111; margin-bottom: 8px; }
   .subtitle { color: #666; font-size: 15px; }
 
@@ -54,7 +49,6 @@
     flex-shrink: 0;
   }
   h3 { font-size: 14px; font-weight: 600; color: #444; margin: 24px 0 10px; }
-  h4 { font-size: 13px; font-weight: 600; color: #666; margin: 16px 0 8px; }
 
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   th { background: #f3f1ec; text-align: left; padding: 8px 12px; font-weight: 600; color: #555; font-size: 12.5px; }
@@ -63,27 +57,12 @@
 
   .card { background: #fff; border: 1px solid #e8e5df; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
   .card-orange { background: #fef6f2; border: 1px solid #f4c4a8; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
-  .card-blue { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
-  .card-gray { background: #f7f6f3; border: 1px solid #e4e1da; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
-  .card-red { background: #fff5f5; border: 1px solid #fecaca; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
-
-  .flow { display: flex; align-items: center; gap: 0; overflow-x: auto; padding: 20px 0; }
-  .flow-step { flex-shrink: 0; text-align: center; }
-  .flow-box {
-    background: #fff; border: 1.5px solid #d4cfc6; border-radius: 10px;
-    padding: 12px 14px; min-width: 100px; font-size: 12.5px;
-    font-weight: 600; color: #222; line-height: 1.4;
-  }
-  .flow-box.orange { border-color: #e8682a; background: #fef6f2; color: #c0511e; }
-  .flow-box.green  { border-color: #16a34a; background: #f0fdf4; color: #16a34a; }
-  .flow-box.blue   { border-color: #2563eb; background: #eff6ff; color: #1d4ed8; }
-  .flow-sub { font-size: 11px; color: #888; font-weight: 400; margin-top: 4px; }
-  .flow-arrow { flex-shrink: 0; width: 28px; text-align: center; color: #bbb; font-size: 18px; }
 
   pre {
     background: #f5f3ef; border: 1px solid #e4e1da; border-radius: 8px;
     padding: 16px; font-size: 12px; line-height: 1.8; overflow-x: auto;
     font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace; color: #333;
+    margin-bottom: 16px;
   }
   .key  { color: #7c3aed; }
   .val  { color: #059669; }
@@ -96,42 +75,15 @@
   }
   .p0 { background: #fee2e2; color: #b91c1c; }
   .p1 { background: #fef3c7; color: #92400e; }
-  .p2 { background: #e0f2fe; color: #075985; }
-
-  .checklist { list-style: none; }
-  .checklist li {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 10px 12px; border-bottom: 1px solid #f0eeea; font-size: 13.5px;
-  }
-  .checklist li:last-child { border-bottom: none; }
-  .check-box { width: 16px; height: 16px; border: 1.5px solid #d0ccc4; border-radius: 4px; flex-shrink: 0; margin-top: 3px; }
 
   .not-do { list-style: none; }
-  .not-do li { padding: 7px 0; font-size: 13.5px; color: #666; display: flex; gap: 8px; align-items: flex-start; }
+  .not-do li { padding: 5px 0; font-size: 13.5px; color: #666; display: flex; gap: 8px; align-items: flex-start; }
   .not-do li::before { content: "✕"; color: #ccc; font-weight: 700; flex-shrink: 0; }
-
-  .do-later { list-style: none; }
-  .do-later li { padding: 7px 0; font-size: 13.5px; color: #666; display: flex; gap: 8px; align-items: flex-start; }
-  .do-later li::before { content: "→"; color: #93c5fd; font-weight: 700; flex-shrink: 0; }
-
-  .source-link { font-size: 12px; color: #2563eb; text-decoration: none; }
-  .source-link:hover { text-decoration: underline; }
 
   .formula {
     background: #fef6f2; border: 1.5px solid #f4c4a8; border-radius: 8px;
     padding: 14px 18px; font-size: 14px; font-weight: 600; color: #b84e1a;
     margin: 12px 0; font-family: "SF Mono", monospace;
-  }
-  .warn-box {
-    background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 8px;
-    padding: 12px 16px; font-size: 13px; color: #78350f; margin: 12px 0;
-  }
-  .warn-box strong { color: #92400e; }
-
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-  @media (max-width: 700px) {
-    .two-col, .three-col { grid-template-columns: 1fr; }
   }
 
   .rarity-tag {
@@ -140,788 +92,344 @@
   }
   .common { background: #f3f1ec; color: #555; }
   .uncommon { background: #d1fae5; color: #065f46; }
-  .rare { background: #dbeafe; color: #1e40af; }
-  .legendary { background: #fde68a; color: #78350f; }
 
-  .open-q { counter-reset: oq; list-style: none; }
-  .open-q li {
-    counter-increment: oq;
-    padding: 14px 16px; margin-bottom: 10px;
+  .decision { list-style: none; }
+  .decision li {
+    padding: 12px 16px; margin-bottom: 8px;
     background: #fff; border: 1px solid #e8e5df; border-radius: 8px;
     font-size: 13.5px;
   }
-  .open-q li::before {
-    content: "Q" counter(oq) " ";
-    font-weight: 700; color: #e8682a; margin-right: 4px;
-  }
-
-  .delta-tag {
-    display: inline-block; font-size: 11px; font-weight: 700;
-    padding: 2px 8px; border-radius: 4px; margin-left: 6px; vertical-align: middle;
-  }
-  .delta-new { background: #dcfce7; color: #15803d; }
-  .delta-change { background: #fef9c3; color: #854d0e; }
-  .delta-keep { background: #f3f1ec; color: #666; }
+  .decision li strong.q { color: #e8682a; margin-right: 4px; }
+  .decision li strong.a { color: #16a34a; }
 </style>
 </head>
 <body>
 
 <nav>
   <ul>
-    <li><a href="#s1">① V1 现状</a></li>
-    <li><a href="#s2">② Balatro 规则速览</a></li>
-    <li><a href="#s3">③ V2.0 范围</a></li>
-    <li><a href="#s4">④ V2.1+ 暂缓</a></li>
-    <li><a href="#s5">⑤ 数据结构</a></li>
-    <li><a href="#s6">⑥ 核心流程</a></li>
-    <li><a href="#s7">⑦ 风险&amp;开放问题</a></li>
+    <li><a href="#s1">① 项目目标</a></li>
+    <li><a href="#s2">② 功能范围</a></li>
+    <li><a href="#s3">③ 数据结构</a></li>
+    <li><a href="#s4">④ 核心流程</a></li>
+    <li><a href="#s5">⑤ 决策记录</a></li>
   </ul>
 </nav>
 
 <div class="container">
   <div class="header">
     <div class="badge">Version V2.0 · PRD</div>
-    <div class="badge-blue">基于 V1.0.0 增量扩展</div>
-    <h1>小丑牌 Web · Balatro 核心机制接入</h1>
-    <p class="subtitle">Product Requirements Document — 设计师 &amp; 开发工程师执行版 · 2026-05-16</p>
+    <h1>小丑牌 Web · V2.0</h1>
+    <p class="subtitle">单文件 HTML 游戏 · 开发执行版 · 2026-05-16</p>
   </div>
 
-  <div class="card-orange">
-    <p style="font-size:15px;font-weight:700;color:#b84e1a;margin-bottom:10px;">V2.0 一句话目标</p>
-    <p style="font-size:14px;color:#7c2d12;">
-      在 V1 计分引擎基础上，接入 Balatro 原版的"打 Blind → 进商店 → 买 Joker → 推进 Ante"完整循环，让玩家能真正感受到 Balatro 的核心乐趣——通过收集 Joker 组合来指数级拉高分数。
-    </p>
-  </div>
-
-
-  <!-- ① V1 现状盘点 -->
+  <!-- ① 项目目标 -->
   <section id="s1">
-    <h2><span class="num">1</span>V1 现状盘点</h2>
+    <h2><span class="num">1</span>项目目标</h2>
+    <div class="card-orange">
+      <p style="font-size:14px;color:#7c2d12;">
+        在 V1 计分引擎基础上，接入"选盲注 → 打牌 → 商店 → 购买 Joker → 推进 Ante"完整循环，让玩家能通过收集 Joker 组合指数级拉高分数，体验 Balatro 核心乐趣。
+      </p>
+    </div>
 
-    <h3>V1 已实现（可直接复用）</h3>
+    <h3>技术约束（继承自 V1）</h3>
     <div class="card">
-      <table>
-        <tr><th>模块</th><th>现状描述</th><th>V2 处理方式</th></tr>
-        <tr>
-          <td>牌型识别</td>
-          <td>10 种牌型，evaluateHand() 完整实现，含小顺子处理</td>
-          <td><span class="delta-keep">保留</span> 原版 Balatro 同样是这 10 种（及以上）</td>
-        </tr>
-        <tr>
-          <td>计分公式</td>
-          <td>(base + 手牌点数之和) × mult</td>
-          <td><span class="delta-change">重构</span> 改为 (chips + 各卡chips) × (mult + 各卡mult)，去掉"点数之和"，改为Balatro标准的 chips 累加</td>
-        </tr>
-        <tr>
-          <td>牌局资源</td>
-          <td>出牌 4 次 / 弃牌 3 次（写死常量）</td>
-          <td><span class="delta-change">变为动态</span> 由 Blind 配置决定，初始仍可 4/3</td>
-        </tr>
-        <tr>
-          <td>目标分数</td>
-          <td>300 分（写死 TARGET_SCORE）</td>
-          <td><span class="delta-change">变为动态</span> 由当前 Ante + Blind 类型决定</td>
-        </tr>
-        <tr>
-          <td>状态管理</td>
-          <td>单一扁平 state 对象，render() 全量重绘</td>
-          <td><span class="delta-change">扩展字段</span> 增加 ante/blind/money/jokers 等，保持原有架构</td>
-        </tr>
-        <tr>
-          <td>UI 布局</td>
-          <td>HUD + 出牌区 + 手牌区 + 操作栏，1080×640 绿毡</td>
-          <td><span class="delta-change">扩展</span> 左侧加 Joker 槽位区，商店作为新弹窗层</td>
-        </tr>
-        <tr>
-          <td>弹窗系统</td>
-          <td>胜利/失败 modal，含重新开始</td>
-          <td><span class="delta-change">扩展</span> 复用样式，增加商店 modal 和 Blind 选择 modal</td>
-        </tr>
-      </table>
-    </div>
-
-    <h3>V1 明确排除但 V2 要加的</h3>
-    <div class="card-gray" style="font-size:13.5px;color:#555;line-height:2;">
-      V1 PRD 明确写入"不做"清单的以下项目，在 V2.0 中要全部接入：<br>
-      <strong style="color:#333;">小丑牌系统 / 商店 / 关卡 / 盲注体系</strong>
-    </div>
-
-    <h3>V1 的关键技术约束（V2 必须继承）</h3>
-    <div class="card-gray">
       <ul style="font-size:13.5px;color:#555;line-height:2.2;padding-left:20px;">
         <li>单文件 HTML + CSS + JS，无构建工具，无框架，无外部依赖（除 Google Fonts）</li>
-        <li>Card 结构：<code style="font-family:monospace;background:#eee;padding:1px 4px;border-radius:3px;">{ suit, rank, value }</code>——V2 需向 Card 追加可选字段（enhancement / seal / edition），不能破坏现有逻辑</li>
-        <li>游戏视口写死 1080×640，暂不做移动端适配</li>
+        <li>游戏视口固定 1080×640，不做移动端适配</li>
+        <li>V1 Card 结构 <code style="font-family:monospace;background:#eee;padding:1px 4px;border-radius:3px;">{ suit, rank, value }</code> 向下兼容，V2 追加可选字段不破坏现有逻辑</li>
       </ul>
     </div>
   </section>
 
 
-  <!-- ② 原版 Balatro 规则速览 -->
+  <!-- ② 功能范围 -->
   <section id="s2">
-    <h2><span class="num">2</span>原版 Balatro 规则速览</h2>
-    <p style="font-size:13px;color:#888;margin-bottom:16px;">
-      来源：
-      <a class="source-link" href="https://balatrogame.fandom.com/wiki/Gameplay_rules" target="_blank">Balatro Wiki · Gameplay rules</a>、
-      <a class="source-link" href="https://balatrowiki.org/w/Blinds_and_Antes" target="_blank">balatrowiki.org · Blinds and Antes</a>、
-      <a class="source-link" href="https://balatrowiki.org/w/Jokers" target="_blank">balatrowiki.org · Jokers</a>、
-      <a class="source-link" href="https://balatrowiki.org/w/Card_Modifiers" target="_blank">balatrowiki.org · Card Modifiers</a>、
-      <a class="source-link" href="https://games.gg/balatro/guides/balatro-economy-guide/" target="_blank">GAMES.GG · Economy Guide</a>
-    </p>
-
-    <h3>2.1 整体循环结构</h3>
-    <div class="flow">
-      <div class="flow-step">
-        <div class="flow-box blue">选择盲注<div class="flow-sub">Small/Big 可跳过<br>Boss 必须打</div></div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-box orange">打牌阶段<div class="flow-sub">出牌/弃牌<br>达到分数阈值</div></div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-box">结算&amp;奖励<div class="flow-sub">获得金钱<br>+利息+剩余手牌奖励</div></div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-box green">进入商店<div class="flow-sub">买 Joker/消耗品<br>/Voucher/补充包</div></div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-box">下一盲注<div class="flow-sub">3 个 Blind = 1 Ante<br>共 8 个 Ante</div></div>
-      </div>
-    </div>
-
-    <h3>2.2 Ante / Blind 分数体系</h3>
-    <div class="card">
-      <p style="font-size:13px;color:#666;margin-bottom:12px;">每个 Ante 含 3 个 Blind：Small Blind（×1 基础分）→ Big Blind（×1.5）→ Boss Blind（×2，特殊限制）</p>
-      <table>
-        <tr><th>Ante</th><th>基础分（Base Chips）</th><th>Small Blind</th><th>Big Blind</th><th>Boss Blind</th></tr>
-        <tr><td>Ante 1</td><td>300</td><td>300</td><td>450</td><td>600</td></tr>
-        <tr><td>Ante 2</td><td>800</td><td>800</td><td>1,200</td><td>1,600</td></tr>
-        <tr><td>Ante 3</td><td>2,000</td><td>2,000</td><td>3,000</td><td>4,000</td></tr>
-        <tr><td>Ante 4</td><td>5,000</td><td>5,000</td><td>7,500</td><td>10,000</td></tr>
-        <tr><td>Ante 5+</td><td>11,000+</td><td colspan="3">依次翻倍，V2.0 只需实现到 Ante 3</td></tr>
-      </table>
-      <p style="font-size:12px;color:#888;margin-top:10px;">来源：<a class="source-link" href="https://balatrowiki.org/w/Blinds_and_Antes" target="_blank">balatrowiki.org · Blinds and Antes</a></p>
-    </div>
-
-    <h3>2.3 金钱 / 利息机制</h3>
-    <div class="card">
-      <table>
-        <tr><th>来源</th><th>金额</th></tr>
-        <tr><td>打败 Small Blind</td><td>$3</td></tr>
-        <tr><td>打败 Big Blind</td><td>$4</td></tr>
-        <tr><td>打败 Boss Blind</td><td>$5</td></tr>
-        <tr><td>每余一次出牌机会</td><td>$1</td></tr>
-        <tr><td>每余一次弃牌机会</td><td>$1</td></tr>
-        <tr><td>利息（结算时）</td><td>每持有 $5 → 获得 $1，上限 $5/轮（即持有 $25 可拿满）</td></tr>
-      </table>
-      <p style="font-size:12px;color:#888;margin-top:10px;">来源：<a class="source-link" href="https://games.gg/balatro/guides/balatro-economy-guide/" target="_blank">GAMES.GG · Economy Guide</a></p>
-    </div>
-
-    <h3>2.4 Joker 系统</h3>
-    <div class="card">
-      <p style="font-size:13.5px;margin-bottom:12px;"><strong>核心规则：</strong>标准 5 个 Joker 槽位，持续生效（不需要出牌才触发），按从左到右顺序计算。</p>
-      <p style="font-size:13.5px;margin-bottom:16px;"><strong>稀有度：</strong>Common（70%）/ Uncommon（25%）/ Rare（5%）/ Legendary（仅通过特定幽灵牌获得）</p>
-      <table>
-        <tr><th>效果类型</th><th>说明</th><th>代表性 Joker 举例</th></tr>
-        <tr>
-          <td>+Chips（加算筹码）</td>
-          <td>直接增加该手牌的 chips 数值</td>
-          <td>Jolly Joker：每有一对，+8 chips</td>
-        </tr>
-        <tr>
-          <td>+Mult（加算倍率）</td>
-          <td>直接增加该手牌的 mult 数值</td>
-          <td>Joker（基础款）：+4 mult</td>
-        </tr>
-        <tr>
-          <td>×Mult（乘算倍率）</td>
-          <td>对最终倍率做乘法，极其强大</td>
-          <td>Cavendish：×3 mult（有概率自毁）</td>
-        </tr>
-        <tr>
-          <td>条件触发</td>
-          <td>打出特定牌型/花色/点数时生效</td>
-          <td>Greedy Joker：每张计分钻石牌 +3 mult</td>
-        </tr>
-        <tr>
-          <td>持有触发</td>
-          <td>手中持有某牌时触发（即使不出）</td>
-          <td>Baron：手持每张 K → ×1.5 mult</td>
-        </tr>
-        <tr>
-          <td>复制类</td>
-          <td>复制其他 Joker 或卡牌效果</td>
-          <td>Blueprint：复制右侧 Joker 的效果</td>
-        </tr>
-        <tr>
-          <td>全局增益</td>
-          <td>对所有出牌永久生效</td>
-          <td>Baseball Card：每个 Rare Joker ×1.5 mult</td>
-        </tr>
-      </table>
-      <p style="font-size:12px;color:#888;margin-top:10px;">来源：<a class="source-link" href="https://balatrowiki.org/w/Jokers" target="_blank">balatrowiki.org · Jokers</a></p>
-    </div>
-
-    <h3>2.5 计分公式（原版标准）</h3>
-    <div class="formula">最终得分 = (hand_chips + Σ scoring_card_chips + Σ joker_chips) × (hand_mult + Σ joker_mult) × Π joker_xmult</div>
-    <p style="font-size:13px;color:#666;margin-bottom:8px;">其中：</p>
-    <ul style="font-size:13px;color:#666;padding-left:20px;line-height:2.2;">
-      <li><strong>hand_chips</strong>：当前牌型的基础 chips（受 Planet 牌升级影响）</li>
-      <li><strong>scoring_card_chips</strong>：参与计分的每张牌自带的 chips（2-9 按面值，10/J/Q/K=10，A=11）</li>
-      <li><strong>hand_mult</strong>：当前牌型的基础 mult（受 Planet 牌升级影响）</li>
-      <li><strong>joker_chips / joker_mult</strong>：各 Joker 提供的加算 chips 和 mult</li>
-      <li><strong>joker_xmult</strong>：各 Joker 提供的乘算倍率（如 ×3、×1.5）</li>
-    </ul>
-    <div class="warn-box" style="margin-top:12px;">
-      <strong>注意：</strong>V1 的公式是 (base + 手牌点数之和) × mult，实际上已经包含了 scoring_card_chips 的概念。V2 只需把这部分拆开、并加入 Joker 的 chips/mult 插槽即可，底层逻辑改动量不大。
-    </div>
-
-    <h3>2.6 牌型等级 & 星球牌升级</h3>
-    <div class="card">
-      <p style="font-size:13px;color:#666;margin-bottom:12px;">每种牌型有独立等级（Level），初始 Level 1。使用对应星球牌可升级，每升一级增加固定 chips 和 mult。</p>
-      <table>
-        <tr><th>牌型</th><th>L1 Chips</th><th>L1 Mult</th><th>每级增加</th><th>对应星球牌</th></tr>
-        <tr><td>高牌 High Card</td><td>5</td><td>1</td><td>+10 chips, +1 mult</td><td>Pluto</td></tr>
-        <tr><td>对子 Pair</td><td>10</td><td>2</td><td>+15 chips, +1 mult</td><td>Mercury</td></tr>
-        <tr><td>两对 Two Pair</td><td>20</td><td>2</td><td>+20 chips, +1 mult</td><td>Uranus</td></tr>
-        <tr><td>三条 Three of a Kind</td><td>30</td><td>3</td><td>+20 chips, +2 mult</td><td>Venus</td></tr>
-        <tr><td>顺子 Straight</td><td>30</td><td>4</td><td>+30 chips, +3 mult</td><td>Saturn</td></tr>
-        <tr><td>同花 Flush</td><td>35</td><td>4</td><td>+15 chips, +2 mult</td><td>Jupiter</td></tr>
-        <tr><td>葫芦 Full House</td><td>40</td><td>4</td><td>+25 chips, +2 mult</td><td>Earth</td></tr>
-        <tr><td>四条 Four of a Kind</td><td>60</td><td>7</td><td>+30 chips, +3 mult</td><td>Mars</td></tr>
-        <tr><td>同花顺 Straight Flush</td><td>100</td><td>8</td><td>+40 chips, +4 mult</td><td>Neptune</td></tr>
-        <tr><td>皇家同花顺 Royal Flush</td><td>100</td><td>8</td><td>+40 chips, +4 mult</td><td>Neptune</td></tr>
-      </table>
-      <p style="font-size:12px;color:#888;margin-top:10px;">来源：<a class="source-link" href="https://balatrowiki.org/w/Poker_Hands" target="_blank">balatrowiki.org · Poker Hands</a></p>
-    </div>
-
-    <h3>2.7 商店（The Shop）</h3>
-    <div class="card">
-      <p style="font-size:13.5px;margin-bottom:12px;">每打完一个 Blind 后进入商店，商店包含以下固定格位：</p>
-      <table>
-        <tr><th>格位</th><th>内容</th><th>价格参考</th></tr>
-        <tr><td>卡牌区（2 格）</td><td>随机 Joker，偶尔是塔罗牌或星球牌</td><td>$3–$10</td></tr>
-        <tr><td>补充包区（2 格）</td><td>Booster Pack，开包后选 1 张保留</td><td>$4–$8</td></tr>
-        <tr><td>优惠券（1 格）</td><td>Voucher，永久效果，$10，每 Ante 刷新一张</td><td>$10</td></tr>
-        <tr><td>刷新按钮</td><td>花费 $5 重新生成卡牌区（不刷新 Voucher 和补充包）</td><td>$5（每次+$1）</td></tr>
-      </table>
-      <p style="font-size:12px;color:#888;margin-top:10px;">来源：<a class="source-link" href="https://balatrogame.fandom.com/wiki/The_Shop" target="_blank">Balatro Wiki · The Shop</a></p>
-    </div>
-
-    <h3>2.8 Boss Blind 特殊限制（代表性 6 个）</h3>
-    <div class="card">
-      <table>
-        <tr><th>Boss Blind 名称</th><th>限制效果</th><th>难度评价</th></tr>
-        <tr><td>The Hook</td><td>每次出牌后，随机丢弃玩家手中 2 张未出的牌</td><td>中等，减少手牌选择</td></tr>
-        <tr><td>The Psychic</td><td>强制每次出牌必须选满 5 张</td><td>中等，限制灵活出牌</td></tr>
-        <tr><td>The Club</td><td>梅花花色牌全部被 debuff（不计 chips，无法触发效果）</td><td>中等，针对花色策略</td></tr>
-        <tr><td>The Goad</td><td>黑桃花色牌全部被 debuff</td><td>中等，同上</td></tr>
-        <tr><td>The House</td><td>开局第一手手牌全部背面朝上（不可见）</td><td>较低，随机性增加</td></tr>
-        <tr><td>The Eye</td><td>同一局内不能打出同种牌型两次</td><td>较高，迫使多样化出牌</td></tr>
-      </table>
-      <p style="font-size:12px;color:#888;margin-top:10px;">来源：<a class="source-link" href="https://vgkami.com/balatro-all-blinds-list-guide/" target="_blank">VGKAMI · Boss Blinds Guide</a></p>
-    </div>
-
-    <h3>2.9 消耗牌系统概览（V2.1+ 参考用）</h3>
-    <div class="card-gray">
-      <div class="two-col">
-        <div>
-          <h4>塔罗牌（Tarot Cards，22 张）</h4>
-          <ul style="font-size:13px;color:#666;line-height:2;padding-left:16px;">
-            <li>改变牌的花色（转成红心/方块/梅花/黑桃）</li>
-            <li>增强牌（变成 Lucky/Mult/Bonus/Wild/Steel/Glass/Gold/Stone 牌）</li>
-            <li>直接生成 Joker（Judgement 牌）</li>
-            <li>经济类：翻倍金钱（The Hermit）</li>
-          </ul>
-          <p style="font-size:12px;color:#888;">来源：<a class="source-link" href="https://balatrogame.fandom.com/wiki/Tarot_Cards" target="_blank">Balatro Wiki · Tarot Cards</a></p>
-        </div>
-        <div>
-          <h4>星球牌（Planet Cards，12 张）</h4>
-          <ul style="font-size:13px;color:#666;line-height:2;padding-left:16px;">
-            <li>对应 10 种牌型 + 3 种隐藏牌型</li>
-            <li>使用后该牌型永久升 1 级（增加基础 chips 和 mult）</li>
-            <li>Earth→葫芦，Jupiter→同花，Saturn→顺子……</li>
-          </ul>
-          <p style="font-size:12px;color:#888;">来源：<a class="source-link" href="https://balatrowiki.org/w/Poker_Hands" target="_blank">balatrowiki.org · Poker Hands</a></p>
-        </div>
-      </div>
-      <div style="margin-top:16px;">
-        <h4>增强牌（Enhancements）/ 印章（Seals）/ 版本（Editions）</h4>
-        <ul style="font-size:13px;color:#666;line-height:2;padding-left:16px;">
-          <li><strong>增强（8 种）：</strong>奖励卡(+30 chips) / 倍数卡(+4 mult) / 百搭卡(当所有花色) / 玻璃卡(×2 mult，有概率碎) / 钢铁卡(持有时×1.5) / 石头卡(+50 chips无花色) / 黄金卡(持有至结束得$3) / 幸运卡(概率+20 mult或$20)</li>
-          <li><strong>印章（4 种）：</strong>金色(计分时+$3) / 红色(该牌重触发1次) / 蓝色(持有则生成对应星球牌) / 紫色(弃置时生成塔罗牌)</li>
-          <li><strong>版本（4 种）：</strong>箔纸(+50 chips) / 全息(+10 mult) / 彩虹(×1.5 mult) / 负片(+1 Joker槽位)</li>
-        </ul>
-        <p style="font-size:12px;color:#888;">来源：<a class="source-link" href="https://balatrowiki.org/w/Card_Modifiers" target="_blank">balatrowiki.org · Card Modifiers</a></p>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ③ V2.0 范围（必做） -->
-  <section id="s3">
-    <h2><span class="num">3</span>V2.0 范围（必做）</h2>
-
-    <div class="warn-box">
-      <strong>范围裁剪原则：</strong>V2.0 的目标是让玩家能完整体验"选盲 → 打牌 → 商店 → Joker 增益 → 下一盲"循环，而不是把原版所有内容一次搬完。消耗牌、增强牌、印章、版本全部推入 V2.1+。
-    </div>
-
-    <h3>3.1 功能清单（按开发顺序排列）</h3>
+    <h2><span class="num">2</span>功能范围（V2.0 必做）</h2>
 
     <div class="card" style="padding:0;">
       <table>
         <tr>
-          <th style="width:24px;"></th>
-          <th style="width:180px;">功能项</th>
-          <th>描述</th>
-          <th style="width:140px;">验收标准</th>
+          <th style="width:36px;"></th>
+          <th style="width:160px;">功能</th>
+          <th>做什么</th>
+          <th style="width:200px;">验收点</th>
         </tr>
-
-        <!-- F1 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
-          <td><strong>F1. 计分公式重构</strong></td>
-          <td>
-            将 V1 公式从 <code>(base + 点数之和) × mult</code> 改为 Balatro 标准：
-            <code>(hand_chips + Σcard_chips) × (hand_mult + Σjoker_mult) × Πjoker_xmult</code>。
-            新增牌型等级表（handLevels），初始 Level 1 对应原版基础值（见 §2.6）。
-            同时更新 score-detail 显示格式为 <code>Chips × Mult = 分数</code>。
-          </td>
-          <td>打出葫芦（Level1）显示 "40+牌面 chips × 4 = X"；引入一张 +4mult Joker 后同样手牌分数正确增加 4×chips；×Mult Joker 在所有加法之后再做乘法</td>
+          <td><strong>F1 · 计分公式重构</strong></td>
+          <td>公式改为 <code>(hand_chips + Σcard_chips) × (hand_mult + Σjoker_mult) × Πjoker_xmult</code>；新增牌型等级表 handLevels（初始 Level 1）；score-detail 显示 "X Chips × Y Mult = Z"</td>
+          <td>葫芦 Level1 基础 40chips×4mult；装 +4mult Joker 后同手分数正确；×Mult 在加法之后再做乘法</td>
         </tr>
-
-        <!-- F2 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
-          <td><strong>F2. Ante / Blind 推进系统</strong></td>
-          <td>
-            新增全局 Ante（1–3）和 Blind 状态（small/big/boss）。每局开始时，按 §2.2 分数表设置 TARGET_SCORE。打败当前 Blind 后弹出"进入商店"而非直接胜利弹窗。商店结束后自动切换到下一 Blind；Big Boss 打完后 Ante +1。Ante 3 Boss 打完即整局胜利。
-          </td>
-          <td>HUD 上能看到当前 Ante 和 Blind 标识；Ante1 Small=300，Big=450，Boss=600；打完 Ante 3 Boss 弹出"通关"弹窗</td>
+          <td><strong>F2 · Ante/Blind 推进</strong></td>
+          <td>全局 ante（1–3）和 blind（small/big/boss）状态；按分数表动态设置目标分；打败 Blind 后进商店而非直接胜利；Boss 打完 ante+1；ante 3 Boss 打完 → 通关</td>
+          <td>Ante1 Small=300/Big=450/Boss=600；打完 Ante3 Boss 弹出"通关"；HUD 显示 Ante 标识</td>
         </tr>
-
-        <!-- F3 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
-          <td><strong>F3. 金钱系统</strong></td>
-          <td>
-            新增 money 字段，显示在 HUD（金色 $X 样式）。打败每个 Blind 后结算：基础奖励（$3/$4/$5）+ 剩余出牌次数×$1 + 剩余弃牌次数×$1 + 利息（每$5持有量→$1，上限$5）。显示结算明细 Toast，3 秒后自动进入商店。
-          </td>
-          <td>打败 Small Blind，剩余 2 手牌 1 弃牌，持有 $0，结算得 $3+2+1=$6；持有 $10 时结算利息 $2；HUD 金额数字实时更新</td>
+          <td><strong>F3 · 金钱系统</strong></td>
+          <td>money 显示在 HUD（金色 $X）；打败 Blind 后结算：基础奖励（Small $3 / Big $4 / Boss $5）+ 剩余出牌次数×$1 + 剩余弃牌次数×$1 + 利息（每持有 $5 → $1，上限 $5/轮）；显示结算明细</td>
+          <td>Small Blind 剩余 2 手 1 弃、持有 $0 → 结算 $6；持有 $10 → 利息 $2；HUD 实时更新</td>
         </tr>
-
-        <!-- F4 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
-          <td><strong>F4. Joker 系统（核心）</strong></td>
-          <td>
-            实现 Joker 槽位（默认 5 格），显示在游戏画面左侧区域。Joker 具有 name / rarity / effect / price / sellValue 字段。每局开始 jokers[] 为空。Joker 效果在 calcScore() 中被正确应用。至少实现下表 §3.2 中列出的 8 张 Joker。出售 Joker 按原价 50% 返还金钱。
-          </td>
-          <td>装备"Joker（+4 mult）"后，打任意手牌 mult 正确+4；装备"Greedy Joker"后只有钻石牌触发加分；5 格填满后商店对应 Joker 变灰无法购买；Joker 拖拽或点击顺序正确影响 ×Mult 计算结果</td>
+          <td><strong>F4 · Joker 系统</strong></td>
+          <td>5 格 Joker 槽位（左侧竖排）；Joker 含 name/rarity/effect/price/sellValue 字段；8 张 Joker 效果在 calcScore() 中正确应用；出售按原价 50% 返钱；满槽后无法购买</td>
+          <td>基础 Joker +4mult 生效；Greedy Joker 只在钻石牌触发；5 格满后商店购买按钮灰显；出售返钱正确</td>
         </tr>
-
-        <!-- F5 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
-          <td><strong>F5. 商店界面</strong></td>
-          <td>
-            打败 Blind 后，结算 Toast 结束后自动弹出商店 Modal。商店包含：2 格 Joker 槽（随机从 V2.0 Joker 库抽取）+ 1 个刷新按钮（$5）+ "继续"按钮（进入下一 Blind）。点击 Joker 卡片扣除金钱并加入 jokers[]；金钱不足时灰显。本轮不做 Booster Pack 和 Voucher（见 §4）。
-          </td>
-          <td>商店正确显示 2 个 Joker；购买后金钱减少、Joker 出现在左侧槽位；金钱不足时点击无反应并有提示；刷新花费 $5 后商店 Joker 重新随机；点"继续"商店关闭、进入下一盲注打牌</td>
+          <td><strong>F5 · 商店界面</strong></td>
+          <td>打败 Blind 结算后弹出商店 Modal：2 格 Joker（随机抽取）+ 1 格 Coming Soon 占位（不可交互）+ 刷新按钮（$5）+ "继续"按钮；金钱不足灰显</td>
+          <td>购买后金钱减少、Joker 出现在槽位；刷新花 $5 后重新随机；点"继续"进入下一盲注选择</td>
         </tr>
-
-        <!-- F6 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
-          <td><strong>F6. Boss Blind 限制效果</strong></td>
-          <td>
-            实现 2 个代表性 Boss Blind（V2.0 只需 2 个，后续可扩展）：<br>
-            <strong>The Hook</strong>：每次出牌后随机弃掉玩家手中 2 张未出的牌（不扣弃牌次数）。<br>
-            <strong>The Psychic</strong>：每次出牌必须选满 5 张，否则"出牌"按钮禁用。<br>
-            Boss Blind 进入前弹出提示卡片，说明本次 Boss 的限制规则。
-          </td>
-          <td>Boss Blind 轮次 HUD 显示特殊标记；The Hook 触发后手牌正确减少 2 张；The Psychic 下选 4 张时出牌按钮灰显；限制效果只在 Boss Blind 内生效，下一轮不延续</td>
+          <td><strong>F6 · Boss Blind 效果</strong></td>
+          <td>实现 2 个 Boss：<strong>The Hook</strong>（出牌后随机弃掉手中 2 张，不扣弃牌次数）；<strong>The Psychic</strong>（必须选满 5 张才能出牌）；进入 Boss 前弹出提示卡片</td>
+          <td>The Hook 出牌后手牌正确减 2；The Psychic 选 4 张时出牌按钮禁用；效果只在 Boss 轮生效</td>
         </tr>
-
-        <!-- F7 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p1">P1</span></td>
-          <td><strong>F7. 盲注选择界面</strong></td>
-          <td>
-            每局开始（以及打完一个 Blind 进商店后），进入"选择盲注"画面（不是弹窗，是独立游戏状态）。显示 Small Blind / Big Blind 的分数要求和奖励，附"跳过"按钮（V2.0 的跳过只是跳过该盲注、不给 Tag，Tag 系统放 V2.1+）。Boss Blind 不可跳过，按钮置灰并显示说明。
-          </td>
-          <td>显示三个盲注的目标分数和奖励金额；Small/Big 可点"跳过"直接进入商店；Boss 不可跳过；选中后自动切换为打牌状态</td>
+          <td><strong>F7 · 盲注选择界面</strong></td>
+          <td>打完 Blind 进商店、商店结束后进入"选择盲注"画面（独立 phase，非弹窗）；显示 3 个盲注的目标分和奖励金额；Small/Big 可跳过（跳过不给奖励）；Boss 不可跳过</td>
+          <td>3 个盲注卡片正确显示分数；跳过后直接进商店、money 不增加；Boss 跳过按钮置灰</td>
         </tr>
-
-        <!-- F8 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p1">P1</span></td>
-          <td><strong>F8. HUD 扩展</strong></td>
-          <td>
-            在现有 HUD（目标分 / 当前分 / 出牌次数 / 弃牌次数）基础上增加：<br>
-            - 当前金钱 $X（金色）<br>
-            - 当前 Ante 进度（如 "Ante 1 · Boss"）<br>
-            Joker 槽位区显示在游戏主画面左侧竖排（宽约 100px），每个 Joker 显示名称和核心效果 tooltip。
-          </td>
-          <td>HUD 6 格显示完整；切换盲注后目标分和 Ante 标识自动更新；Joker 槽位为空时显示灰色空格</td>
+          <td><strong>F8 · HUD 扩展</strong></td>
+          <td>在 V1 HUD 基础上追加：当前金钱 $X（金色）+ Ante 进度（如"Ante 1 · Boss"）；Joker 槽位区显示在游戏画面左侧竖排（~110px 宽），空槽显示灰色虚线框</td>
+          <td>HUD 6 格完整显示；切换 Blind 后目标分和 Ante 标识自动更新；Joker tooltip 显示名称和效果</td>
         </tr>
-
-        <!-- F9 -->
         <tr>
           <td style="text-align:center;"><span class="p-tag p1">P1</span></td>
-          <td><strong>F9. 通关 / 失败重构</strong></td>
-          <td>
-            移除原 V1 的单局胜负逻辑。失败条件改为：某个 Blind 内出牌次数耗尽但未达到分数目标。胜利条件改为：打败 Ante 3 的 Boss Blind。失败后显示"已到达 Ante X"的进度反馈，而不是简单"失败"。重新开始时重置全部状态包括 Ante / money / jokers。
-          </td>
-          <td>打败 Ante3 Boss 弹出胜利；某 Blind 内出牌耗尽弹出失败并显示进度；重新开始后 money=$0、jokers=[]、ante=1、blind=small</td>
+          <td><strong>F9 · 胜负重构</strong></td>
+          <td>失败：某 Blind 内出牌耗尽但未达目标分；胜利：打败 Ante3 Boss Blind；失败弹窗显示"已到达 Ante X"进度；重新开始重置全部状态（money/jokers/ante/blind）</td>
+          <td>Ante3 Boss 通过 → 胜利弹窗；出牌耗尽 → 失败弹窗含进度；重开后 money=0、jokers=[]、ante=1</td>
         </tr>
-
       </table>
     </div>
 
-    <h3>3.2 V2.0 实现的 8 张 Joker 清单</h3>
-    <p style="font-size:13px;color:#666;margin-bottom:12px;">选取标准：覆盖各效果类型、实现复杂度低、教学演示效果好。</p>
+    <h3>V2.0 实现的 8 张 Joker</h3>
     <div class="card" style="padding:0;">
       <table>
+        <tr><th>名称</th><th>稀有度</th><th>效果</th><th>触发时机</th><th>价格</th></tr>
         <tr>
-          <th>Joker 名</th><th>稀有度</th><th>效果（中文）</th><th>触发时机</th><th>参考价格</th>
-        </tr>
-        <tr>
-          <td><strong>Joker</strong>（基础款）</td>
+          <td><strong>Joker</strong></td>
           <td><span class="rarity-tag common">Common</span></td>
-          <td>+4 Mult</td>
-          <td>独立（每次出牌恒加）</td>
-          <td>$2</td>
+          <td>+4 Mult</td><td>每次出牌恒触发</td><td>$2</td>
         </tr>
         <tr>
           <td><strong>Jolly Joker</strong></td>
           <td><span class="rarity-tag common">Common</span></td>
-          <td>打出含一对时 +8 Chips</td>
-          <td>出牌时含对子则触发</td>
-          <td>$3</td>
+          <td>打出含对子时 +8 Chips</td><td>出牌含对子则触发</td><td>$3</td>
         </tr>
         <tr>
           <td><strong>Greedy Joker</strong></td>
           <td><span class="rarity-tag common">Common</span></td>
-          <td>每张计分的钻石牌 +3 Mult</td>
-          <td>计分时逐牌检查花色</td>
-          <td>$5</td>
+          <td>每张计分钻石牌 +3 Mult</td><td>计分时逐牌检查花色</td><td>$5</td>
         </tr>
         <tr>
           <td><strong>Lusty Joker</strong></td>
           <td><span class="rarity-tag common">Common</span></td>
-          <td>每张计分的红心牌 +3 Mult</td>
-          <td>计分时逐牌检查花色</td>
-          <td>$5</td>
+          <td>每张计分红心牌 +3 Mult</td><td>计分时逐牌检查花色</td><td>$5</td>
         </tr>
         <tr>
           <td><strong>Wrathful Joker</strong></td>
           <td><span class="rarity-tag common">Common</span></td>
-          <td>每张计分的黑桃牌 +3 Mult</td>
-          <td>计分时逐牌检查花色</td>
-          <td>$5</td>
+          <td>每张计分黑桃牌 +3 Mult</td><td>计分时逐牌检查花色</td><td>$5</td>
         </tr>
         <tr>
           <td><strong>Half Joker</strong></td>
           <td><span class="rarity-tag common">Common</span></td>
-          <td>打出 ≤3 张时 +20 Mult</td>
-          <td>出牌时检查选牌数量</td>
-          <td>$5</td>
+          <td>出牌 ≤3 张时 +20 Mult</td><td>出牌时检查选牌数量</td><td>$5</td>
         </tr>
         <tr>
           <td><strong>Supernova</strong></td>
           <td><span class="rarity-tag uncommon">Uncommon</span></td>
-          <td>将本局打出该牌型的次数加到 Mult（上限由手牌次数决定）</td>
-          <td>出牌时查历史牌型记录</td>
-          <td>$5</td>
+          <td>本局打出该牌型的次数加到 Mult</td><td>出牌时查 playHistory</td><td>$5</td>
         </tr>
         <tr>
           <td><strong>Cavendish</strong></td>
           <td><span class="rarity-tag common">Common</span></td>
-          <td>×3 Mult，但每轮结束有 1/1000 概率自毁</td>
-          <td>出牌后乘算，每轮结束检查自毁</td>
-          <td>$6</td>
+          <td>×3 Mult；每轮结束有 1/1000 概率自毁</td><td>出牌后乘算；轮末检查自毁</td><td>$6</td>
         </tr>
       </table>
     </div>
-    <p style="font-size:12px;color:#888;margin-top:8px;">原版数据来源：<a class="source-link" href="https://balatrowiki.org/w/Jokers" target="_blank">balatrowiki.org · Jokers</a></p>
 
-    <h3>3.3 V2.0 验收总 Checklist</h3>
-    <div class="card" style="padding:16px 20px;">
-      <ul class="checklist">
-        <li><div class="check-box"></div><strong>[F1]</strong> 计分公式改为标准 chips × mult 结构，score-detail 显示 "X Chips × Y Mult = Z"</li>
-        <li><div class="check-box"></div><strong>[F1]</strong> 牌型初始 chips/mult 与原版 Level 1 数据一致（高牌 5×1，葫芦 40×4 等）</li>
-        <li><div class="check-box"></div><strong>[F2]</strong> Ante 1→3，每 Ante 含 Small/Big/Boss 共 9 轮盲注，分数阈值正确</li>
-        <li><div class="check-box"></div><strong>[F3]</strong> 打败每个 Blind 后结算金钱，利息机制（每$5持有→$1，上限$5）正确执行</li>
-        <li><div class="check-box"></div><strong>[F4]</strong> 8 张 Joker 效果各自正确触发，不互相干扰；×Mult 在所有加法结束后执行</li>
-        <li><div class="check-box"></div><strong>[F4]</strong> 5 个 Joker 槽位，满后无法购买；出售 Joker 按 50% 返钱</li>
-        <li><div class="check-box"></div><strong>[F5]</strong> 商店界面出现 2 个 Joker 供购买，刷新功能正常，金钱不足灰显</li>
-        <li><div class="check-box"></div><strong>[F6]</strong> The Hook：出牌后随机移除手中 2 张；The Psychic：强制 5 张才能出牌</li>
-        <li><div class="check-box"></div><strong>[F6]</strong> Boss Blind 进入前显示提示卡片</li>
-        <li><div class="check-box"></div><strong>[F7]</strong> 盲注选择界面显示 3 个盲注信息，Small/Big 可跳过，Boss 不可</li>
-        <li><div class="check-box"></div><strong>[F8]</strong> HUD 显示 Ante 进度 + 当前金钱</li>
-        <li><div class="check-box"></div><strong>[F9]</strong> 打败 Ante3 Boss → 胜利；出牌耗尽未达分 → 失败显示进度；重新开始彻底重置</li>
-      </ul>
-    </div>
+    <h3>不做（V2.0 明确排除）</h3>
+    <ul class="not-do">
+      <li>塔罗牌 / 星球牌 / 幽灵牌（消耗牌系统）</li>
+      <li>增强牌（Enhancement）/ 印章（Seal）/ 版本（Edition）</li>
+      <li>Voucher（优惠券）/ Booster Pack（补充包）</li>
+      <li>Tag（跳过奖励）/ 更多 Boss Blind（原版共 38 种，V2.0 只做 2 个）</li>
+      <li>Ante 4–8 / Endless 模式 / 动画 / 音效 / 移动端适配</li>
+    </ul>
   </section>
 
 
-  <!-- ④ V2.1+ 暂缓清单 -->
-  <section id="s4">
-    <h2><span class="num">4</span>V2.1+ 暂缓清单</h2>
+  <!-- ③ 数据结构 -->
+  <section id="s3">
+    <h2><span class="num">3</span>数据结构</h2>
 
-    <div class="card-gray">
-      <p style="font-size:13.5px;color:#555;margin-bottom:16px;">以下功能确认不在 V2.0 做，理由附后，后续版本再评估。</p>
-      <ul class="do-later">
-        <li>
-          <strong>消耗牌系统（塔罗牌 + 星球牌 + 幽灵牌）</strong>——理由：三种消耗品各自有独立的使用 UI（使用时需要选中目标牌）、存储槽（消耗品槽）和触发时机，工程量独立且复杂。V2.0 Joker 系统已能提供足够的数值增益，先验证主循环再加消耗品。
-        </li>
-        <li>
-          <strong>牌型升级 / 星球牌（Planet Cards）</strong>——理由：依赖 handLevels 系统和消耗品购买链路，等消耗牌系统 UI 确定后一起做，否则两次重构 calcScore()。
-        </li>
-        <li>
-          <strong>增强牌（Enhancements）/ 印章（Seals）/ 版本（Editions）</strong>——理由：需要在 Card 结构上追加字段，并在 createCardEl() 渲染层和 calcScore() 计分层同时改动；系统互相依赖（塔罗牌是主要施加途径），建议跟消耗牌一起做。
-        </li>
-        <li>
-          <strong>Voucher（优惠券）</strong>——理由：14 对共 28 种永久效果，大量涉及商店打折、利息上调、槽位扩展等全局状态，单独是一个较大功能块，V2.0 商店先只做 Joker 购买。
-        </li>
-        <li>
-          <strong>Booster Pack（补充包）</strong>——理由：开包 UI 交互独立，涉及从牌库随机抽消耗品或 Joker，需要先把消耗品系统建好才有意义。
-        </li>
-        <li>
-          <strong>Tag（跳过盲注奖励）</strong>——理由：V2.0 跳过 Small/Big 的设计里没有 Tag 奖励，先验证跳过流程本身。Tag 种类多（40+），需要独立设计。
-        </li>
-        <li>
-          <strong>更多 Joker（150 张原版 Joker 中的剩余 142 张）</strong>——理由：V2.0 先用 8 张验证效果框架，后续按玩法需要分批扩充，不一次全做。
-        </li>
-        <li>
-          <strong>更多 Boss Blind（原版 38 种中的剩余 36 种）</strong>——理由：V2.0 实现 2 个足够验证 Boss 机制，后续批量扩展，每个只需在 bossBlinds[] 数组里追加配置。
-        </li>
-        <li>
-          <strong>Ante 4–8 / Endless 模式</strong>——理由：V2.0 先做 Ante 1–3，验证整体循环手感和平衡性，稳定后才有意义扩展关卡长度。
-        </li>
-        <li>
-          <strong>动画 / 音效 / 移动端适配</strong>——继承自 V1 的"不做"列表，长期暂缓。
-        </li>
-      </ul>
-    </div>
-  </section>
-
-
-  <!-- ⑤ 数据结构建议 -->
-  <section id="s5">
-    <h2><span class="num">5</span>数据结构建议</h2>
-    <p style="font-size:13px;color:#666;margin-bottom:16px;">以下是 V2.0 建议的字段草案，供开发直接参考。保持在 V1 单文件架构内扩展，不引入外部状态管理。</p>
-
-    <h3>5.1 顶层游戏状态 state{}</h3>
-    <pre><span class="cmt">// ============ 顶层状态（在 V1 基础上扩展） ============</span>
+    <h3>顶层游戏状态 state{}</h3>
+    <pre><span class="cmt">// 在 V1 基础上扩展，保持单文件架构</span>
 const state = {
-  <span class="cmt">// --- V1 保留 ---</span>
-  <span class="key">deck</span>:          <span class="val">Card[]</span>,        <span class="cmt">// 剩余牌堆</span>
+  <span class="cmt">// V1 保留</span>
+  <span class="key">deck</span>:          <span class="val">Card[]</span>,
   <span class="key">hand</span>:          <span class="val">Card[]</span>,        <span class="cmt">// 当前手牌 8 张</span>
-  <span class="key">selected</span>:      <span class="val">Card[]</span>,        <span class="cmt">// 已选中牌</span>
-  <span class="key">score</span>:         <span class="val">number</span>,       <span class="cmt">// 本盲注内累计得分</span>
-  <span class="key">handsLeft</span>:     <span class="val">number</span>,       <span class="cmt">// 剩余出牌次数（默认4）</span>
-  <span class="key">discardsLeft</span>:  <span class="val">number</span>,       <span class="cmt">// 剩余弃牌次数（默认3）</span>
+  <span class="key">selected</span>:      <span class="val">Card[]</span>,
+  <span class="key">score</span>:         <span class="val">number</span>,        <span class="cmt">// 本盲注内累计得分</span>
+  <span class="key">handsLeft</span>:     <span class="val">number</span>,        <span class="cmt">// 剩余出牌次数（默认 4）</span>
+  <span class="key">discardsLeft</span>:  <span class="val">number</span>,        <span class="cmt">// 剩余弃牌次数（默认 3）</span>
 
-  <span class="cmt">// --- V2 新增 ---</span>
-  <span class="key">ante</span>:          <span class="val">number</span>,       <span class="cmt">// 当前 Ante，1–3</span>
-  <span class="key">blind</span>:         <span class="str">'small'|'big'|'boss'</span>, <span class="cmt">// 当前盲注类型</span>
-  <span class="key">targetScore</span>:   <span class="val">number</span>,       <span class="cmt">// 本盲注目标分（由 ante+blind 动态计算）</span>
-  <span class="key">money</span>:         <span class="val">number</span>,       <span class="cmt">// 当前持有金钱</span>
-  <span class="key">jokers</span>:        <span class="val">Joker[]</span>,      <span class="cmt">// 已装备的小丑牌，最多 5 个</span>
-  <span class="key">handLevels</span>:    <span class="val">Record&lt;HandType, number&gt;</span>, <span class="cmt">// 各牌型等级，初始全 1（V2.0 不会变动，预留给 Planet 牌）</span>
-  <span class="key">currentBoss</span>:   <span class="val">BossBlind|null</span>, <span class="cmt">// 当前 Boss 配置，非 Boss 轮为 null</span>
-  <span class="key">phase</span>:         <span class="str">'blind_select'|'playing'|'shop'|'win'|'lose'</span>, <span class="cmt">// 取代 V1 的 gameStatus</span>
-  <span class="key">playHistory</span>:   <span class="val">HandType[]</span>,   <span class="cmt">// 本盲注内已打出的牌型（供 The Eye / Supernova 使用）</span>
+  <span class="cmt">// V2 新增</span>
+  <span class="key">ante</span>:          <span class="val">number</span>,        <span class="cmt">// 当前 Ante，1–3</span>
+  <span class="key">blind</span>:         <span class="str">'small'|'big'|'boss'</span>,
+  <span class="key">targetScore</span>:   <span class="val">number</span>,        <span class="cmt">// 由 ante+blind 动态计算</span>
+  <span class="key">money</span>:         <span class="val">number</span>,
+  <span class="key">jokers</span>:        <span class="val">Joker[]</span>,       <span class="cmt">// 已装备，最多 5 个</span>
+  <span class="key">handLevels</span>:    <span class="val">Record&lt;HandType, number&gt;</span>, <span class="cmt">// 各牌型等级，初始全 1</span>
+  <span class="key">currentBoss</span>:   <span class="val">BossBlind|null</span>,
+  <span class="key">phase</span>:         <span class="str">'blind_select'|'playing'|'shop'|'win'|'lose'</span>,
+  <span class="key">playHistory</span>:   <span class="val">HandType[]</span>,    <span class="cmt">// 本盲注已打出牌型（供 Supernova / The Eye 用）</span>
 };</pre>
 
-    <h3>5.2 Card 结构（向下兼容扩展）</h3>
-    <pre><span class="cmt">// Card 结构（V1 原有字段不变，V2 追加可选字段）</span>
-{
+    <h3>Card 结构（向下兼容）</h3>
+    <pre>{
   <span class="key">suit</span>:        <span class="str">"♥|♦|♣|♠"</span>,
   <span class="key">rank</span>:        <span class="str">"A|2-10|J|Q|K"</span>,
-  <span class="key">value</span>:       <span class="val">number</span>,         <span class="cmt">// chips 面值，A=11, J/Q/K=10, 2-10按面值</span>
-
-  <span class="cmt">// V2 可选字段（V2.0 阶段全部默认 undefined，供 V2.1+ 消耗牌系统使用）</span>
+  <span class="key">value</span>:       <span class="val">number</span>,  <span class="cmt">// A=11, J/Q/K=10, 2-10 按面值</span>
+  <span class="cmt">// V2 可选（V2.0 阶段全部 undefined，预留给 V2.1+ 消耗牌）</span>
   <span class="key">enhancement</span>: <span class="str">'bonus'|'mult'|'wild'|'glass'|'steel'|'stone'|'gold'|'lucky'|undefined</span>,
   <span class="key">seal</span>:        <span class="str">'gold'|'red'|'blue'|'purple'|undefined</span>,
   <span class="key">edition</span>:     <span class="str">'foil'|'holographic'|'polychrome'|'negative'|undefined</span>,
-  <span class="key">debuffed</span>:    <span class="val">boolean</span>,        <span class="cmt">// 被 Boss Blind 效果禁用时为 true（如 The Club 禁梅花）</span>
+  <span class="key">debuffed</span>:    <span class="val">boolean</span>, <span class="cmt">// Boss Blind 效果禁用时为 true</span>
 }</pre>
 
-    <h3>5.3 Joker 结构</h3>
-    <pre><span class="cmt">// Joker 数据结构</span>
-{
-  <span class="key">id</span>:        <span class="val">string</span>,           <span class="cmt">// 唯一 ID，如 'joker_base'</span>
-  <span class="key">name</span>:      <span class="val">string</span>,           <span class="cmt">// 显示名，如 "Joker"</span>
+    <h3>Joker 结构</h3>
+    <pre>{
+  <span class="key">id</span>:        <span class="val">string</span>,
+  <span class="key">name</span>:      <span class="val">string</span>,
   <span class="key">rarity</span>:    <span class="str">'common'|'uncommon'|'rare'|'legendary'</span>,
-  <span class="key">price</span>:     <span class="val">number</span>,           <span class="cmt">// 购买价格</span>
-  <span class="key">sellValue</span>: <span class="val">number</span>,           <span class="cmt">// 出售价格（一般为 price 的 50%）</span>
-  <span class="key">desc</span>:      <span class="val">string</span>,           <span class="cmt">// tooltip 描述文字</span>
-  <span class="key">effect</span>:    <span class="val">JokerEffect</span>,      <span class="cmt">// 见下方</span>
+  <span class="key">price</span>:     <span class="val">number</span>,
+  <span class="key">sellValue</span>: <span class="val">number</span>,   <span class="cmt">// 一般为 price 的 50%</span>
+  <span class="key">desc</span>:      <span class="val">string</span>,
+  <span class="key">effect</span>:    <span class="val">JokerEffect</span>,
 }
 
-<span class="cmt">// JokerEffect 函数签名（在 calcScore 管道中被调用）</span>
-<span class="cmt">// ctx = { hand: Card[], scoringCards: Card[], handType: HandType, chips: number, mult: number }</span>
-<span class="cmt">// 返回 { addChips, addMult, xMult } 三者可选</span>
+<span class="cmt">// ctx = { hand, scoringCards, handType, chips, mult }</span>
+<span class="cmt">// 返回 { addChips?, addMult?, xMult? }</span>
 type JokerEffect = (ctx: ScoreContext) => { addChips?: number; addMult?: number; xMult?: number };</pre>
 
-    <h3>5.4 Boss Blind 结构</h3>
-    <pre><span class="cmt">// Boss Blind 配置</span>
-{
-  <span class="key">id</span>:          <span class="val">string</span>,           <span class="cmt">// 如 'the_hook'</span>
-  <span class="key">name</span>:        <span class="val">string</span>,           <span class="cmt">// 如 "The Hook"</span>
-  <span class="key">desc</span>:        <span class="val">string</span>,           <span class="cmt">// 玩家提示文字</span>
-  <span class="key">onAfterPlay</span>: <span class="val">Function|null</span>,   <span class="cmt">// 出牌后触发（The Hook：随机弃 2 张）</span>
-  <span class="key">canPlay</span>:     <span class="val">Function|null</span>,   <span class="cmt">// 校验是否可出牌（The Psychic：检查选牌 ≥5）</span>
-  <span class="key">onEnter</span>:     <span class="val">Function|null</span>,   <span class="cmt">// 进入盲注时触发（The House：翻转手牌）</span>
-  <span class="key">debuffFilter</span>:<span class="val">Function|null</span>,   <span class="cmt">// 哪些牌被禁用（The Club：过滤梅花）</span>
-}</pre>
-
-    <h3>5.5 Ante 分数常量表</h3>
-    <pre><span class="cmt">// 分数阈值常量，按 §2.2 数据</span>
-const ANTE_BASE = { 1: 300, 2: 800, 3: 2000 };
+    <h3>Ante 分数常量</h3>
+    <pre>const ANTE_BASE = { 1: 300, 2: 800, 3: 2000 };
 const BLIND_MULT = { small: 1, big: 1.5, boss: 2 };
-
+<span class="cmt">// Ante1 Small=300, Big=450, Boss=600</span>
+<span class="cmt">// Ante2 Small=800, Big=1200, Boss=1600</span>
+<span class="cmt">// Ante3 Small=2000, Big=3000, Boss=4000</span>
 function getTargetScore(ante, blind) {
   return Math.floor(ANTE_BASE[ante] * BLIND_MULT[blind]);
 }</pre>
 
-    <h3>5.6 计分管道（伪代码）</h3>
+    <h3>牌型基础值（Level 1）</h3>
+    <div class="card" style="padding:0;">
+      <table>
+        <tr><th>牌型</th><th>基础 Chips</th><th>基础 Mult</th></tr>
+        <tr><td>高牌 High Card</td><td>5</td><td>1</td></tr>
+        <tr><td>对子 Pair</td><td>10</td><td>2</td></tr>
+        <tr><td>两对 Two Pair</td><td>20</td><td>2</td></tr>
+        <tr><td>三条 Three of a Kind</td><td>30</td><td>3</td></tr>
+        <tr><td>顺子 Straight</td><td>30</td><td>4</td></tr>
+        <tr><td>同花 Flush</td><td>35</td><td>4</td></tr>
+        <tr><td>葫芦 Full House</td><td>40</td><td>4</td></tr>
+        <tr><td>四条 Four of a Kind</td><td>60</td><td>7</td></tr>
+        <tr><td>同花顺 Straight Flush</td><td>100</td><td>8</td></tr>
+        <tr><td>皇家同花顺 Royal Flush</td><td>100</td><td>8</td></tr>
+      </table>
+    </div>
+
+    <h3>计分公式</h3>
+    <div class="formula">最终得分 = (hand_chips + Σ scoring_card_chips + Σ joker_addChips) × (hand_mult + Σ joker_addMult) × Π joker_xMult</div>
     <pre>function calcScore(selectedCards) {
   const handType = evaluateHand(selectedCards);
   const level = state.handLevels[handType.key];
-
-  <span class="cmt">// 1. 基础 chips = 牌型chips + 各计分牌面值</span>
   const scoringCards = getScoringCards(selectedCards, handType);
+
   let chips = handType.baseChips(level);
   for (const c of scoringCards) {
-    if (!c.debuffed) chips += c.value; <span class="cmt">// 被 debuff 的牌不贡献 chips</span>
+    if (!c.debuffed) chips += c.value;
   }
-
-  <span class="cmt">// 2. 基础 mult</span>
   let mult = handType.baseMult(level);
-
-  <span class="cmt">// 3. 各 Joker 加算 chips 和 mult</span>
   let xMultProduct = 1;
-  const ctx = { hand: state.hand, scoringCards, handType, chips, mult };
+
   for (const joker of state.jokers) {
     const { addChips = 0, addMult = 0, xMult = 1 } = joker.effect(ctx);
     chips += addChips;
-    mult += addMult;
-    xMultProduct *= xMult;
+    mult  += addMult;
+    xMultProduct *= xMult;  <span class="cmt">// ×Mult 最后统一做乘法</span>
   }
 
-  <span class="cmt">// 4. 最终得分</span>
-  const finalScore = Math.floor(chips * mult * xMultProduct);
-  return { handType, chips, mult, xMultProduct, score: finalScore };
+  return Math.floor(chips * mult * xMultProduct);
 }</pre>
   </section>
 
 
-  <!-- ⑥ 核心游戏流程 -->
-  <section id="s6">
-    <h2><span class="num">6</span>核心游戏流程（V2.0）</h2>
+  <!-- ④ 核心流程 -->
+  <section id="s4">
+    <h2><span class="num">4</span>核心流程</h2>
 
-    <h3>完整一局流程</h3>
-    <div class="card" style="font-size:13.5px;line-height:2.2;">
-      <p style="font-weight:600;color:#333;margin-bottom:8px;">游戏开始</p>
+    <div class="card" style="font-size:13.5px;line-height:2.4;">
       <ol style="padding-left:20px;color:#555;">
-        <li>初始化：ante=1, money=$0, jokers=[], 洗牌，phase='blind_select'</li>
-        <li><strong>盲注选择界面（phase=blind_select）</strong>：显示 Small/Big/Boss 分数要求，玩家选择打或跳过（Small/Big）</li>
-        <li><strong>打牌阶段（phase=playing）</strong>：发 8 张手牌，设置 targetScore，玩家出牌/弃牌，达到 targetScore 则本 Blind 胜利</li>
-        <li><strong>结算 Toast</strong>：显示本轮奖励明细，money += 奖励+利息，持续 2–3 秒</li>
-        <li><strong>商店（phase=shop）</strong>：显示 2 个随机 Joker + 刷新 + 继续按钮，玩家购买或直接继续</li>
-        <li>若 3 个 Blind 均通过 → ante++，返回步骤 2（blind_select）</li>
-        <li>ante 推进到 4（即打完 ante=3 的 Boss Blind）→ phase='win'，游戏胜利</li>
-        <li>任意 Blind 内出牌耗尽且 score &lt; targetScore → phase='lose'，显示进度</li>
+        <li><strong>游戏开始</strong>：ante=1, money=0, jokers=[], 洗牌，phase='blind_select'</li>
+        <li><strong>盲注选择</strong>（phase=blind_select）：显示 Small/Big/Boss 目标分和奖励；Small/Big 可跳过（不给奖励）；Boss 不可跳过</li>
+        <li><strong>打牌阶段</strong>（phase=playing）：发 8 张手牌，设 targetScore；玩家出牌/弃牌；达到 targetScore → 本 Blind 胜利，进结算</li>
+        <li><strong>结算</strong>：计算基础奖励 + 剩余出牌弃牌奖励 + 利息，money 更新，显示明细</li>
+        <li><strong>商店</strong>（phase=shop）：2 格 Joker + 1 格 Coming Soon 占位 + 刷新 + 继续</li>
+        <li>3 个 Blind 均通过 → ante++，回到步骤 2；ante 推进到 4 → phase='win'</li>
+        <li>任意 Blind 出牌耗尽且未达分 → phase='lose'，显示进度</li>
       </ol>
     </div>
 
-    <h3>界面布局建议（V2.0）</h3>
-    <div class="card">
-      <p style="font-size:13px;color:#666;margin-bottom:12px;">在 V1 的 1080×640 游戏视口内调整布局，新增 Joker 槽位区。</p>
+    <h3>界面布局（1080×640 视口）</h3>
+    <div class="card" style="padding:0;">
       <table>
         <tr><th>区域</th><th>位置</th><th>内容</th></tr>
-        <tr><td>HUD 顶栏</td><td>顶部，高 64px</td><td>目标分 / 当前分 / 出牌次数 / 弃牌次数 / 金钱 / Ante进度（6 格）</td></tr>
-        <tr><td>Joker 槽位区</td><td>左侧竖栏，宽 110px</td><td>5 个 Joker 槽，空槽显示灰色虚线框；Joker 卡片显示名称+效果简写</td></tr>
-        <tr><td>出牌区</td><td>中上方主区域</td><td>保持 V1 的 5 格出牌区 + 牌型徽章 + 分数明细</td></tr>
-        <tr><td>手牌区</td><td>中下方</td><td>保持 V1 的 8 张手牌横排</td></tr>
-        <tr><td>操作栏</td><td>底部，高 56px</td><td>出牌 / 弃牌 / 重新开始按钮</td></tr>
-        <tr><td>商店 Modal</td><td>全屏遮罩浮层</td><td>2 个 Joker 卡片 + 刷新按钮 + 继续按钮，复用 V1 modal 样式</td></tr>
-        <tr><td>盲注选择 Modal</td><td>全屏遮罩浮层</td><td>3 个盲注卡片，显示名称/分数/奖励/跳过按钮</td></tr>
-        <tr><td>Boss 提示 Modal</td><td>小浮层，3秒自动关</td><td>Boss 名称 + 限制效果说明</td></tr>
+        <tr><td>HUD 顶栏</td><td>顶部 64px</td><td>目标分 / 当前分 / 出牌次数 / 弃牌次数 / 金钱 / Ante 进度</td></tr>
+        <tr><td>Joker 槽位区</td><td>左侧 ~110px 竖栏</td><td>5 个 Joker 槽，空槽显示灰色虚线框，Joker 显示名称+效果简写</td></tr>
+        <tr><td>出牌区</td><td>中上方主区域</td><td>5 格出牌区 + 牌型徽章 + "X Chips × Y Mult = Z"分数明细</td></tr>
+        <tr><td>手牌区</td><td>中下方</td><td>8 张手牌横排</td></tr>
+        <tr><td>操作栏</td><td>底部 56px</td><td>出牌 / 弃牌 / 重新开始按钮</td></tr>
+        <tr><td>商店 Modal</td><td>全屏遮罩</td><td>2 个 Joker 卡片 + Coming Soon 占位格 + 刷新 + 继续</td></tr>
+        <tr><td>盲注选择 Modal</td><td>全屏遮罩</td><td>3 个盲注卡片，含名称/分数/奖励/跳过按钮</td></tr>
+        <tr><td>Boss 提示 Modal</td><td>小浮层 3 秒自动关</td><td>Boss 名称 + 限制效果说明</td></tr>
       </table>
     </div>
   </section>
 
 
-  <!-- ⑦ 风险 & 开放问题 -->
-  <section id="s7">
-    <h2><span class="num">7</span>风险 &amp; 开放问题</h2>
+  <!-- ⑤ 决策记录 -->
+  <section id="s5">
+    <h2><span class="num">5</span>决策记录（2026-05-16 已拍板）</h2>
 
-    <h3>已识别风险</h3>
-    <div class="card-red">
-      <table>
-        <tr><th>风险</th><th>说明</th><th>建议对策</th></tr>
-        <tr>
-          <td>V1 计分公式重构影响面大</td>
-          <td>calcScore() 是核心函数，V2 重构后需要同时确保 V1 的 10 种牌型识别逻辑不受影响，同时新公式的多 Joker 叠加顺序要严格对齐 Balatro 原版（先加法再乘法）</td>
-          <td>F1 最先做，单独用测试用例验证（高牌 5+A面值 × 1 = 16，装备基础 Joker 后 16 × 5 = 80）</td>
-        </tr>
-        <tr>
-          <td>布局空间紧张</td>
-          <td>V1 视口 1080×640，加入左侧 Joker 栏（110px）后主区域压缩，手牌 8 张在较窄空间可能拥挤</td>
-          <td>先原型验证布局，必要时把手牌缩小至 76×110px，或改为左侧 Joker 区叠加在出牌区外侧</td>
-        </tr>
-        <tr>
-          <td>Ante 3 难度平衡</td>
-          <td>Ante 3 Boss Blind 目标分 4000，V2.0 Joker 库仅 8 张，玩家可能刚好撑不到或轻松通关，需要实测调整</td>
-          <td>开发完成后人工跑 10 局，根据通关率调整 Ante 3 基础分或 Joker 价格</td>
-        </tr>
-        <tr>
-          <td>单文件规模膨胀</td>
-          <td>V1 已 695 行，V2 加入所有新逻辑后预计 1200–1500 行，单文件可维护性下降</td>
-          <td>保持函数命名规范（以 V2 新增的统一加 v2_ 前缀或注释分节），暂不拆文件</td>
-        </tr>
-      </table>
-    </div>
-
-    <h3>开放问题决策记录（2026-05-16 用户拍板）</h3>
-    <ul class="open-q">
+    <ul class="decision">
       <li>
-        <strong>Q1 · Joker 数量？</strong> → <strong style="color:#2d5a3d;">维持 8 张</strong><br>
-        V2.0 底池固定 8 张 Joker，商店每次随机展示 2 张。可控、能尽快跑通闭环；重复度高的问题留到 V2.1+ 扩库时解决。
+        <strong class="q">D1 · Joker 数量</strong>
+        <strong class="a">→ 固定 8 张</strong><br>
+        商店每次随机展示 2 张，底池 8 张可控，够跑通主循环。V2.1+ 再扩库。
       </li>
       <li>
-        <strong>Q2 · 跳过 Blind 的奖励？</strong> → <strong style="color:#2d5a3d;">不给奖励</strong><br>
-        跳过 Small/Big 不给任何金钱或 Tag。设计上"跳过"等同于"放弃这场的金钱与利息收益换取节省时间"，是一种纯权衡，而非纯收益。Tag 系统整体顺延到 V2.1+。
+        <strong class="q">D2 · 跳过 Blind 的奖励</strong>
+        <strong class="a">→ 不给任何奖励</strong><br>
+        跳过 = 放弃本轮金钱与利息，换取节省时间，是纯权衡而非纯收益。Tag 系统顺延 V2.1+。
       </li>
       <li>
-        <strong>Q3 · 商店第 3 格？</strong> → <strong style="color:#2d5a3d;">加 Coming Soon 占位格</strong><br>
-        商店布局变为「2 个 Joker 格 + 1 个塔罗/星球牌占位格」。占位格显示一张随机的塔罗或星球牌外观，标注 "Coming Soon"，<u>不可购买、不可交互</u>。仅用于：① 让商店视觉更饱满；② 给玩家对 V2.1+ 的期待。开发时可以做成纯展示组件，不接计分逻辑。
+        <strong class="q">D3 · 商店第 3 格</strong>
+        <strong class="a">→ Coming Soon 占位格</strong><br>
+        展示随机塔罗或星球牌外观，标注 "Coming Soon"，不可交互，纯展示组件，不接计分逻辑。
       </li>
     </ul>
-
-    <div style="margin-top:32px;padding:16px 20px;background:#f3f1ec;border-radius:8px;font-size:13px;color:#666;">
-      <strong style="color:#333;">参考资料合集（开发查阅用）</strong><br>
-      <ul style="margin-top:8px;line-height:2.4;padding-left:16px;">
-        <li><a class="source-link" href="https://balatrogame.fandom.com/wiki/Gameplay_rules" target="_blank">Balatro Wiki · Gameplay rules（整体规则）</a></li>
-        <li><a class="source-link" href="https://balatrowiki.org/w/Blinds_and_Antes" target="_blank">balatrowiki.org · Blinds and Antes（Ante/分数表）</a></li>
-        <li><a class="source-link" href="https://balatrowiki.org/w/Jokers" target="_blank">balatrowiki.org · Jokers（Joker 完整列表）</a></li>
-        <li><a class="source-link" href="https://balatrowiki.org/w/Poker_Hands" target="_blank">balatrowiki.org · Poker Hands（牌型等级与星球牌）</a></li>
-        <li><a class="source-link" href="https://balatrowiki.org/w/Card_Modifiers" target="_blank">balatrowiki.org · Card Modifiers（增强/印章/版本）</a></li>
-        <li><a class="source-link" href="https://balatrogame.fandom.com/wiki/The_Shop" target="_blank">Balatro Wiki · The Shop（商店结构）</a></li>
-        <li><a class="source-link" href="https://balatrogame.fandom.com/wiki/Tarot_Cards" target="_blank">Balatro Wiki · Tarot Cards（22 种塔罗牌）</a></li>
-        <li><a class="source-link" href="https://balatrowiki.org/w/Spectral_Cards" target="_blank">balatrowiki.org · Spectral Cards（18 种幽灵牌）</a></li>
-        <li><a class="source-link" href="https://vgkami.com/balatro-all-blinds-list-guide/" target="_blank">VGKAMI · All Boss Blinds Guide（Boss 效果详解）</a></li>
-        <li><a class="source-link" href="https://games.gg/balatro/guides/balatro-economy-guide/" target="_blank">GAMES.GG · Economy Guide（金钱/利息机制）</a></li>
-      </ul>
-    </div>
   </section>
 
 </div>

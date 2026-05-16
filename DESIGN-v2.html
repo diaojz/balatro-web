@@ -3,1305 +3,448 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小丑牌 V2.0 Design Spec</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>小丑牌 V2 · 设计预览</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#f5f0e8;font-family:'Noto Sans SC',system-ui,sans-serif;color:#1a1a1a;font-size:14px}
-a{color:#e8682a;text-decoration:none}
+body{background:#f0ece3;font-family:system-ui,'Noto Sans SC',sans-serif;color:#1a1a1a;font-size:13px;line-height:1.6}
+.mono{font-family:'JetBrains Mono',monospace}
+h1{font-size:18px;font-weight:700;color:#1a1a1a}
+h2{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#e8682a;margin-bottom:12px}
+.note{font-size:12px;color:#666;margin-top:6px;line-height:1.5}
 
-.topbar{position:sticky;top:0;z-index:100;background:#1a1a1a;display:flex;align-items:center;gap:24px;padding:0 24px;height:44px;flex-wrap:wrap}
-.badge{background:#e8682a;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.5px}
-.badge-v2{background:#7c3aed;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.5px}
-.nav-links{display:flex;gap:0;margin-left:auto;flex-wrap:wrap}
-.nav-links a{color:#aaa;font-size:12px;padding:0 12px;line-height:44px;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
-.nav-links a:hover{color:#fff;border-color:#e8682a}
+/* Layout */
+.page{max-width:960px;margin:0 auto;padding:24px 20px}
+.sec{margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid #ddd5c4}
+.row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 
-.section{padding:40px 40px 48px;border-bottom:1px solid #e0d8cc}
-.section-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#e8682a;margin-bottom:8px}
-.section-subtitle{font-size:13px;color:#888;margin-bottom:28px;line-height:1.6}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
-.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:start}
+/* ── 1. 色板 ── */
+.swatch-row{display:flex;gap:10px;flex-wrap:wrap}
+.swatch{width:80px;text-align:center}
+.swatch-color{width:80px;height:48px;border-radius:8px;margin-bottom:4px;border:1px solid rgba(0,0,0,.1)}
+.swatch-hex{font-family:monospace;font-size:10px;color:#555}
+.swatch-name{font-size:11px;color:#333;font-weight:600}
 
-.token-table{width:100%;border-collapse:collapse;font-size:13px}
-.token-table th{text-align:left;padding:6px 10px;background:#ede6d8;color:#666;font-weight:600;font-size:11px;letter-spacing:.5px}
-.token-table td{padding:7px 10px;border-bottom:1px solid #e8e0d2;vertical-align:middle}
-.swatch{display:inline-block;width:16px;height:16px;border-radius:3px;border:1px solid rgba(0,0,0,.15);vertical-align:middle;margin-right:6px}
-.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#555}
+/* ── 2. Joker 卡片基础样式 ── */
+.j{width:90px;height:114px;border-radius:10px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:3px;padding:6px 4px;
+  position:relative;cursor:pointer;transition:transform 180ms ease;flex-shrink:0}
+.j:hover{transform:translateY(-5px)}
+.j .icon{font-size:26px;line-height:1}
+.j .name{font-size:8.5px;font-weight:700;color:#fff;text-align:center;line-height:1.2;padding:0 2px}
+.j .eff{font-size:7.5px;color:rgba(255,255,255,.72);text-align:center;line-height:1.3;padding:0 2px}
+.j .price{position:absolute;bottom:4px;right:5px;font-family:monospace;font-size:9px;font-weight:700;color:#d4a017}
 
-.new-tag{display:inline-block;background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;margin-left:6px;letter-spacing:.3px;vertical-align:middle}
-.change-tag{display:inline-block;background:#fef9c3;color:#854d0e;font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;margin-left:6px;letter-spacing:.3px;vertical-align:middle}
-.keep-tag{display:inline-block;background:#f3f1ec;color:#666;font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;margin-left:6px;letter-spacing:.3px;vertical-align:middle}
-
-/* ASCII 线框区 */
-.wireframe{background:#1a1a1a;border-radius:10px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#ccc;line-height:1.6;overflow-x:auto}
-.wireframe .label{color:#e8682a;font-weight:700}
-.wireframe .dim{color:#555}
-.wireframe .gold{color:#d4a017}
-.wireframe .green{color:#5dd67a}
-.wireframe .purple{color:#a855f7}
-.wireframe .blue{color:#60a5fa}
-
-/* 组件规格卡片 */
-.spec-card{background:#fff;border:1px solid #e0d8cc;border-radius:12px;padding:20px 22px;margin-bottom:20px}
-.spec-card h4{font-size:13px;font-weight:700;color:#e8682a;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
-.spec-row{display:flex;gap:16px;margin-bottom:8px;font-size:13px;align-items:baseline}
-.spec-key{color:#888;min-width:90px;font-size:12px;flex-shrink:0}
-.spec-val{color:#1a1a1a;font-family:'JetBrains Mono',monospace;font-size:12px}
-
-/* Joker 卡片演示 */
-.joker-card{
-  width:90px;height:120px;border-radius:12px;position:relative;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;cursor:pointer;user-select:none;flex-shrink:0;
-  transition:transform 200ms ease,box-shadow 200ms ease;
-  padding:6px 4px;
-}
-.joker-card:hover{transform:translateY(-4px)}
-.joker-card .j-icon{font-size:28px;line-height:1}
-.joker-card .j-name{font-size:9px;font-weight:700;color:#fff;text-align:center;line-height:1.2;padding:0 2px}
-.joker-card .j-effect{font-size:8px;color:rgba(255,255,255,.75);text-align:center;line-height:1.3;padding:0 2px}
-.joker-card .j-price{position:absolute;bottom:5px;right:6px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:#d4a017}
-
-/* 稀有度边框样式 */
-.rarity-common{
-  background:linear-gradient(160deg,#2a2a3a 0%,#1e1e2e 100%);
-  box-shadow:0 0 0 2.5px #6b7db3,0 4px 12px rgba(0,0,0,.4);
-}
-.rarity-uncommon{
-  background:linear-gradient(160deg,#1a2e1a 0%,#142414 100%);
-  box-shadow:0 0 0 2.5px #4ade80,0 4px 12px rgba(74,222,128,.25);
-}
-.rarity-rare{
-  background:linear-gradient(160deg,#2e1a1a 0%,#241414 100%);
-  box-shadow:0 0 0 2.5px #f87171,0 4px 12px rgba(248,113,113,.25);
-}
-.rarity-legendary{
-  background:linear-gradient(160deg,#2a1a3a 0%,#1e1428 100%);
-  box-shadow:0 0 0 2.5px #a855f7,0 4px 16px rgba(168,85,247,.4);
-  animation:legendary-pulse 2s ease-in-out infinite;
-}
-@keyframes legendary-pulse{
+/* 稀有度 */
+.common{background:#2a2a3a;box-shadow:0 0 0 2.5px #6b7db3,0 4px 12px rgba(0,0,0,.4)}
+.uncommon{background:#1a2e1a;box-shadow:0 0 0 2.5px #4ade80,0 4px 12px rgba(74,222,128,.2)}
+.rare{background:#2e1a1a;box-shadow:0 0 0 2.5px #fb923c,0 4px 12px rgba(251,146,60,.3)}
+.legendary{background:#2a1a3a;box-shadow:0 0 0 2.5px #a855f7,0 4px 20px rgba(168,85,247,.5);
+  animation:lpulse 2s ease-in-out infinite}
+@keyframes lpulse{
   0%,100%{box-shadow:0 0 0 2.5px #a855f7,0 4px 16px rgba(168,85,247,.4)}
-  50%{box-shadow:0 0 0 2.5px #c084fc,0 4px 24px rgba(168,85,247,.65)}
+  50%{box-shadow:0 0 0 2.5px #c084fc,0 4px 28px rgba(168,85,247,.7)}
 }
+.rarity-label{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:4px;display:inline-block}
+.rl-c{background:#e8eaf0;color:#4a5568;border:1px solid #6b7db3}
+.rl-u{background:#d1fae5;color:#065f46;border:1px solid #4ade80}
+.rl-r{background:#fee2e2;color:#991b1b;border:1px solid #fb923c}
+.rl-l{background:#f3e8ff;color:#6b21a8;border:1px solid #a855f7}
 
-.joker-grid{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+/* ── 3. 商店 ── */
+.shop{background:#1a2a1a;border-radius:14px;padding:20px;width:380px}
+.shop-title{font-family:monospace;font-size:16px;font-weight:700;color:#d4a017;text-align:center;margin-bottom:2px}
+.shop-sub{font-size:11px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:16px}
+.shop-items{display:flex;gap:12px;justify-content:center;margin-bottom:16px}
+.shop-item{width:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:background 180ms ease}
+.shop-item:hover{background:rgba(255,255,255,.12)}
+.item-price{background:#d4a017;color:#1a1a1a;font-family:monospace;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px}
+.item-name{font-size:10px;color:#fff;font-weight:600;text-align:center}
+.coming-soon{width:100px;background:rgba(255,255,255,.02);border:1.5px dashed rgba(255,255,255,.2);
+  border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:4px;opacity:.6;min-height:110px}
+.cs-label{font-size:9px;font-weight:700;color:#666;letter-spacing:1px;text-transform:uppercase;text-align:center}
+.shop-actions{display:flex;gap:10px;justify-content:center}
+.btn{border:none;border-radius:999px;padding:8px 20px;font-size:12px;font-weight:700;cursor:pointer;transition:opacity 150ms}
+.btn-reroll{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.btn-reroll:hover{background:rgba(255,255,255,.2)}
+.btn-continue{background:#e8682a;color:#fff}
+.btn-continue:hover{opacity:.85}
 
-/* 稀有度标签 */
-.rarity-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.2px}
-.rb-common{background:#e8eaf0;color:#4a5568;border:1px solid #6b7db3}
-.rb-uncommon{background:#d1fae5;color:#065f46;border:1px solid #4ade80}
-.rb-rare{background:#fee2e2;color:#991b1b;border:1px solid #f87171}
-.rb-legendary{background:#f3e8ff;color:#6b21a8;border:1px solid #a855f7}
-
-/* 商店演示 */
-.shop-demo{
-  width:100%;max-width:760px;background:#1a2a1a;border-radius:16px;
-  padding:24px;margin:0 auto;
-  box-shadow:0 12px 40px rgba(0,0,0,.5);
-}
-.shop-title{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#d4a017;text-align:center;margin-bottom:4px;letter-spacing:1px}
-.shop-subtitle{font-size:12px;color:rgba(255,255,255,.45);text-align:center;margin-bottom:20px}
-.shop-items{display:flex;gap:16px;justify-content:center;margin-bottom:20px}
-.shop-item{
-  width:110px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
-  border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;
-  cursor:pointer;transition:background 200ms ease;position:relative;
-}
-.shop-item:hover{background:rgba(255,255,255,.1)}
-.shop-item-price{
-  background:#d4a017;color:#1a1a1a;font-family:'JetBrains Mono',monospace;
-  font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;
-}
-.shop-item-name{font-size:11px;color:#fff;font-weight:600;text-align:center}
-.shop-coming-soon{
-  width:110px;background:rgba(255,255,255,.03);border:1.5px dashed rgba(255,255,255,.2);
-  border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;
-  gap:8px;opacity:.65;
-}
-.coming-soon-label{font-size:9px;font-weight:700;color:#888;letter-spacing:1px;text-transform:uppercase;text-align:center}
-.shop-actions{display:flex;gap:12px;justify-content:center}
-
-/* 盲注卡片 */
-.blind-cards{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.blind-card{
-  width:200px;border-radius:14px;padding:20px 16px;display:flex;flex-direction:column;gap:8px;
-  position:relative;cursor:pointer;transition:transform 150ms ease;
-}
-.blind-card:hover{transform:translateY(-3px)}
-.blind-small{background:#1a2e1a;border:2px solid #4ade80}
-.blind-big{background:#2e2a1a;border:2px solid #d4a017}
-.blind-boss{background:#2e1a1a;border:2px solid #f87171;animation:boss-glow 2s ease-in-out infinite}
-@keyframes boss-glow{
-  0%,100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}
-  50%{box-shadow:0 0 16px 2px rgba(248,113,113,.3)}
-}
-.blind-type{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.7}
-.blind-name{font-size:16px;font-weight:700;color:#fff}
-.blind-score{font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.7)}
+/* ── 4. 盲注选择 ── */
+.blind-row{display:flex;gap:12px;flex-wrap:wrap}
+.blind{width:160px;border-radius:12px;padding:16px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:transform 150ms}
+.blind:hover{transform:translateY(-3px)}
+.b-small{background:#1a2e1a;border:2px solid #4ade80}
+.b-big{background:#2e2a1a;border:2px solid #d4a017}
+.b-boss{background:#2e1a1a;border:2px solid #f87171;animation:bglow 2s ease-in-out infinite}
+@keyframes bglow{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 16px 2px rgba(248,113,113,.3)}}
+.blind-type{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.65;color:#fff}
+.blind-name{font-size:14px;font-weight:700;color:#fff}
+.blind-score{font-family:monospace;font-size:11px;color:rgba(255,255,255,.65)}
 .blind-score span{color:#5dd67a;font-weight:700}
-.blind-reward{font-size:12px;color:#d4a017;font-weight:600}
-.blind-boss-effect{font-size:11px;color:#fca5a5;background:rgba(248,113,113,.12);border-radius:6px;padding:6px 8px;line-height:1.5}
-.btn-blind{
-  display:block;width:100%;border:none;border-radius:999px;padding:8px 0;
-  font-family:'Noto Sans SC',sans-serif;font-size:12px;font-weight:700;cursor:pointer;
-  transition:opacity 150ms ease;margin-top:4px;
-}
-.btn-blind-play{background:#e8682a;color:#fff}
-.btn-blind-skip{background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.25)}
-.btn-blind-skip:hover{border-color:rgba(255,255,255,.5);color:rgba(255,255,255,.8)}
-.btn-blind-disabled{background:rgba(255,255,255,.08);color:rgba(255,255,255,.25);cursor:not-allowed}
+.blind-reward{font-size:11px;color:#d4a017;font-weight:600}
+.blind-effect{font-size:10px;color:#fca5a5;background:rgba(248,113,113,.12);border-radius:5px;padding:5px 6px;line-height:1.5}
+.btn-play{display:block;width:100%;border:none;border-radius:999px;padding:6px 0;
+  font-size:11px;font-weight:700;cursor:pointer;margin-top:2px;background:#e8682a;color:#fff}
+.btn-skip{display:block;width:100%;border:1px solid rgba(255,255,255,.25);border-radius:999px;
+  padding:6px 0;font-size:11px;font-weight:700;cursor:pointer;background:transparent;color:rgba(255,255,255,.5)}
 
-/* HUD 演示 */
-.hud-v2{
-  display:flex;align-items:stretch;gap:0;padding:0;height:64px;
-  background:rgba(0,0,0,.35);border-bottom:1px solid rgba(255,255,255,.08);
-  border-radius:10px;overflow:hidden;
-}
-.hud-item{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  border-right:1px solid rgba(255,255,255,.1);padding:0 8px;
-}
+/* ── 5. Boss 提示卡 ── */
+.boss-alert{background:#1a0a0a;border:2px solid #f87171;border-radius:12px;padding:24px 28px;
+  max-width:340px;text-align:center;box-shadow:0 0 32px rgba(248,113,113,.2)}
+.ba-skull{font-size:44px;margin-bottom:6px}
+.ba-name{font-size:20px;font-weight:700;color:#f87171;font-family:monospace;margin-bottom:2px}
+.ba-sub{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.ba-rule{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:7px;padding:10px 14px;font-size:12px;color:#fca5a5;line-height:1.6}
+.ba-dismiss{margin-top:12px;border:none;border-radius:999px;padding:7px 24px;background:rgba(248,113,113,.2);color:#f87171;font-size:12px;font-weight:700;cursor:pointer}
+
+/* ── 6. HUD ── */
+.hud{display:flex;align-items:stretch;height:60px;background:rgba(0,0,0,.35);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.hud-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-right:1px solid rgba(255,255,255,.1);padding:0 6px}
 .hud-item:last-child{border-right:none}
-.hud-label{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;font-weight:600}
-.hud-value{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#fff;line-height:1.2;font-variant-numeric:tabular-nums}
-.hud-value.target{color:#d4a017}
-.hud-value.score{color:#5dd67a}
-.hud-value.plays{color:#e8682a}
-.hud-value.discards{color:#e06060}
-.hud-value.money{color:#d4a017;font-size:18px}
-.hud-value.ante{color:#c084fc;font-size:13px;line-height:1.4;text-align:center}
+.hud-label{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;font-weight:600}
+.hud-value{font-family:monospace;font-size:18px;font-weight:700;color:#fff;line-height:1.2}
+.hv-target{color:#d4a017}.hv-score{color:#5dd67a}.hv-plays{color:#e8682a}.hv-disc{color:#e06060}.hv-money{color:#d4a017;font-size:16px}.hv-ante{color:#c084fc;font-size:11px;text-align:center;line-height:1.4}
 
-/* 结算面板 */
-.cashout-panel{
-  background:#1a1a1a;border:2px solid #d4a017;border-radius:14px;
-  padding:24px 28px;max-width:340px;margin:0 auto;
-}
-.cashout-title{font-size:18px;font-weight:700;color:#d4a017;text-align:center;margin-bottom:16px;font-family:'JetBrains Mono',monospace}
-.cashout-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px}
-.cashout-row:last-of-type{border-bottom:none}
-.cashout-label{color:rgba(255,255,255,.65)}
-.cashout-amount{font-family:'JetBrains Mono',monospace;font-weight:700;color:#d4a017}
-.cashout-total{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:2px solid #d4a017;font-size:16px}
-.cashout-total .cashout-label{color:#fff;font-weight:700}
-.cashout-total .cashout-amount{font-size:20px;color:#d4a017}
+/* ── 7. Cash Out ── */
+.cashout{background:#1a1a1a;border:2px solid #d4a017;border-radius:12px;padding:22px 26px;max-width:300px}
+.co-title{font-size:16px;font-weight:700;color:#d4a017;text-align:center;margin-bottom:14px;font-family:monospace}
+.co-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px}
+.co-row:last-of-type{border-bottom:none}
+.co-label{color:rgba(255,255,255,.6)}
+.co-amount{font-family:monospace;font-weight:700;color:#d4a017}
+.co-total{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:2px solid #d4a017}
+.co-total .co-label{color:#fff;font-weight:700;font-size:14px}
+.co-total .co-amount{font-size:18px}
+.btn-collect{display:block;width:100%;border:none;border-radius:999px;padding:10px 0;
+  background:#d4a017;color:#1a1a1a;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px}
+.btn-collect:hover{background:#e5b81e}
 
-/* Boss 提示卡 */
-.boss-alert{
-  background:#1a0a0a;border:2px solid #f87171;border-radius:14px;
-  padding:28px 32px;max-width:400px;margin:0 auto;text-align:center;
-  box-shadow:0 0 32px rgba(248,113,113,.25);
-}
-.boss-alert-skull{font-size:48px;margin-bottom:8px}
-.boss-alert-name{font-size:22px;font-weight:700;color:#f87171;margin-bottom:4px;font-family:'JetBrains Mono',monospace}
-.boss-alert-subtitle{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px}
-.boss-alert-rule{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:8px;padding:12px 16px;font-size:13px;color:#fca5a5;line-height:1.6}
-
-/* 交班盒子 */
-.handoff{background:#1a1a1a;border-radius:12px;padding:20px 22px}
-.handoff h4{color:#e8682a;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
-.handoff ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-.handoff li{font-family:'JetBrains Mono',monospace;font-size:12px;color:#ccc;line-height:1.6;padding-left:12px;position:relative}
-.handoff li::before{content:'·';position:absolute;left:0;color:#e8682a}
-code{font-family:'JetBrains Mono',monospace;background:#ede6d8;padding:1px 5px;border-radius:3px;font-size:11px;color:#c0511e}
-pre.code-block{background:#1a1a1a;border-radius:8px;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#ccc;line-height:1.8;overflow-x:auto;margin-top:12px}
-pre.code-block .cm{color:#555;font-style:italic}
-pre.code-block .kw{color:#a855f7}
-pre.code-block .val{color:#4ade80}
-pre.code-block .str{color:#fbbf24}
-
-.section-scroll-anchor{scroll-margin-top:44px}
-.note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:12px 14px;font-size:13px;color:#78350f;margin:16px 0;line-height:1.6}
-.note strong{color:#92400e}
-table.comp-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
-table.comp-table th{background:#ede6d8;color:#666;font-size:11px;font-weight:600;letter-spacing:.5px;padding:7px 10px;text-align:left}
-table.comp-table td{padding:7px 10px;border-bottom:1px solid #e8e0d2;vertical-align:top;line-height:1.6}
+/* ── 8. 交互状态示例 ── */
+.state-grid{display:flex;gap:10px;flex-wrap:wrap}
+.state-card{background:#fff;border-radius:8px;padding:12px 14px;min-width:110px;text-align:center;border:1px solid #e0d8cc}
+.state-label{font-size:10px;color:#888;margin-bottom:6px;letter-spacing:.5px}
+/* btn states */
+.btn-demo{border:none;border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;display:inline-block}
+.btn-default{background:#e8682a;color:#fff}
+.btn-hover{background:#d45a1e;color:#fff;transform:scale(1.03)}
+.btn-active{background:#c0521a;color:#fff;transform:scale(.97)}
+.btn-disabled{background:#ccc;color:#999;cursor:not-allowed}
+/* blind states */
+.bc-pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 10px;border-radius:4px;letter-spacing:.5px}
+.bp-pending{background:#2a2a2a;color:#fff;border:1px solid rgba(255,255,255,.3)}
+.bp-defeated{background:#1a2e1a;color:#4ade80;border:1px solid #4ade80}
+.bp-skipped{background:#3a2a1a;color:#d4a017;border:1px solid #d4a017;opacity:.65}
+/* card hover */
+.card-demo{width:50px;height:70px;border-radius:8px;background:#fbfaf7;border:1.5px solid #ddd;
+  display:flex;align-items:center;justify-content:center;font-size:18px;transition:transform 180ms ease;cursor:pointer}
+.card-demo.selected{transform:translateY(-8px);box-shadow:0 0 0 2.5px #e8682a,0 6px 14px rgba(232,104,42,.35)}
+.card-demo.hovered{transform:translateY(-4px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+/* shop item purchased */
+.shop-item-bought{width:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.45}
+.sold-label{font-size:10px;color:rgba(255,255,255,.35);font-weight:600}
 </style>
 </head>
 <body>
+<div class="page">
 
-<!-- 顶部导航 -->
-<div class="topbar">
-  <span class="badge">Version V1.0.0 · 延续</span>
-  <span class="badge-v2">V2.0 · 新增规范</span>
-  <nav class="nav-links">
-    <a href="#s01">01 · 设计目标</a>
-    <a href="#s02">02 · 新增 Tokens</a>
-    <a href="#s03">03 · Joker 组件</a>
-    <a href="#s04">04 · 商店界面</a>
-    <a href="#s05">05 · 盲注选择</a>
-    <a href="#s06">06 · HUD 扩展</a>
-    <a href="#s07">07 · 结算 & Boss</a>
-    <a href="#s08">08 · 核心线框</a>
-    <a href="#s09">09 · 动效 & 边界</a>
-    <a href="#s10">10 · 开发交班</a>
-  </nav>
+<!-- ══ 头部 ══ -->
+<div style="display:flex;align-items:baseline;gap:14px;margin-bottom:28px;border-bottom:2px solid #e8682a;padding-bottom:14px">
+  <h1>小丑牌 V2 · 设计预览</h1>
+  <span style="font-size:11px;color:#888">打开即是预览，不是文字规范</span>
+  <span style="margin-left:auto;font-size:11px;color:#aaa">配色延续 V1 · 扑克桌绿+橙 · 新增稀有度系统</span>
 </div>
 
 
-<!-- ══════════════════════════════════════
-     01 · 设计版本目标
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s01">
-  <div class="section-title">01 · 设计版本目标</div>
-  <div class="section-subtitle">V2.0 视觉规范在 V1 扑克桌绿 + 橙色强调的基础上，扩展出 Joker / 商店 / 盲注三套新界面，不换风格，只做加法。</div>
+<!-- ══ §1. 核心色板 ══ -->
+<div class="sec">
+<h2>01 · 核心色板</h2>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-color" style="background:#2d5a3d"></div><div class="swatch-name">桌面绿</div><div class="swatch-hex">#2d5a3d</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#e8682a"></div><div class="swatch-name">强调橙</div><div class="swatch-hex">#e8682a</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#d4a017"></div><div class="swatch-name">金钱金</div><div class="swatch-hex">#d4a017</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#5dd67a"></div><div class="swatch-name">得分绿</div><div class="swatch-hex">#5dd67a</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#f87171"></div><div class="swatch-name">Boss红</div><div class="swatch-hex">#f87171</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#a855f7"></div><div class="swatch-name">Ante紫</div><div class="swatch-hex">#a855f7</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#fbfaf7;border:1px solid #ddd"></div><div class="swatch-name">牌面白</div><div class="swatch-hex">#fbfaf7</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#1a1a1a"></div><div class="swatch-name">面板黑</div><div class="swatch-hex">#1a1a1a</div></div>
+</div>
+<p class="note">稀有度边框：Common <strong style="color:#6b7db3">#6b7db3</strong> / Uncommon <strong style="color:#4ade80">#4ade80</strong> / Rare <strong style="color:#fb923c">#fb923c</strong> / Legendary <strong style="color:#a855f7">#a855f7（有脉冲动画）</strong></p>
+</div>
 
-  <div class="two-col">
-    <div>
-      <div class="spec-card">
-        <h4>气质定调（延续 V1）</h4>
-        <p style="font-size:13px;color:#555;line-height:1.8;margin-bottom:12px;">
-          <strong>克制 · 专业 · 带赌场感</strong><br>
-          V1 已定下的三个形容词完全适用于 V2。V2 新增"稀有度层次感"——通过边框颜色+发光强度区分 Joker 档次，这是原版 Balatro 的视觉语言核心之一。
-        </p>
-        <table class="comp-table">
-          <tr><th>继承 / 变更</th><th>元素</th><th>处理方式</th></tr>
-          <tr><td><span class="keep-tag">KEEP</span></td><td>扑克桌绿 #2d5a3d</td><td>游戏主背景不变</td></tr>
-          <tr><td><span class="keep-tag">KEEP</span></td><td>强调橙 #e8682a</td><td>出牌按钮 / 选中描边</td></tr>
-          <tr><td><span class="keep-tag">KEEP</span></td><td>卡牌 88×128px + 圆角 12px</td><td>扑克牌尺寸不变</td></tr>
-          <tr><td><span class="keep-tag">KEEP</span></td><td>JetBrains Mono + Noto Sans SC</td><td>字体方案不变</td></tr>
-          <tr><td><span class="keep-tag">KEEP</span></td><td>200ms ease 过渡</td><td>所有卡片动效统一</td></tr>
-          <tr><td><span class="new-tag">NEW</span></td><td>稀有度边框颜色系统</td><td>4 档 Joker 颜色分层</td></tr>
-          <tr><td><span class="new-tag">NEW</span></td><td>金钱金色 #d4a017</td><td>V1 HUD 已用，V2 扩展到商店 / 结算</td></tr>
-          <tr><td><span class="new-tag">NEW</span></td><td>Boss 警示红 #f87171</td><td>Boss Blind 专属，比弃牌红更亮更暖</td></tr>
-          <tr><td><span class="new-tag">NEW</span></td><td>Ante 紫 #a855f7</td><td>HUD Ante 进度、传奇边框</td></tr>
-          <tr><td><span class="change-tag">CHANGE</span></td><td>HUD 格数 4 → 6</td><td>新增金钱、Ante 进度两格</td></tr>
-          <tr><td><span class="change-tag">CHANGE</span></td><td>主区域宽度</td><td>左侧预留 110px Joker 竖栏</td></tr>
-        </table>
-      </div>
+
+<!-- ══ §2. Joker 稀有度展示 ══ -->
+<div class="sec">
+<h2>02 · Joker 稀有度 · 4档并排</h2>
+<div class="row" style="align-items:flex-start">
+  <div style="text-align:center">
+    <div class="j common">
+      <div class="icon">🃏</div>
+      <div class="name">Joker</div>
+      <div class="eff">+4 Mult</div>
+      <div class="price">$2</div>
     </div>
-    <div>
-      <div class="spec-card">
-        <h4>V2 界面状态机（phase）</h4>
-        <p style="font-size:13px;color:#888;margin-bottom:12px;">对应 PRD §5.1，每个 phase 对应一套独立的视觉层</p>
-        <table class="comp-table">
-          <tr><th>phase 值</th><th>显示内容</th><th>覆盖方式</th></tr>
-          <tr><td class="mono">blind_select</td><td>盲注选择界面</td><td>全屏覆盖游戏区（全屏 modal 层）</td></tr>
-          <tr><td class="mono">playing</td><td>游戏主界面 + Joker 栏</td><td>常驻主视图</td></tr>
-          <tr><td class="mono">shop</td><td>商店界面</td><td>全屏覆盖游戏区</td></tr>
-          <tr><td class="mono">win</td><td>通关弹窗</td><td>遮罩层，复用 V1 state-win 样式</td></tr>
-          <tr><td class="mono">lose</td><td>失败弹窗 + 进度</td><td>遮罩层</td></tr>
-        </table>
-        <div class="note" style="margin-top:16px">
-          <strong>重要：</strong>盲注选择、商店均作为独立游戏状态（全屏替换主视图），而非浮层弹窗。PRD §6 已明确。Boss 提示卡是进入 playing 状态前的短暂全屏提示（3 秒自动消失）。
-        </div>
+    <div class="rarity-label rl-c">Common</div>
+  </div>
+  <div style="text-align:center">
+    <div class="j uncommon">
+      <div class="icon">💚</div>
+      <div class="name">Half Joker</div>
+      <div class="eff">≤3张 +20 Mult</div>
+      <div class="price">$3</div>
+    </div>
+    <div class="rarity-label rl-u">Uncommon</div>
+  </div>
+  <div style="text-align:center">
+    <div class="j rare">
+      <div class="icon">🌋</div>
+      <div class="name">Cavendish</div>
+      <div class="eff">3倍 Three of a Kind</div>
+      <div class="price">$4</div>
+    </div>
+    <div class="rarity-label rl-r">Rare</div>
+  </div>
+  <div style="text-align:center">
+    <div class="j legendary">
+      <div class="icon">👑</div>
+      <div class="name">Canio</div>
+      <div class="eff">销毁牌 +Mult</div>
+      <div class="price">$6</div>
+    </div>
+    <div class="rarity-label rl-l">Legendary</div>
+  </div>
+</div>
+<p class="note">尺寸：94×100px（槽位）/ 90×114px（商店卡）· 圆角 10px · 边框 2.5px solid + drop-shadow</p>
+</div>
+
+
+<!-- ══ §3. 8张具体 Joker ══ -->
+<div class="sec">
+<h2>03 · Joker 具体 8 张</h2>
+<div class="row">
+  <div class="j common"><div class="icon">🃏</div><div class="name">Joker</div><div class="eff">+4 Mult</div><div class="price">$2</div></div>
+  <div class="j common"><div class="icon">💰</div><div class="name">Greedy Joker</div><div class="eff">♦ 牌 +3 Mult</div><div class="price">$2</div></div>
+  <div class="j common"><div class="icon">❤️</div><div class="name">Lusty Joker</div><div class="eff">♥ 牌 +3 Mult</div><div class="price">$2</div></div>
+  <div class="j common"><div class="icon">😤</div><div class="name">Wrathful Joker</div><div class="eff">♠ 牌 +3 Mult</div><div class="price">$2</div></div>
+  <div class="j common"><div class="icon">🍔</div><div class="name">Gluttonous</div><div class="eff">♣ 牌 +3 Mult</div><div class="price">$2</div></div>
+  <div class="j uncommon"><div class="icon">💚</div><div class="name">Half Joker</div><div class="eff">≤3张 +20 Mult</div><div class="price">$3</div></div>
+  <div class="j rare"><div class="icon">🌋</div><div class="name">Cavendish</div><div class="eff">3× Three Kind</div><div class="price">$4</div></div>
+  <div class="j rare"><div class="icon">⭐</div><div class="name">Supernova</div><div class="eff">+Mult = 出牌次数</div><div class="price">$4</div></div>
+</div>
+<p class="note">左侧竖栏槽位最多 5 个 · 超过显示"FULL"提示 · 每张卡右下角显示卖出价（$）</p>
+</div>
+
+
+<!-- ══ §4. 商店界面 ══ -->
+<div class="sec">
+<h2>04 · 商店界面</h2>
+<div class="shop">
+  <div class="shop-title">🏪 商 店</div>
+  <div class="shop-sub">当前回合结束 · 选购 Joker</div>
+  <div class="shop-items">
+    <!-- Joker 1 -->
+    <div class="shop-item">
+      <div class="j uncommon" style="width:72px;height:88px;font-size:0">
+        <div style="font-size:22px">💚</div>
+        <div style="font-size:7.5px;font-weight:700;color:#fff;text-align:center">Half Joker</div>
+        <div style="font-size:6.5px;color:rgba(255,255,255,.7);text-align:center">≤3张 +20 Mult</div>
       </div>
+      <div class="item-price">$5</div>
+    </div>
+    <!-- Joker 2 -->
+    <div class="shop-item">
+      <div class="j rare" style="width:72px;height:88px;font-size:0">
+        <div style="font-size:22px">⭐</div>
+        <div style="font-size:7.5px;font-weight:700;color:#fff;text-align:center">Supernova</div>
+        <div style="font-size:6.5px;color:rgba(255,255,255,.7);text-align:center">+Mult=出牌次数</div>
+      </div>
+      <div class="item-price">$7</div>
+    </div>
+    <!-- Coming Soon -->
+    <div class="coming-soon">
+      <div style="font-size:20px;opacity:.4">＋</div>
+      <div class="cs-label">Coming<br>Soon</div>
     </div>
   </div>
-</section>
+  <div class="shop-actions">
+    <button class="btn btn-reroll">🎲 Reroll $1</button>
+    <button class="btn btn-continue">继续 →</button>
+  </div>
+</div>
+<p class="note">背景 #1a2a1a · 宽度自适应（max 760px）· Reroll 花费金币 · Continue 进入下一盲注选择</p>
+</div>
 
 
-<!-- ══════════════════════════════════════
-     02 · 新增 Design Tokens
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s02">
-  <div class="section-title">02 · 新增 Design Tokens</div>
-  <div class="section-subtitle">在 V1 :root 变量基础上追加，不覆盖已有变量。共新增 14 个 token。</div>
-
-  <div class="two-col">
-    <div>
-      <table class="token-table">
-        <thead>
-          <tr><th>类别</th><th>Token / 值</th><th>用途</th></tr>
-        </thead>
-        <tbody>
-          <!-- 稀有度颜色 -->
-          <tr>
-            <td colspan="3" style="padding:8px 10px 2px;background:#ede6d8;font-size:11px;color:#666;font-weight:600;letter-spacing:.5px">JOKER RARITY COLORS <span class="new-tag">NEW</span></td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#6b7db3"></span>Common 蓝灰</td>
-            <td class="mono">--color-rarity-common: #6b7db3</td>
-            <td>普通 Joker 边框，低调专业</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#4ade80"></span>Uncommon 绿</td>
-            <td class="mono">--color-rarity-uncommon: #4ade80</td>
-            <td>非普通 Joker 边框，活力感</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#fb923c"></span>Rare 橙红</td>
-            <td class="mono">--color-rarity-rare: #fb923c</td>
-            <td>稀有 Joker 边框，稀缺感（橙红，避免与 Boss 警示红撞色）</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#a855f7"></span>Legendary 紫</td>
-            <td class="mono">--color-rarity-legendary: #a855f7</td>
-            <td>传奇 Joker 边框，带脉冲动画</td>
-          </tr>
-
-          <!-- 游戏元素颜色 -->
-          <tr>
-            <td colspan="3" style="padding:8px 10px 2px;background:#ede6d8;font-size:11px;color:#666;font-weight:600;letter-spacing:.5px">GAME ELEMENT COLORS <span class="new-tag">NEW</span></td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#f87171"></span>Boss 警示红</td>
-            <td class="mono">--color-boss: #f87171</td>
-            <td>Boss Blind 边框/标题，危险感</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#a855f7"></span>Ante 紫</td>
-            <td class="mono">--color-ante: #a855f7</td>
-            <td>HUD Ante 进度文字</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#60a5fa"></span>Coming Soon 蓝</td>
-            <td class="mono">--color-coming-soon: #60a5fa</td>
-            <td>商店占位格虚线边框及图标</td>
-          </tr>
-
-          <!-- Joker 卡背景 -->
-          <tr>
-            <td colspan="3" style="padding:8px 10px 2px;background:#ede6d8;font-size:11px;color:#666;font-weight:600;letter-spacing:.5px">JOKER CARD BACKGROUNDS <span class="new-tag">NEW</span></td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#2a2a3a"></span>Common 背景</td>
-            <td class="mono">--joker-bg-common: #2a2a3a</td>
-            <td>Common Joker 卡面底色</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#1a2e1a"></span>Uncommon 背景</td>
-            <td class="mono">--joker-bg-uncommon: #1a2e1a</td>
-            <td>Uncommon Joker 卡面底色</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#2e1a1a"></span>Rare 背景</td>
-            <td class="mono">--joker-bg-rare: #2e1a1a</td>
-            <td>Rare Joker 卡面底色</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#2a1a3a"></span>Legendary 背景</td>
-            <td class="mono">--joker-bg-legendary: #2a1a3a</td>
-            <td>Legendary Joker 卡面底色</td>
-          </tr>
-
-          <!-- 形状 -->
-          <tr>
-            <td colspan="3" style="padding:8px 10px 2px;background:#ede6d8;font-size:11px;color:#666;font-weight:600;letter-spacing:.5px">SHAPE TOKENS <span class="new-tag">NEW</span></td>
-          </tr>
-          <tr>
-            <td>Joker 卡圆角</td>
-            <td class="mono">--radius-joker: 10px</td>
-            <td>Joker 卡片，比扑克牌略小</td>
-          </tr>
-          <tr>
-            <td>传奇脉冲动画</td>
-            <td class="mono">--ease-legendary: 2s ease-in-out infinite</td>
-            <td>Legendary 边框脉冲节奏</td>
-          </tr>
-        </tbody>
-      </table>
+<!-- ══ §5. 盲注选择 ══ -->
+<div class="sec">
+<h2>05 · 盲注选择界面</h2>
+<div style="background:#1a1a2a;border-radius:14px;padding:24px;display:inline-block">
+  <div style="text-align:center;margin-bottom:16px">
+    <span style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1.5px;text-transform:uppercase">选择盲注 · Ante 1</span>
+  </div>
+  <div class="blind-row">
+    <div class="blind b-small">
+      <div class="blind-type" style="color:#4ade80">Small Blind</div>
+      <div class="blind-name">小盲注</div>
+      <div class="blind-score">目标：<span>300</span></div>
+      <div class="blind-reward">奖励：$3</div>
+      <button class="btn-play">出牌</button>
+      <button class="btn-skip">跳过</button>
     </div>
-    <div>
-      <div class="spec-card">
-        <h4>稀有度选色逻辑说明</h4>
-        <ul style="font-size:13px;color:#555;line-height:2;padding-left:16px;">
-          <li><strong>Common 蓝灰 #6b7db3</strong>：饱和度低，与桌面绿的对比适中，不抢眼，符合"普通"的心理预期。</li>
-          <li><strong>Uncommon 绿 #4ade80</strong>：与桌面底色 #2d5a3d 同色系但更亮，有辨识度又不突兀。</li>
-          <li><strong>Rare 红 #f87171</strong>：使用亮红（区别于弃牌红 #a83232），更接近"珍贵"而非"危险"的语义。</li>
-          <li><strong>Legendary 紫 #a855f7</strong>：游戏中未使用过的色相，视觉上"稀缺"，配合脉冲动画强化神秘感。</li>
-        </ul>
-        <div class="note">
-          <strong>与 Boss 红的区分：</strong>Rare 用 #f87171（亮桃红），Boss 也用 #f87171，两者相同但语义不同。实际使用时 Boss Blind 有独立的背景色 #2e1a1a + 发光阴影来区分场景，不会造成混淆——玩家不会同时看到 Rare Joker 和 Boss 边框。
-        </div>
-      </div>
-      <div class="spec-card" style="margin-top:0">
-        <h4>完整 :root 追加代码</h4>
-        <pre class="code-block"><span class="cm">/* 在 V1 :root { } 末尾追加 */</span>
-<span class="kw">:root</span> {
-  <span class="cm">/* V1 保留（不动） */</span>
-  --color-table:   <span class="val">#2d5a3d</span>;
-  --color-accent:  <span class="val">#e8682a</span>;
-  --color-discard: <span class="val">#a83232</span>;
-  --color-gold:    <span class="val">#d4a017</span>;
-  --color-card-bg: <span class="val">#fbfaf7</span>;
-  --color-score:   <span class="val">#5dd67a</span>;
-  --radius-card:   <span class="val">12px</span>;
-  --radius-btn:    <span class="val">999px</span>;
-  --ease-card:     <span class="val">200ms ease</span>;
-
-  <span class="cm">/* V2 新增 */</span>
-  --color-rarity-common:    <span class="val">#6b7db3</span>;
-  --color-rarity-uncommon:  <span class="val">#4ade80</span>;
-  --color-rarity-rare:      <span class="val">#fb923c</span>;
-  --color-rarity-legendary: <span class="val">#a855f7</span>;
-  --color-boss:             <span class="val">#f87171</span>;
-  --color-ante:             <span class="val">#a855f7</span>;
-  --color-coming-soon:      <span class="val">#60a5fa</span>;
-  --joker-bg-common:        <span class="val">#2a2a3a</span>;
-  --joker-bg-uncommon:      <span class="val">#1a2e1a</span>;
-  --joker-bg-rare:          <span class="val">#2e1a1a</span>;
-  --joker-bg-legendary:     <span class="val">#2a1a3a</span>;
-  --radius-joker:           <span class="val">10px</span>;
-}</pre>
-      </div>
+    <div class="blind b-big">
+      <div class="blind-type" style="color:#d4a017">Big Blind</div>
+      <div class="blind-name">大盲注</div>
+      <div class="blind-score">目标：<span>450</span></div>
+      <div class="blind-reward">奖励：$4</div>
+      <button class="btn-play">出牌</button>
+      <button class="btn-skip">跳过</button>
+    </div>
+    <div class="blind b-boss">
+      <div class="blind-type" style="color:#f87171">⚠ Boss Blind</div>
+      <div class="blind-name">The Hook</div>
+      <div class="blind-score">目标：<span>600</span></div>
+      <div class="blind-reward">奖励：$5</div>
+      <div class="blind-effect">出牌后随机弃掉 2 张手牌</div>
+      <button class="btn-play" style="background:#f87171">迎战</button>
     </div>
   </div>
-</section>
+</div>
+<p class="note">Small/Big 可跳过 · Boss 不可跳过 · 三卡横排 · 背景暗色全屏覆盖游戏区</p>
+</div>
 
 
-<!-- ══════════════════════════════════════
-     03 · Joker 组件规格
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s03">
-  <div class="section-title">03 · Joker 卡片组件</div>
-  <div class="section-subtitle">Joker 卡比扑克牌更窄更矮，作为辅助角色不抢主角。4 档稀有度通过边框颜色 + 背景色 + 发光阴影区分。</div>
+<!-- ══ §6. Boss 提示卡 ══ -->
+<div class="sec">
+<h2>06 · Boss 提示卡（进入 Boss 盲注前）</h2>
+<div class="boss-alert">
+  <div class="ba-skull">💀</div>
+  <div class="ba-name">The Hook</div>
+  <div class="ba-sub">Boss Blind · Ante 1</div>
+  <div class="ba-rule">出牌后随机弃掉 2 张手牌<br>本局内持续生效</div>
+  <button class="ba-dismiss">明白了，开始</button>
+</div>
+<p class="note" style="margin-top:8px">按钮手动触发关闭（不自动计时）· 边框 #f87171 · 外发光 0 0 32px rgba(248,113,113,.25)</p>
+</div>
 
-  <div class="two-col">
-    <!-- 左：规格 -->
-    <div>
-      <div class="spec-card">
-        <h4>Joker 卡片尺寸规格</h4>
-        <div class="spec-row"><span class="spec-key">尺寸</span><span class="spec-val">70px × 100px（竖排槽位）<br>90px × 120px（商店展示）</span></div>
-        <div class="spec-row"><span class="spec-key">圆角</span><span class="spec-val">--radius-joker: 10px</span></div>
-        <div class="spec-row"><span class="spec-key">边框</span><span class="spec-val">box-shadow: 0 0 0 2.5px [rarity-color]</span></div>
-        <div class="spec-row"><span class="spec-key">内容布局</span><span class="spec-val">flex-col，居中，gap 4px</span></div>
-        <div class="spec-row"><span class="spec-key">图标区</span><span class="spec-val">emoji 字体，28px（槽位）/ 36px（商店）</span></div>
-        <div class="spec-row"><span class="spec-key">名字</span><span class="spec-val">9px, 700, #fff，单行截断</span></div>
-        <div class="spec-row"><span class="spec-key">效果简写</span><span class="spec-val">8px, rgba(255,255,255,.75)，最多2行</span></div>
-        <div class="spec-row"><span class="spec-key">价格角标</span><span class="spec-val">右下角，JetBrains Mono 9px，#d4a017</span></div>
-        <div class="spec-row"><span class="spec-key">hover</span><span class="spec-val">translateY(-4px)，200ms ease</span></div>
-        <div class="spec-row"><span class="spec-key">已购买/已装备</span><span class="spec-val">无价格角标，无 hover 效果，不可再点</span></div>
-      </div>
 
-      <div class="spec-card">
-        <h4>4 档稀有度视觉对比</h4>
-        <table class="comp-table">
-          <tr><th>档位</th><th>边框颜色</th><th>背景色</th><th>发光</th><th>动画</th></tr>
-          <tr>
-            <td><span class="rarity-badge rb-common">Common</span></td>
-            <td class="mono">#6b7db3</td>
-            <td class="mono">#2a2a3a</td>
-            <td>无</td>
-            <td>无</td>
-          </tr>
-          <tr>
-            <td><span class="rarity-badge rb-uncommon">Uncommon</span></td>
-            <td class="mono">#4ade80</td>
-            <td class="mono">#1a2e1a</td>
-            <td>rgba(74,222,128,.25)</td>
-            <td>无</td>
-          </tr>
-          <tr>
-            <td><span class="rarity-badge rb-rare">Rare</span></td>
-            <td class="mono">#fb923c</td>
-            <td class="mono">#2e1a1a</td>
-            <td>rgba(251,146,60,.25)</td>
-            <td>无</td>
-          </tr>
-          <tr>
-            <td><span class="rarity-badge rb-legendary">Legendary</span></td>
-            <td class="mono">#a855f7</td>
-            <td class="mono">#2a1a3a</td>
-            <td>rgba(168,85,247,.4)</td>
-            <td>脉冲 2s</td>
-          </tr>
-        </table>
-        <div class="note">
-          <strong>Joker 不能比扑克牌大：</strong>竖排槽位 70×100px，约为扑克牌 88×128px 的 80%。商店展示 90×120px，因商店无扑克牌，可略大一点以便阅读效果文字。
-        </div>
-      </div>
-
-      <div class="spec-card">
-        <h4>Joker 槽位容器（左侧竖栏）</h4>
-        <div class="spec-row"><span class="spec-key">容器宽度</span><span class="spec-val">110px（含 padding）</span></div>
-        <div class="spec-row"><span class="spec-key">高度</span><span class="spec-val">撑满出牌区 + 手牌区高度</span></div>
-        <div class="spec-row"><span class="spec-key">背景</span><span class="spec-val">rgba(0,0,0,.2)</span></div>
-        <div class="spec-row"><span class="spec-key">border-right</span><span class="spec-val">1px solid rgba(255,255,255,.08)</span></div>
-        <div class="spec-row"><span class="spec-key">槽位排列</span><span class="spec-val">flex-col，gap 8px，padding 8px</span></div>
-        <div class="spec-row"><span class="spec-key">空槽样式</span><span class="spec-val">70×100px，dashed 1.5px rgba(255,255,255,.2)，圆角 10px</span></div>
-        <div class="spec-row"><span class="spec-key">空槽内容</span><span class="spec-val">+ 号，rgba(255,255,255,.2)，18px</span></div>
-        <div class="spec-row"><span class="spec-key">槽位已满提示</span><span class="spec-val">底部显示"已满 5/5"，10px，#e8682a</span></div>
-      </div>
-    </div>
-
-    <!-- 右：8 张 Joker 视觉草案 -->
-    <div>
-      <div class="spec-card">
-        <h4>4 档稀有度卡片视觉预览</h4>
-        <div class="joker-grid" style="margin-bottom:16px">
-          <div>
-            <div style="font-size:10px;color:#888;text-align:center;margin-bottom:6px;letter-spacing:.5px">Common</div>
-            <div class="joker-card rarity-common" style="width:80px;height:110px">
-              <div class="j-icon">🃏</div>
-              <div class="j-name">Joker</div>
-              <div class="j-effect">+4 Mult</div>
-              <div class="j-price">$2</div>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:10px;color:#888;text-align:center;margin-bottom:6px;letter-spacing:.5px">Uncommon</div>
-            <div class="joker-card rarity-uncommon" style="width:80px;height:110px">
-              <div class="j-icon">🌟</div>
-              <div class="j-name">Supernova</div>
-              <div class="j-effect">牌型次数→Mult</div>
-              <div class="j-price">$5</div>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:10px;color:#888;text-align:center;margin-bottom:6px;letter-spacing:.5px">Rare</div>
-            <div class="joker-card rarity-rare" style="width:80px;height:110px">
-              <div class="j-icon">💀</div>
-              <div class="j-name">示例 Rare</div>
-              <div class="j-effect">Rare 效果</div>
-              <div class="j-price">$8</div>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:10px;color:#888;text-align:center;margin-bottom:6px;letter-spacing:.5px">Legendary</div>
-            <div class="joker-card rarity-legendary" style="width:80px;height:110px">
-              <div class="j-icon">👑</div>
-              <div class="j-name">示例 Legend</div>
-              <div class="j-effect">传奇效果</div>
-              <div class="j-price">$20</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="spec-card">
-        <h4>8 张 Joker 具体视觉草案</h4>
-        <div class="joker-grid">
-          <div class="joker-card rarity-common">
-            <div class="j-icon">🃏</div>
-            <div class="j-name">Joker</div>
-            <div class="j-effect">+4 Mult</div>
-            <div class="j-price">$2</div>
-          </div>
-          <div class="joker-card rarity-common">
-            <div class="j-icon">😄</div>
-            <div class="j-name">Jolly Joker</div>
-            <div class="j-effect">对子→+8 Chips</div>
-            <div class="j-price">$3</div>
-          </div>
-          <div class="joker-card rarity-common">
-            <div class="j-icon">💎</div>
-            <div class="j-name">Greedy Joker</div>
-            <div class="j-effect">♦每张+3 Mult</div>
-            <div class="j-price">$5</div>
-          </div>
-          <div class="joker-card rarity-common">
-            <div class="j-icon">❤️</div>
-            <div class="j-name">Lusty Joker</div>
-            <div class="j-effect">♥每张+3 Mult</div>
-            <div class="j-price">$5</div>
-          </div>
-          <div class="joker-card rarity-common">
-            <div class="j-icon">⚡</div>
-            <div class="j-name">Wrathful Joker</div>
-            <div class="j-effect">♠每张+3 Mult</div>
-            <div class="j-price">$5</div>
-          </div>
-          <div class="joker-card rarity-common">
-            <div class="j-icon">✂️</div>
-            <div class="j-name">Half Joker</div>
-            <div class="j-effect">≤3张→+20 Mult</div>
-            <div class="j-price">$5</div>
-          </div>
-          <div class="joker-card rarity-uncommon">
-            <div class="j-icon">🌟</div>
-            <div class="j-name">Supernova</div>
-            <div class="j-effect">牌型历史次数→+Mult</div>
-            <div class="j-price">$5</div>
-          </div>
-          <div class="joker-card rarity-common">
-            <div class="j-icon">🍌</div>
-            <div class="j-name">Cavendish</div>
-            <div class="j-effect">×3 Mult<br>1/1000 自毁</div>
-            <div class="j-price">$6</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="spec-card">
-        <h4>8 张 Joker 配色 + emoji 选取逻辑</h4>
-        <table class="comp-table">
-          <tr><th>Joker</th><th>emoji</th><th>选取理由</th></tr>
-          <tr><td>Joker（基础）</td><td>🃏</td><td>扑克牌小丑，字面对应</td></tr>
-          <tr><td>Jolly Joker</td><td>😄</td><td>"开心"隐喻"一对"的满足感</td></tr>
-          <tr><td>Greedy Joker</td><td>💎</td><td>钻石花色直接映射</td></tr>
-          <tr><td>Lusty Joker</td><td>❤️</td><td>红心花色直接映射</td></tr>
-          <tr><td>Wrathful Joker</td><td>⚡</td><td>黑桃的"愤怒"语义，闪电感</td></tr>
-          <tr><td>Half Joker</td><td>✂️</td><td>"剪掉"一半手牌的视觉隐喻</td></tr>
-          <tr><td>Supernova</td><td>🌟</td><td>超新星爆发感，Uncommon 稀有度匹配</td></tr>
-          <tr><td>Cavendish</td><td>🍌</td><td>原版 Balatro 即用香蕉图标，致敬</td></tr>
-        </table>
-      </div>
-    </div>
+<!-- ══ §7. HUD 横条 ══ -->
+<div class="sec">
+<h2>07 · HUD 横条（顶部，6格）</h2>
+<div style="background:#2d5a3d;padding:12px;border-radius:10px">
+  <div class="hud">
+    <div class="hud-item"><div class="hud-label">目标</div><div class="hud-value hv-target">450</div></div>
+    <div class="hud-item"><div class="hud-label">得分</div><div class="hud-value hv-score">312</div></div>
+    <div class="hud-item"><div class="hud-label">出牌</div><div class="hud-value hv-plays">3</div></div>
+    <div class="hud-item"><div class="hud-label">弃牌</div><div class="hud-value hv-disc">2</div></div>
+    <div class="hud-item"><div class="hud-label">金钱</div><div class="hud-value hv-money">$12</div></div>
+    <div class="hud-item"><div class="hud-label">进度</div><div class="hud-value hv-ante">Ante 1<br><span style="color:#f87171;font-size:9px">Boss</span></div></div>
   </div>
-</section>
+</div>
+<p class="note">高度 64px · 6格等宽 · 用 textContent 更新避免闪烁 · 背景 rgba(0,0,0,.35) + backdrop-filter:blur(4px)</p>
+</div>
 
 
-<!-- ══════════════════════════════════════
-     04 · 商店界面
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s04">
-  <div class="section-title">04 · 商店界面（phase = shop）</div>
-  <div class="section-subtitle">独立游戏状态，全屏替换主视图。3 格商品位：2 个 Joker + 1 个 Coming Soon 占位。</div>
+<!-- ══ §8. Cash Out 结算 ══ -->
+<div class="sec">
+<h2>08 · Cash Out 结算面板</h2>
+<div class="cashout">
+  <div class="co-title">💰 回合结算</div>
+  <div class="co-row"><span class="co-label">基础奖励</span><span class="co-amount">+$4</span></div>
+  <div class="co-row"><span class="co-label">利息 (×3存款)</span><span class="co-amount">+$3</span></div>
+  <div class="co-row"><span class="co-label">剩余出牌 ×1</span><span class="co-amount">+$1</span></div>
+  <div class="co-row"><span class="co-label">大盲注奖金</span><span class="co-amount">+$2</span></div>
+  <div class="co-total"><span class="co-label">合计</span><span class="co-amount">$22</span></div>
+  <button class="btn-collect">领取奖励 ($22)</button>
+</div>
+<p class="note">面板宽 max 340px · 边框 2px solid #d4a017 · 按钮点击后进入商店 phase</p>
+</div>
 
-  <div class="two-col">
-    <div>
-      <!-- 商店演示 -->
-      <div class="shop-demo">
-        <div class="shop-title">THE SHOP</div>
-        <div class="shop-subtitle" style="color:rgba(255,255,255,.45);font-size:11px;text-align:center;margin-bottom:6px">打败 Small Blind · 获得 <span style="color:#d4a017;font-weight:700">$6</span></div>
-        <div style="text-align:center;margin-bottom:20px;font-size:12px;color:rgba(255,255,255,.45)">当前持有 <span style="color:#d4a017;font-family:'JetBrains Mono',monospace;font-weight:700">$12</span></div>
 
-        <div class="shop-items">
-          <!-- Joker 1 -->
-          <div class="shop-item" style="border-color:#4ade80;background:rgba(26,46,26,.6)">
-            <div style="font-size:32px">🌟</div>
-            <div class="shop-item-name">Supernova</div>
-            <div style="font-size:10px;color:rgba(255,255,255,.55);text-align:center;line-height:1.4">牌型历史次数<br>加入 Mult</div>
-            <div class="shop-item-price">$5</div>
-          </div>
-          <!-- Joker 2 -->
-          <div class="shop-item" style="border-color:#6b7db3">
-            <div style="font-size:32px">🍌</div>
-            <div class="shop-item-name">Cavendish</div>
-            <div style="font-size:10px;color:rgba(255,255,255,.55);text-align:center;line-height:1.4">×3 Mult<br>1/1000 自毁</div>
-            <div class="shop-item-price">$6</div>
-          </div>
-          <!-- Coming Soon -->
-          <div class="shop-coming-soon">
-            <div style="font-size:28px;filter:grayscale(1);opacity:.5">🔮</div>
-            <div style="font-size:10px;color:rgba(96,165,250,.7);text-align:center;line-height:1.4">塔罗 / 星球牌</div>
-            <div class="coming-soon-label">COMING<br>SOON</div>
-          </div>
-        </div>
+<!-- ══ §9. 关键交互状态 ══ -->
+<div class="sec">
+<h2>09 · 关键交互状态</h2>
+<div class="state-grid">
 
-        <div class="shop-actions">
-          <button style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:9px 20px;font-family:'Noto Sans SC',sans-serif;font-size:13px;font-weight:700;cursor:pointer">
-            刷新 <span style="color:#d4a017;font-family:'JetBrains Mono',monospace">$5</span>
-          </button>
-          <button style="background:#e8682a;color:#fff;border:none;border-radius:999px;padding:9px 26px;font-family:'Noto Sans SC',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(232,104,42,.45)">
-            继续 →
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <div class="spec-card">
-        <h4>商店布局规格</h4>
-        <div class="spec-row"><span class="spec-key">容器宽度</span><span class="spec-val">760px max，居中在 1080 视口</span></div>
-        <div class="spec-row"><span class="spec-key">容器背景</span><span class="spec-val">#1a2a1a（绿调深黑，呼应桌面绿）</span></div>
-        <div class="spec-row"><span class="spec-key">容器圆角</span><span class="spec-val">16px</span></div>
-        <div class="spec-row"><span class="spec-key">标题</span><span class="spec-val">JetBrains Mono 18px, #d4a017, 居中</span></div>
-        <div class="spec-row"><span class="spec-key">金钱副标题</span><span class="spec-val">12px，显示"打败 X Blind · 获得 $Y"</span></div>
-        <div class="spec-row"><span class="spec-key">商品格间距</span><span class="spec-val">gap 16px，justify-content: center</span></div>
-        <div class="spec-row"><span class="spec-key">商品格宽</span><span class="spec-val">110px，高度随内容，最小 150px</span></div>
-        <div class="spec-row"><span class="spec-key">底部按钮区</span><span class="spec-val">gap 12px，居中，margin-top 20px</span></div>
-      </div>
-
-      <div class="spec-card">
-        <h4>商品格状态规格</h4>
-        <table class="comp-table">
-          <tr><th>状态</th><th>视觉</th><th>交互</th></tr>
-          <tr>
-            <td>可购买</td>
-            <td>正常边框 + hover 背景加亮</td>
-            <td>点击扣钱 + Joker 入槽</td>
-          </tr>
-          <tr>
-            <td>金钱不足</td>
-            <td>opacity: .45，cursor: not-allowed</td>
-            <td>点击无反应，tooltip: "金钱不足"</td>
-          </tr>
-          <tr>
-            <td>Joker 槽满</td>
-            <td>opacity: .45，cursor: not-allowed</td>
-            <td>点击无反应，tooltip: "Joker 槽已满"</td>
-          </tr>
-          <tr>
-            <td>已购买</td>
-            <td>背景变暗，显示"✓ 已购买"，价格隐藏</td>
-            <td>不可点击</td>
-          </tr>
-          <tr>
-            <td>Coming Soon</td>
-            <td>dashed 边框，opacity: .65，灰化 emoji</td>
-            <td>完全不可交互，无 pointer-events</td>
-          </tr>
-        </table>
-      </div>
-
-      <div class="spec-card">
-        <h4>Coming Soon 占位格详细规格</h4>
-        <div class="spec-row"><span class="spec-key">边框</span><span class="spec-val">1.5px dashed rgba(96,165,250,.35)</span></div>
-        <div class="spec-row"><span class="spec-key">背景</span><span class="spec-val">rgba(96,165,250,.04)</span></div>
-        <div class="spec-row"><span class="spec-key">emoji</span><span class="spec-val">随机塔罗/星球，filter:grayscale(1) opacity:.5</span></div>
-        <div class="spec-row"><span class="spec-key">文字1</span><span class="spec-val">10px，rgba(96,165,250,.7)，"塔罗 / 星球牌"</span></div>
-        <div class="spec-row"><span class="spec-key">标签</span><span class="spec-val">"COMING SOON"，9px 700，#888，letter-spacing 1px</span></div>
-        <div class="spec-row"><span class="spec-key">pointer-events</span><span class="spec-val">none（CSS 级别禁止交互）</span></div>
-        <div class="note">
-          <strong>设计意图：</strong>既不能像 bug 一样突兀，又要有"将来可玩"的期待感。方案：降饱和度（灰化 emoji）+ 虚线边框（暗示"未完成"）+ 蓝色文字（区别于错误红）+ "COMING SOON"明确标注。整体视觉权重约为可购买格的 40%。
-        </div>
-      </div>
-
-      <div class="spec-card">
-        <h4>刷新按钮规格</h4>
-        <div class="spec-row"><span class="spec-key">默认态</span><span class="spec-val">透明背景，rgba(255,255,255,.2) 边框</span></div>
-        <div class="spec-row"><span class="spec-key">价格文字</span><span class="spec-val">"刷新 $5"，$5 用 #d4a017 金色高亮</span></div>
-        <div class="spec-row"><span class="spec-key">金钱不足</span><span class="spec-val">opacity: .4，cursor: not-allowed</span></div>
-        <div class="spec-row"><span class="spec-key">hover</span><span class="spec-val">边框亮度 +，translateY(-1px)</span></div>
-      </div>
-    </div>
+  <!-- 按钮4态 -->
+  <div class="state-card">
+    <div class="state-label">按钮 · Default</div>
+    <button class="btn-demo btn-default">出牌</button>
   </div>
-</section>
+  <div class="state-card">
+    <div class="state-label">按钮 · Hover</div>
+    <button class="btn-demo btn-hover">出牌</button>
+  </div>
+  <div class="state-card">
+    <div class="state-label">按钮 · Active</div>
+    <button class="btn-demo btn-active">出牌</button>
+  </div>
+  <div class="state-card">
+    <div class="state-label">按钮 · Disabled</div>
+    <button class="btn-demo btn-disabled" disabled>出牌</button>
+  </div>
 
+  <!-- 扑克牌选中 -->
+  <div class="state-card" style="background:#2d5a3d">
+    <div class="state-label" style="color:rgba(255,255,255,.5)">牌 · 普通</div>
+    <div class="card-demo">♠K</div>
+  </div>
+  <div class="state-card" style="background:#2d5a3d">
+    <div class="state-label" style="color:rgba(255,255,255,.5)">牌 · Hover</div>
+    <div class="card-demo hovered">♠K</div>
+  </div>
+  <div class="state-card" style="background:#2d5a3d">
+    <div class="state-label" style="color:rgba(255,255,255,.5)">牌 · 选中</div>
+    <div class="card-demo selected">♠K</div>
+  </div>
 
-<!-- ══════════════════════════════════════
-     05 · 盲注选择界面
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s05">
-  <div class="section-title">05 · 盲注选择界面（phase = blind_select）</div>
-  <div class="section-subtitle">3 个盲注卡片横排。Small/Big 提供"跳过"选项（无奖励），Boss 不可跳过。</div>
+  <!-- 盲注状态 -->
+  <div class="state-card">
+    <div class="state-label">盲注 · Pending</div>
+    <span class="bc-pill bp-pending">Small</span>
+  </div>
+  <div class="state-card">
+    <div class="state-label">盲注 · Defeated</div>
+    <span class="bc-pill bp-defeated">✓ Small</span>
+  </div>
+  <div class="state-card">
+    <div class="state-label">盲注 · Skipped</div>
+    <span class="bc-pill bp-skipped">— Small</span>
+  </div>
 
-  <div style="background:#1a2a1a;padding:32px;border-radius:16px;margin-bottom:32px">
-    <div style="text-align:center;margin-bottom:24px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#a855f7;letter-spacing:2px;font-weight:700;text-transform:uppercase;margin-bottom:6px">ANTE 1 / 3</div>
-      <div style="font-size:20px;font-weight:700;color:#fff">选择盲注</div>
-    </div>
-    <div class="blind-cards">
-      <!-- Small Blind -->
-      <div class="blind-card blind-small">
-        <div class="blind-type" style="color:#4ade80">SMALL BLIND</div>
-        <div class="blind-name">小盲注</div>
-        <div class="blind-score">目标 <span>300</span></div>
-        <div class="blind-reward">奖励 $3 + 剩余手牌/弃牌</div>
-        <button class="btn-blind btn-blind-play">打 →</button>
-        <button class="btn-blind btn-blind-skip">跳过（无奖励）</button>
-      </div>
-      <!-- Big Blind -->
-      <div class="blind-card blind-big">
-        <div class="blind-type" style="color:#d4a017">BIG BLIND</div>
-        <div class="blind-name">大盲注</div>
-        <div class="blind-score">目标 <span>450</span></div>
-        <div class="blind-reward">奖励 $4 + 剩余手牌/弃牌</div>
-        <button class="btn-blind btn-blind-play">打 →</button>
-        <button class="btn-blind btn-blind-skip">跳过（无奖励）</button>
-      </div>
-      <!-- Boss Blind -->
-      <div class="blind-card blind-boss">
-        <div class="blind-type" style="color:#f87171">BOSS BLIND</div>
-        <div class="blind-name">The Hook</div>
-        <div class="blind-score">目标 <span style="color:#f87171">600</span></div>
-        <div class="blind-reward">奖励 $5 + 剩余手牌/弃牌</div>
-        <div class="blind-boss-effect">出牌后随机丢弃手中 2 张未出的牌</div>
-        <button class="btn-blind btn-blind-play" style="background:#f87171;color:#1a1a1a">必须打 →</button>
-        <button class="btn-blind btn-blind-disabled" disabled>Boss 不可跳过</button>
-      </div>
+  <!-- 商店已购 -->
+  <div class="state-card" style="background:#1a2a1a">
+    <div class="state-label" style="color:rgba(255,255,255,.4)">商店 · 已购买</div>
+    <div class="shop-item-bought">
+      <div style="font-size:20px;filter:grayscale(1)">💚</div>
+      <div class="sold-label">已购买</div>
     </div>
   </div>
 
-  <div class="two-col">
-    <div>
-      <div class="spec-card">
-        <h4>盲注卡片规格</h4>
-        <div class="spec-row"><span class="spec-key">卡片宽度</span><span class="spec-val">200px，高度随内容（约 200–220px）</span></div>
-        <div class="spec-row"><span class="spec-key">圆角</span><span class="spec-val">14px</span></div>
-        <div class="spec-row"><span class="spec-key">边框宽度</span><span class="spec-val">2px solid [blind-color]</span></div>
-        <div class="spec-row"><span class="spec-key">Small 边框</span><span class="spec-val">#4ade80（绿，轻松）</span></div>
-        <div class="spec-row"><span class="spec-key">Big 边框</span><span class="spec-val">#d4a017（金，适中）</span></div>
-        <div class="spec-row"><span class="spec-key">Boss 边框</span><span class="spec-val">#f87171 + 脉冲发光动画</span></div>
-        <div class="spec-row"><span class="spec-key">内部排列</span><span class="spec-val">flex-col，gap 8px，padding 20px 16px</span></div>
-        <div class="spec-row"><span class="spec-key">hover</span><span class="spec-val">translateY(-3px)，150ms ease（Boss 也有）</span></div>
-      </div>
-    </div>
-    <div>
-      <div class="spec-card">
-        <h4>"跳过"按钮语义设计</h4>
-        <p style="font-size:13px;color:#555;line-height:1.8;margin-bottom:12px;">
-          PRD Q2 决策：跳过 Small/Big 不给任何奖励。按钮文案必须明确告知玩家"无奖励"这件事，而非含糊的"跳过"。
-        </p>
-        <table class="comp-table">
-          <tr><th>按钮类型</th><th>文案</th><th>样式</th></tr>
-          <tr>
-            <td>Small/Big 打</td>
-            <td>"打 →"</td>
-            <td>#e8682a 橙色实心，全宽</td>
-          </tr>
-          <tr>
-            <td>Small/Big 跳过</td>
-            <td>"跳过（无奖励）"</td>
-            <td>透明背景，白色半透明边框<br>文字 rgba(255,255,255,.5)</td>
-          </tr>
-          <tr>
-            <td>Boss 必须打</td>
-            <td>"必须打 →"</td>
-            <td>#f87171 红色实心，全宽</td>
-          </tr>
-          <tr>
-            <td>Boss 不可跳过</td>
-            <td>"Boss 不可跳过"</td>
-            <td>opacity: .25，cursor: not-allowed，disabled</td>
-          </tr>
-        </table>
-        <div class="note">
-          <strong>跳过时的反馈：</strong>点击跳过后，该盲注卡片灰化（opacity 降至 .35）并显示"跳过 · 无奖励"灰色文字，然后直接进入商店，不弹额外提示。灰化是玩家"错过了什么"的视觉反馈。
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
+<p class="note">牌选中：translateY(-8px) + 橙色描边 2.5px · 按钮 Active：scale(.97) · 盲注 Skipped：opacity .65</p>
+</div>
 
 
-<!-- ══════════════════════════════════════
-     06 · HUD 扩展
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s06">
-  <div class="section-title">06 · HUD 扩展（4 格 → 6 格）</div>
-  <div class="section-subtitle">在 V1 四格 HUD 右侧追加金钱和 Ante 进度，保持同等高度 64px。</div>
+<!-- ══ §10. 给开发的注意点 ══ -->
+<div class="sec" style="border-bottom:none">
+<h2>10 · 给开发的注意点</h2>
+<div style="background:#1a1a1a;border-radius:10px;padding:18px 20px">
+<ul style="list-style:none;display:flex;flex-direction:column;gap:9px">
+  <li style="font-family:monospace;font-size:12px;color:#ccc;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#e8682a">·</span>全屏布局：<code style="background:#2a2a2a;color:#fb923c;padding:1px 5px;border-radius:3px">width:100vw; height:100vh; overflow:hidden</code>，游戏区不出现滚动条</li>
+  <li style="font-family:monospace;font-size:12px;color:#ccc;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#e8682a">·</span>HUD 数值用 <code style="background:#2a2a2a;color:#fb923c;padding:1px 5px;border-radius:3px">el.textContent = val</code> 局部更新，避免重排闪烁</li>
+  <li style="font-family:monospace;font-size:12px;color:#ccc;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#e8682a">·</span>Boss 提示卡由按钮手动关闭，不要 setTimeout 自动消失</li>
+  <li style="font-family:monospace;font-size:12px;color:#ccc;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#e8682a">·</span>盲注选择 / 商店 / Boss提示 均为全屏 <code style="background:#2a2a2a;color:#fb923c;padding:1px 5px;border-radius:3px">phase</code> 切换，不是 modal 浮层</li>
+  <li style="font-family:monospace;font-size:12px;color:#ccc;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#e8682a">·</span>Joker 槽位最多 5 个，满载时显示"Joker 已满"提示，商店购买按钮变 disabled</li>
+  <li style="font-family:monospace;font-size:12px;color:#ccc;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#e8682a">·</span>Legendary Joker 的 <code style="background:#2a2a2a;color:#fb923c;padding:1px 5px;border-radius:3px">legendary-pulse</code> 动画：box-shadow 2s ease-in-out infinite，不要用 opacity</li>
+  <li style="font-family:monospace;font-size:12px;color:#ccc;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#e8682a">·</span>所有过渡统一 <code style="background:#2a2a2a;color:#fb923c;padding:1px 5px;border-radius:3px">200ms ease</code>，卡片悬停 translateY(-4~-8px)，不做弹簧动效</li>
+  <li style="font-family:monospace;font-size:12px;color:#ccc;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:#e8682a">·</span>计分公式显示：Chips × Mult，颜色分别为 <span style="color:#5dd67a">#5dd67a</span> 和 <span style="color:#e8682a">#e8682a</span>，xMult 用 <span style="color:#a855f7">#a855f7</span></li>
+</ul>
+</div>
+</div>
 
-  <!-- HUD 演示 -->
-  <div style="background:#2d5a3d;padding:20px;border-radius:12px;margin-bottom:28px">
-    <div class="hud-v2">
-      <div class="hud-item">
-        <div class="hud-label">目标分</div>
-        <div class="hud-value target">450</div>
-      </div>
-      <div class="hud-item">
-        <div class="hud-label">当前分</div>
-        <div class="hud-value score">0</div>
-      </div>
-      <div class="hud-item">
-        <div class="hud-label">剩余出牌</div>
-        <div class="hud-value plays">4</div>
-      </div>
-      <div class="hud-item">
-        <div class="hud-label">剩余弃牌</div>
-        <div class="hud-value discards">3</div>
-      </div>
-      <div class="hud-item">
-        <div class="hud-label">金钱</div>
-        <div class="hud-value money">$12</div>
-      </div>
-      <div class="hud-item">
-        <div class="hud-label">进度</div>
-        <div class="hud-value ante">Ante 1<br>Big Blind</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="two-col">
-    <div>
-      <div class="spec-card">
-        <h4>新增 HUD 格规格</h4>
-        <table class="comp-table">
-          <tr><th>格</th><th>标签</th><th>值格式</th><th>颜色</th><th>字号</th></tr>
-          <tr><td>第 5 格</td><td>金钱</td><td>$XX（JetBrains Mono）</td><td>#d4a017</td><td>18px</td></tr>
-          <tr><td>第 6 格</td><td>进度</td><td>Ante N<br>Blind 类型</td><td>#a855f7</td><td>13px，双行</td></tr>
-        </table>
-        <div class="note">
-          <strong>第 6 格双行设计：</strong>"Ante 1"在上，"Big Blind / Boss Blind"在下，两行共占一格高度，字号 13px，line-height 1.4。Boss Blind 时下行改为红色 #f87171。
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="spec-card">
-        <h4>HUD 宽度分配（1080px 视口）</h4>
-        <p style="font-size:13px;color:#555;margin-bottom:12px;line-height:1.7">左侧 Joker 竖栏占 110px，剩余 970px 由 HUD 横向展开。6 格 flex:1 等分，每格约 161px。实际实现中 HUD 横跨全宽 1080px（Joker 栏在 HUD 下方的 playing 区域，不影响 HUD 顶部）。</p>
-        <div class="wireframe">
-<span class="label">┌─── HUD 1080px ───────────────────────────────────────────┐</span>
-│  目标分  │  当前分  │ 出牌次 │ 弃牌次 │  <span class="gold">金钱</span>  │  <span class="purple">Ante进度</span>  │
-│  <span class="gold">450</span>     │  <span class="green">0</span>      │  <span class="label">4</span>    │   3    │  <span class="gold">$12</span>  │Ante 1     │
-│  (金)   │  (绿)   │  (橙)  │  (红)  │  (金)  │<span class="purple">Big Blind</span> │
-<span class="label">└──────────────────────────────────────────────────────────┘</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════════════════════
-     07 · 结算 & Boss 提示卡
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s07">
-  <div class="section-title">07 · Cash Out 结算面板 & Boss 提示卡</div>
-  <div class="section-subtitle">打败盲注后弹出结算 Toast，3 秒后进商店。进入 Boss Blind 前显示 Boss 提示卡（3 秒自动关闭）。</div>
-
-  <div class="three-col">
-    <!-- 结算面板 -->
-    <div>
-      <div style="font-size:12px;color:#888;margin-bottom:10px;text-align:center;font-weight:600;letter-spacing:.5px;text-transform:uppercase">Cash Out 结算面板</div>
-      <div class="cashout-panel">
-        <div class="cashout-title">CASH OUT</div>
-        <div class="cashout-row">
-          <span class="cashout-label">打败 Small Blind</span>
-          <span class="cashout-amount">$3</span>
-        </div>
-        <div class="cashout-row">
-          <span class="cashout-label">剩余出牌 × 2</span>
-          <span class="cashout-amount">$2</span>
-        </div>
-        <div class="cashout-row">
-          <span class="cashout-label">剩余弃牌 × 1</span>
-          <span class="cashout-amount">$1</span>
-        </div>
-        <div class="cashout-row">
-          <span class="cashout-label">利息（持有 $10）</span>
-          <span class="cashout-amount">$2</span>
-        </div>
-        <div class="cashout-total">
-          <span class="cashout-label">本轮收入</span>
-          <span class="cashout-amount">$8</span>
-        </div>
-        <div style="text-align:center;margin-top:16px">
-          <div style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:8px">3 秒后自动进入商店…</div>
-          <button style="background:#e8682a;color:#fff;border:none;border-radius:999px;padding:9px 26px;font-family:'Noto Sans SC',sans-serif;font-size:13px;font-weight:700;cursor:pointer">
-            进入商店 →
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Boss 提示卡 -->
-    <div>
-      <div style="font-size:12px;color:#888;margin-bottom:10px;text-align:center;font-weight:600;letter-spacing:.5px;text-transform:uppercase">Boss Blind 进入提示卡</div>
-      <div class="boss-alert">
-        <div class="boss-alert-skull">💀</div>
-        <div class="boss-alert-name">The Hook</div>
-        <div class="boss-alert-subtitle">BOSS BLIND · ANTE 1</div>
-        <div class="boss-alert-rule">
-          每次出牌后，随机从你的手牌中移除 2 张未出的牌。<br><br>
-          <span style="color:rgba(255,255,255,.5);font-size:11px">不消耗弃牌次数</span>
-        </div>
-        <div style="margin-top:16px;font-size:11px;color:rgba(255,255,255,.35);text-align:center">3 秒后自动关闭</div>
-      </div>
-    </div>
-
-    <!-- 规格说明 -->
-    <div>
-      <div class="spec-card">
-        <h4>结算面板规格</h4>
-        <div class="spec-row"><span class="spec-key">容器</span><span class="spec-val">340px max，居中遮罩层</span></div>
-        <div class="spec-row"><span class="spec-key">背景</span><span class="spec-val">#1a1a1a</span></div>
-        <div class="spec-row"><span class="spec-key">边框</span><span class="spec-val">2px solid #d4a017</span></div>
-        <div class="spec-row"><span class="spec-key">标题</span><span class="spec-val">JetBrains Mono 18px，#d4a017</span></div>
-        <div class="spec-row"><span class="spec-key">金额颜色</span><span class="spec-val">#d4a017，JetBrains Mono 700</span></div>
-        <div class="spec-row"><span class="spec-key">合计行</span><span class="spec-val">2px solid #d4a017 上分隔线，合计金额 20px</span></div>
-        <div class="spec-row"><span class="spec-key">出现动画</span><span class="spec-val">从下方 translateY(20px) → 0，200ms ease</span></div>
-        <div class="spec-row"><span class="spec-key">自动关闭</span><span class="spec-val">3 秒后 fadeOut + 进入 shop phase</span></div>
-      </div>
-      <div class="spec-card">
-        <h4>Boss 提示卡规格</h4>
-        <div class="spec-row"><span class="spec-key">容器</span><span class="spec-val">400px max，居中全屏遮罩</span></div>
-        <div class="spec-row"><span class="spec-key">背景</span><span class="spec-val">#1a0a0a（比正黑更偏红）</span></div>
-        <div class="spec-row"><span class="spec-key">边框</span><span class="spec-val">2px solid #f87171，带发光阴影</span></div>
-        <div class="spec-row"><span class="spec-key">图标</span><span class="spec-val">💀 48px（The Hook），The Psychic 用 🧿</span></div>
-        <div class="spec-row"><span class="spec-key">Boss 名</span><span class="spec-val">JetBrains Mono 22px，#f87171</span></div>
-        <div class="spec-row"><span class="spec-key">规则区</span><span class="spec-val">rgba(248,113,113,.1) 背景，圆角 8px</span></div>
-        <div class="spec-row"><span class="spec-key">出现动画</span><span class="spec-val">scale(0.9→1) + fadeIn，250ms ease</span></div>
-        <div class="spec-row"><span class="spec-key">自动关闭</span><span class="spec-val">3 秒后淡出，进入 playing phase</span></div>
-      </div>
-      <div class="spec-card">
-        <h4>两种 Boss 的差异化图标</h4>
-        <table class="comp-table">
-          <tr><th>Boss 名</th><th>图标</th><th>规则文案</th></tr>
-          <tr><td>The Hook</td><td>💀</td><td>出牌后随机移除手中 2 张</td></tr>
-          <tr><td>The Psychic</td><td>🧿</td><td>强制每次出牌选满 5 张</td></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════════════════════
-     08 · 核心画面线框图
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s08">
-  <div class="section-title">08 · 核心画面 ASCII 线框图</div>
-  <div class="section-subtitle">三张核心画面：打牌主界面（+Joker 区）、盲注选择、商店。</div>
-
-  <!-- 线框 1：打牌主界面 -->
-  <div style="margin-bottom:28px">
-    <div style="font-size:12px;font-weight:700;color:#e8682a;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">线框 A · 打牌主界面（1080×640，phase=playing）</div>
-    <div class="wireframe">
-<span class="label">┌──────────────────────────────────────── HUD 1080×64 ────────────────────────────────────────┐</span>
-│  <span class="gold">目标</span>:300  │  <span class="green">得分</span>:0  │  <span class="label">出牌</span>:4  │  弃牌:3  │  <span class="gold">$12</span>   │  <span class="purple">Ante1</span>/<span class="purple">Small</span>  │
-<span class="label">└────────────────────────────────────────────────────────────────────────────────────────────────┘</span>
-<span class="label">┌── Joker区 110px ──┬─────────────────────────── 出牌区 970px ──────────────────────────────────┐</span>
-│ ┌──────────────┐  │                                                                            │
-│ │ <span class="label">[🃏 Joker  ]</span>  │  │              [ 牌型徽章: 同花顺 ]                                       │
-│ │ <span class="dim">+4 Mult    </span>  │  │                                                                            │
-│ └──────────────┘  │    ┌──────┐  ┌──────┐  ┌──────┐  ┌ - - ┐  ┌ - - ┐                      │
-│ ┌──────────────┐  │    │  A   │  │  K   │  │  Q   │  │  +  │  │  +  │                      │
-│ │ <span class="label">[🌟 Supernova]</span> │  │    │  ♥   │  │  ♥   │  │  ♥   │  │     │  │     │                      │
-│ │ <span class="dim">牌型→+Mult </span>  │  │    └──────┘  └──────┘  └──────┘  └ - - ┘  └ - - ┘                      │
-│ └──────────────┘  │                                                                            │
-│ ┌──────────────┐  │         [ Chips: 135 × Mult: 9 = 1215 ]                                   │
-│ │ <span class="dim">[  空槽 +  ]</span>  │  │                   选中 1–5 张牌后点击「出牌」                             │
-│ └──────────────┘  │                                                                            │
-│ ┌──────────────┐  <span class="label">├──────────────────────────── 手牌区 ────────────────────────────────────┤</span>
-│ │ <span class="dim">[  空槽 +  ]</span>  │  │  手牌 · 8 张                                                            │
-│ └──────────────┘  │  ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐ ┌────┐              │
-│ ┌──────────────┐  │  │ J♥ │ │7♠ │ │3♦ │ │K♣ │ │9♥ │ │4♠ │ │2♦ │ │8♣ │              │
-│ │ <span class="dim">[  空槽 +  ]</span>  │  │    │ │   │ │   │ │   │ │   │ │   │ │   │ │   │              │
-│ └──────────────┘  │  └────┘ └────┘ └────┘ └────┘ └────┘ └────┘ └────┘ └────┘              │
-│ <span class="dim">  Joker 2/5   </span>  │                                                                            │
-<span class="label">└───────────────────┴────────────────────────────────────────────────────────────────────────────┘</span>
-<span class="label">┌──────────────────────────────────── 操作栏 1080×56 ────────────────────────────────────────────┐</span>
-│                          [ 出牌 ]  [ 弃牌 ]  [ 重新开始 ]                                       │
-<span class="label">└────────────────────────────────────────────────────────────────────────────────────────────────┘</span>
-    </div>
-  </div>
-
-  <!-- 线框 2：盲注选择 -->
-  <div style="margin-bottom:28px">
-    <div style="font-size:12px;font-weight:700;color:#e8682a;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">线框 B · 盲注选择界面（phase=blind_select，全屏替换）</div>
-    <div class="wireframe">
-<span class="label">┌──────────────────────────────── 盲注选择 1080×640 ─────────────────────────────────────────────┐</span>
-│                                                                                                  │
-│                              <span class="purple">ANTE 1 / 3</span>       选择盲注                                       │
-│                                                                                                  │
-│   ┌─ <span class="green">■■■</span> SMALL BLIND ───────┐  ┌─ <span class="gold">■■■</span> BIG BLIND ─────────┐  ┌─ <span class="label">■■■</span> BOSS BLIND ──────┐   │
-│   │  小盲注              │  │  大盲注              │  │  The Hook          │   │
-│   │  目标: <span class="green">300</span>          │  │  目标: <span class="gold">450</span>          │  │  目标: <span class="label">600</span>          │   │
-│   │  奖励: <span class="gold">$3</span>            │  │  奖励: <span class="gold">$4</span>            │  │  奖励: <span class="gold">$5</span>            │   │
-│   │                      │  │                      │  │ ┌──────────────────┐ │   │
-│   │                      │  │                      │  │ │出牌后随机移除    │ │   │
-│   │                      │  │                      │  │ │手中2张未出的牌   │ │   │
-│   │                      │  │                      │  │ └──────────────────┘ │   │
-│   │  [  打  →  ]         │  │  [  打  →  ]         │  │  [ 必须打 → ]      │   │
-│   │  [ 跳过(无奖励) ]    │  │  [ 跳过(无奖励) ]    │  │  [ Boss不可跳过 ] │   │
-│   └──────────────────────┘  └──────────────────────┘  └────────────────────┘   │
-│                                                                                  │
-<span class="label">└──────────────────────────────────────────────────────────────────────────────────────────────────┘</span>
-    </div>
-  </div>
-
-  <!-- 线框 3：商店 -->
-  <div style="margin-bottom:28px">
-    <div style="font-size:12px;font-weight:700;color:#e8682a;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">线框 C · 商店界面（phase=shop，全屏替换）</div>
-    <div class="wireframe">
-<span class="label">┌────────────────────────── 商店 1080×640 ──────────────────────────────────┐</span>
-│                                                                               │
-│                         <span class="gold">THE SHOP</span>                                              │
-│               打败 Small Blind · 获得 <span class="gold">$6</span>  ·  当前持有 <span class="gold">$12</span>                  │
-│                                                                               │
-│        ┌──── <span class="green">■ Uncommon</span> ─────┐  ┌──── <span class="dim">■ Common</span> ──────┐  ┌── <span class="blue">- - -</span> ─────┐ │
-│        │  🌟  Supernova     │  │  🍌  Cavendish    │  │  🔮  塔罗牌   │ │
-│        │  牌型次数→+Mult    │  │  ×3 Mult          │  │              │ │
-│        │  1/1000 自毁       │  │                   │  │  <span class="blue">COMING</span>       │ │
-│        │  ──────────────    │  │  ──────────────   │  │  <span class="blue">SOON</span>         │ │
-│        │  <span class="gold">$5</span>              │  │  <span class="gold">$6</span>             │  │  (不可购买)  │ │
-│        └────────────────────┘  └───────────────────┘  └──────────────┘ │
-│                                                                               │
-│                    [ 刷新 <span class="gold">$5</span> ]        [ 继续 → ]                            │
-│                                                                               │
-<span class="label">└───────────────────────────────────────────────────────────────────────────────┘</span>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════════════════════
-     09 · 动效与边界状态
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s09">
-  <div class="section-title">09 · 动效规范 & 边界状态</div>
-  <div class="section-subtitle">延续 V1 的 200ms ease 基调，新增 Joker 触发高亮、商店购买动画、Boss 警告脉冲。</div>
-
-  <div class="two-col">
-    <div>
-      <div class="spec-card">
-        <h4>新增动效清单</h4>
-        <table class="comp-table">
-          <tr><th>触发时机</th><th>动效</th><th>时长</th></tr>
-          <tr>
-            <td>Joker 计分触发</td>
-            <td>该 Joker 卡边框颜色亮度 +50%，scale(1→1.05→1)</td>
-            <td>300ms ease</td>
-          </tr>
-          <tr>
-            <td>×Mult Joker 触发</td>
-            <td>额外增加短暂白色闪光 flash（before 伪元素 opacity 0→.6→0）</td>
-            <td>400ms ease</td>
-          </tr>
-          <tr>
-            <td>商店购买 Joker</td>
-            <td>Joker 卡片从商店位置 scale(1→0.6) fadeOut，在槽位 scale(0.6→1) fadeIn</td>
-            <td>350ms ease</td>
-          </tr>
-          <tr>
-            <td>结算面板出现</td>
-            <td>translateY(20px→0) + opacity(0→1)</td>
-            <td>200ms ease</td>
-          </tr>
-          <tr>
-            <td>Boss 提示卡出现</td>
-            <td>scale(0.9→1) + opacity(0→1)</td>
-            <td>250ms ease</td>
-          </tr>
-          <tr>
-            <td>跳过盲注</td>
-            <td>该盲注卡 opacity(1→0.35)，显示"跳过"灰字</td>
-            <td>300ms ease</td>
-          </tr>
-          <tr>
-            <td>Legendary 边框</td>
-            <td>脉冲发光 keyframes，周期 2s</td>
-            <td>2s infinite</td>
-          </tr>
-          <tr>
-            <td>Boss Blind 卡片</td>
-            <td>边框脉冲发光（比 Legendary 更快更红）</td>
-            <td>1.5s infinite</td>
-          </tr>
-          <tr>
-            <td>计分数字跳动</td>
-            <td>数字从旧值滚动到新值（requestAnimationFrame）</td>
-            <td>400ms ease-out</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div>
-      <div class="spec-card">
-        <h4>边界状态与空状态</h4>
-        <table class="comp-table">
-          <tr><th>场景</th><th>视觉处理</th></tr>
-          <tr>
-            <td>Joker 槽位全空</td>
-            <td>5 个虚线空槽，无任何文字。整个竖栏仍然占位（不隐藏），视觉上给玩家"可以填满"的期待。</td>
-          </tr>
-          <tr>
-            <td>Joker 槽位全满</td>
-            <td>槽位底部显示"已满 5/5"，字号 10px，颜色 #e8682a。商店中所有 Joker 格变为不可点击态（opacity .45）。</td>
-          </tr>
-          <tr>
-            <td>商店金钱不足</td>
-            <td>商品格 opacity .45，cursor: not-allowed。鼠标悬停显示 tooltip "金钱不足（需要 $X）"。</td>
-          </tr>
-          <tr>
-            <td>刷新金钱不足</td>
-            <td>刷新按钮 opacity .4，disabled，tooltip "需要 $5"。</td>
-          </tr>
-          <tr>
-            <td>跳过 Small/Big</td>
-            <td>该盲注卡灰化，显示"已跳过 · 无奖励"灰色覆盖文字，然后进商店。</td>
-          </tr>
-          <tr>
-            <td>The Psychic Boss：出牌 &lt;5 张</td>
-            <td>"出牌"按钮保持 disabled（V1 的 .4 opacity），按钮下方额外显示 11px 红字"The Psychic: 必须选满 5 张"。</td>
-          </tr>
-          <tr>
-            <td>The Hook Boss：手牌 &lt;2 张被移除</td>
-            <td>随机被移除的牌先做 scale(1→0) + opacity(0) 动画（300ms），然后从 DOM 移除。无额外弹窗，符合原版风格的静默移除。</td>
-          </tr>
-          <tr>
-            <td>失败（出牌耗尽）</td>
-            <td>复用 V1 modal 样式，但标题改为"已到达 Ante X · Y Blind"，副文字"出牌次数耗尽"，按钮"重新开始"。</td>
-          </tr>
-          <tr>
-            <td>通关（Ante3 Boss）</td>
-            <td>复用 V1 state-win 金边黑底样式，标题"通关！"，副文字"你击败了全部 3 个 Ante"。</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ══════════════════════════════════════
-     10 · 开发实现交班
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s10">
-  <div class="section-title">10 · 开发实现交班</div>
-  <div class="section-subtitle">给工程师的实现建议，对应 PRD §5 数据结构与 §6 布局建议。</div>
-
-  <div class="two-col">
-    <div>
-      <div class="handoff">
-        <h4>CSS 变量追加（copy-paste 到 :root）</h4>
-        <ul>
-          <li>新增 14 个变量，见第 02 节完整列表，直接追加到现有 <code>:root {}</code> 末尾</li>
-          <li>稀有度颜色以 <code>--color-rarity-[档位]</code> 命名，便于 JS 动态读取：<code>getComputedStyle(el).getPropertyValue('--color-rarity-' + joker.rarity)</code></li>
-          <li>Joker 背景色以 <code>--joker-bg-[档位]</code> 命名，在 createJokerEl() 中按 rarity 赋值给 style.background</li>
-        </ul>
-      </div>
-      <div class="handoff" style="margin-top:16px">
-        <h4>Joker 卡片 HTML 结构建议</h4>
-        <ul>
-          <li>建议结构：<code>&lt;div class="joker-card" data-rarity="common" data-id="joker_base"&gt;</code></li>
-          <li>内部四个子节点：<code>.j-icon</code>（emoji）、<code>.j-name</code>、<code>.j-effect</code>、<code>.j-price</code></li>
-          <li>稀有度边框通过 <code>data-rarity</code> + CSS 属性选择器 <code>[data-rarity="uncommon"]</code> 设置 box-shadow，不要用 JS 内联</li>
-          <li>商店 Joker（90×120px）加 class <code>joker-card--shop</code>；槽位 Joker（70×100px）加 <code>joker-card--slot</code></li>
-          <li>槽位已满时在 <code>.joker-slot-area</code> 上加 class <code>is-full</code>，CSS 联动禁止 pointer-events</li>
-        </ul>
-      </div>
-      <div class="handoff" style="margin-top:16px">
-        <h4>布局改动（V1 → V2）</h4>
-        <ul>
-          <li>V1 的 <code>.game-viewport</code> 保持 1080×640，内部 flex-direction: column</li>
-          <li>HUD 下方新增 <code>.game-body</code> 容器，display: flex，flex-direction: row</li>
-          <li><code>.joker-slot-area</code> 宽 110px，flex-shrink: 0，在 <code>.game-body</code> 左侧</li>
-          <li><code>.main-area</code> flex: 1，包含原 V1 的出牌区 + 手牌区 + 操作栏</li>
-          <li>手牌 8 张在 970px 内横排，每张 82×118px，gap 约 9px，合计约 746px，有余量</li>
-        </ul>
-      </div>
-    </div>
-    <div>
-      <div class="handoff">
-        <h4>phase 切换逻辑与视图渲染</h4>
-        <ul>
-          <li><code>state.phase</code> 变化时，调用 <code>renderPhase()</code> 函数，根据 phase 值显示/隐藏对应 DOM 区域</li>
-          <li>建议用 CSS class 控制可见性：<code>.phase-[name] { display: flex }</code>，配合 <code>body.phase-playing</code> 类名切换</li>
-          <li>blind_select / shop 全屏覆盖：position absolute，z-index 10，覆盖 <code>.game-body</code>，但 HUD 仍可见（HUD z-index 5）</li>
-          <li>Boss 提示卡 z-index 20，遮住整个 game-viewport，3 秒后 JS removeEventListener + classList.remove</li>
-        </ul>
-      </div>
-      <div class="handoff" style="margin-top:16px">
-        <h4>计分显示（F1 改动）</h4>
-        <ul>
-          <li>V1 的 score-detail 区域改为三段显示：<code>Chips [135] × Mult [9] = [1215]</code></li>
-          <li>chips 数字颜色 <code>#5dd67a</code>（沿用 score 绿），mult 数字颜色 <code>#e8682a</code>（橙），×Mult 数字颜色 <code>#a855f7</code>（紫）</li>
-          <li>若 joker_xmult = 1（无乘算），×Mult 段不显示，避免界面冗余</li>
-          <li>数字跳动动画：requestAnimationFrame 在 400ms 内从旧值线性插值到新值，font-variant-numeric: tabular-nums 防抖</li>
-        </ul>
-      </div>
-      <div class="handoff" style="margin-top:16px">
-        <h4>Coming Soon 占位实现建议</h4>
-        <ul>
-          <li>用纯 CSS + HTML 实现，不需要任何 JS 逻辑</li>
-          <li><code>pointer-events: none</code> 写在 CSS 里，JS 无需额外判断</li>
-          <li>V2.1 接入塔罗牌后，只需移除 <code>coming-soon</code> class 并补充点击事件，零额外改动</li>
-          <li>emoji 建议从固定列表中随机抽取显示（🔮 🌍 ☀️ 🌙 ⭐），增加视觉多样性但不影响功能</li>
-        </ul>
-      </div>
-      <div class="handoff" style="margin-top:16px">
-        <h4>Joker 效果计算顺序（F4 关键）</h4>
-        <ul>
-          <li>严格按 PRD §5.6 伪代码顺序：先累计所有 addChips → 再累计所有 addMult → 最后乘 xMultProduct</li>
-          <li>Cavendish 的 xMult: 3 必须在 for 循环最末处理，用 <code>xMultProduct *= xMult</code></li>
-          <li>Joker 顺序影响 ×Mult 结果：<code>state.jokers</code> 数组顺序即为计算顺序，槽位从左到右</li>
-          <li>Joker 触发高亮动画：在 for 循环中，若某 Joker 返回非零值则 <code>triggerJokerAnim(joker.id)</code></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- 总结段 -->
-  <div style="margin-top:36px;background:#1a1a1a;border-radius:14px;padding:24px 28px">
-    <div style="font-size:13px;font-weight:700;color:#e8682a;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px">设计规范总结</div>
-    <p style="font-size:13px;color:#ccc;line-height:2;">
-      V2.0 在"克制·专业·带赌场感"的 V1 气质上，新增了稀有度层次感这一核心维度——通过 4 档颜色边框（蓝灰/绿/红/紫）让玩家在 0.5 秒内识别 Joker 价值，这是 Balatro 原版最具辨识度的视觉语言。
-      主色仍是扑克桌绿 #2d5a3d + 强调橙 #e8682a，未做任何改变。
-    </p>
-    <p style="font-size:13px;color:#ccc;line-height:2;margin-top:8px;">
-      最值得开发前 review 的 <strong style="color:#e8682a">2 个设计点</strong>：
-    </p>
-    <ul style="font-size:13px;color:#ccc;line-height:2.2;padding-left:20px;margin-top:4px">
-      <li><strong style="color:#fff">① Joker 稀有度配色：</strong>Rare 红（#f87171）与 Boss 警示红（#f87171）使用了相同 hex 值，但所处上下文不同（一个在 Joker 卡，一个在盲注选择 / Boss 提示卡），请确认这种"同色不同语义"在实际界面中不会造成视觉混淆。如果认为有问题，可以把 Rare 边框调整为 #fb923c（橙红）以作区分。</li>
-      <li><strong style="color:#fff">② Coming Soon 占位格视觉权重：</strong>当前方案为 opacity .65 + 灰化 emoji + 虚线蓝边，整体视觉权重约为可购买格的 40%。请评估：在商店只有 3 格的情况下，这个占位是否过于显眼（影响玩家焦点），还是恰好合适（传递"即将上线"期待感）。</li>
-    </ul>
-  </div>
-</section>
-
+</div><!-- /page -->
 </body>
 </html>

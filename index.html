@@ -48,18 +48,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    /* Bug A fix: 移除 padding，让游戏铺满整个视口 */
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
   }
 
   .game-viewport {
-    width: 1080px;
-    height: 640px;
+    /* Bug A fix: 铺满整个视口，大屏用 max-width/max-height 防止卡牌过大 */
+    width: 100vw;
+    height: 100vh;
+    max-width: 1920px;
+    max-height: 1200px;
     background: var(--color-table);
-    border-radius: 16px;
+    /* 只有 max-width 生效时才显示圆角，全屏时去掉圆角 */
+    border-radius: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 12px 48px rgba(0,0,0,.45);
+    box-shadow: none;
     position: relative;
     background-image:
       radial-gradient(ellipse at 50% 100%, rgba(0,0,0,.25) 0%, transparent 70%),
@@ -413,8 +422,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,.82);
-    backdrop-filter: blur(6px);
+    background: radial-gradient(ellipse at center, rgba(20,40,30,.45) 0%, rgba(0,0,0,.55) 100%);
+    backdrop-filter: blur(8px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 250ms ease;
@@ -1505,37 +1514,77 @@ function renderHUD() {
     boss:  'Boss Blind'
   }[state.blind] || '';
   const isBoss = state.blind === 'boss';
-  el.hudAnte.innerHTML = `Ante ${state.ante}<br><span class="${isBoss ? 'boss-blind-label' : ''}">${blindLabel}</span>`;
+  // Bug B fix: 用 textContent 精确更新子节点，避免 innerHTML 重建导致闪烁
+  // hudAnte 的初始 HTML 是 "Ante 1<br><span>Small Blind</span>"
+  // 找到第一个文本节点和 span 子节点直接更新
+  const anteTextNode = Array.from(el.hudAnte.childNodes).find(n => n.nodeType === Node.TEXT_NODE);
+  const anteSpan = el.hudAnte.querySelector('span');
+  if (anteTextNode) anteTextNode.textContent = `Ante ${state.ante}`;
+  if (anteSpan) {
+    anteSpan.textContent = blindLabel;
+    anteSpan.className = isBoss ? 'boss-blind-label' : '';
+  }
 }
 
 function renderJokerSlots() {
-  el.jokerSlots.innerHTML = '';
+  // Bug B fix: 不再每次 innerHTML='' 全量重建，改为按槽位对比更新
+  // 避免 legendary-pulse CSS 动画因 DOM 重建而被打断导致闪烁
+  const existingSlots = Array.from(el.jokerSlots.querySelectorAll('.joker-slot'));
+
   for (let i = 0; i < MAX_JOKERS; i++) {
-    const slot = document.createElement('div');
-    if (i < state.jokers.length) {
-      const j = state.jokers[i];
-      slot.className = 'joker-slot';
-      slot.dataset.rarity = j.rarity;
-      slot.dataset.id     = j.id;
-      slot.innerHTML = `
-        <div class="j-icon">${j.icon}</div>
-        <div class="j-name">${j.name}</div>
-        <div class="j-eff">${j.desc}</div>
-        <div class="j-sell" title="出售 ($${j.sellValue})">$${j.sellValue}</div>
-      `;
-      // 出售按钮
-      const sellBtn = slot.querySelector('.j-sell');
-      const jIdx = i;
-      if (sellBtn) sellBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sellJoker(jIdx);
-      });
+    const j = i < state.jokers.length ? state.jokers[i] : null;
+    let slot = existingSlots[i];
+
+    if (j) {
+      // 有 Joker：检查现有槽位的 data-id 是否一致，一致则跳过重建
+      const sameJoker = slot && slot.dataset.id === String(j.id) && !slot.classList.contains('empty');
+      if (!sameJoker) {
+        // 需要新建或替换
+        const newSlot = document.createElement('div');
+        newSlot.className = 'joker-slot';
+        newSlot.dataset.rarity = j.rarity;
+        newSlot.dataset.id     = j.id;
+        newSlot.innerHTML = `
+          <div class="j-icon">${j.icon}</div>
+          <div class="j-name">${j.name}</div>
+          <div class="j-eff">${j.desc}</div>
+          <div class="j-sell" title="出售 ($${j.sellValue})">$${j.sellValue}</div>
+        `;
+        const jIdx = i;
+        const sellBtn = newSlot.querySelector('.j-sell');
+        if (sellBtn) sellBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          sellJoker(jIdx);
+        });
+        if (slot) {
+          el.jokerSlots.replaceChild(newSlot, slot);
+        } else {
+          el.jokerSlots.appendChild(newSlot);
+        }
+      }
+      // 同一个 Joker 不重建，保持动画连续
     } else {
-      slot.className = 'joker-slot empty';
-      slot.textContent = '+';
+      // 空槽位：检查是否已经是 empty 状态
+      const alreadyEmpty = slot && slot.classList.contains('empty');
+      if (!alreadyEmpty) {
+        const newSlot = document.createElement('div');
+        newSlot.className = 'joker-slot empty';
+        newSlot.textContent = '+';
+        if (slot) {
+          el.jokerSlots.replaceChild(newSlot, slot);
+        } else {
+          el.jokerSlots.appendChild(newSlot);
+        }
+      }
     }
-    el.jokerSlots.appendChild(slot);
   }
+
+  // 移除多余槽位（如果 MAX_JOKERS 变小，实际上不会发生，保护性处理）
+  const currentSlots = el.jokerSlots.querySelectorAll('.joker-slot');
+  for (let i = MAX_JOKERS; i < currentSlots.length; i++) {
+    el.jokerSlots.removeChild(currentSlots[i]);
+  }
+
   el.jokerFullHint.textContent = state.jokers.length >= MAX_JOKERS
     ? `已满 ${MAX_JOKERS}/${MAX_JOKERS}` : '';
 }
