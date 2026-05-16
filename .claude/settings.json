@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/diaoye/.claude/agents/ /Users/diaoye/.claude/commands/ 2>&1 | head -50)",
+      "Read(//Users/diaoye/.claude/agents/**)",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)"
+    ]
+  }
+}

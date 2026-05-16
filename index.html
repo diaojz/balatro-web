@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小丑牌 · V1.0.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-table: #2d5a3d;
+    --color-accent: #e8682a;
+    --color-discard: #a83232;
+    --color-gold: #d4a017;
+    --color-card-red: #d33f3f;
+    --color-card-bg: #fbfaf7;
+    --color-score: #5dd67a;
+    --radius-card: 12px;
+    --radius-btn: 999px;
+    --ease-card: 200ms ease;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: #1a1a1a;
+    font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+    color: #1a1a1a;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .game-viewport {
+    width: 1080px;
+    height: 640px;
+    background: var(--color-table);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 48px rgba(0,0,0,.45);
+    position: relative;
+    background-image:
+      radial-gradient(ellipse at 50% 100%, rgba(0,0,0,.25) 0%, transparent 70%),
+      repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,.012) 20px, rgba(255,255,255,.012) 21px);
+  }
+
+  /* HUD */
+  .hud {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    padding: 0 24px;
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    flex-shrink: 0;
+  }
+  .hud-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255,255,255,.1);
+    padding: 0 8px;
+  }
+  .hud-item:last-child { border-right: none; }
+  .hud-label {
+    font-size: 10px;
+    color: rgba(255,255,255,.55);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .hud-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .hud-value.target { color: var(--color-gold); }
+  .hud-value.score { color: var(--color-score); }
+  .hud-value.plays { color: var(--color-accent); }
+  .hud-value.discards { color: #e06060; }
+
+  /* 出牌区 */
+  .play-zone {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.15);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    gap: 10px;
+    position: relative;
+  }
+  .hand-type-badge {
+    background: rgba(232,104,42,.85);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 18px;
+    border-radius: 999px;
+    letter-spacing: .5px;
+    box-shadow: 0 2px 8px rgba(232,104,42,.4);
+    min-height: 26px;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+  .hand-type-badge.visible { opacity: 1; }
+  .play-cards {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .play-placeholder {
+    width: 88px;
+    height: 128px;
+    border-radius: var(--radius-card);
+    border: 2px dashed rgba(255,255,255,.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,.25);
+    font-size: 24px;
+  }
+  .zone-hint {
+    font-size: 12px;
+    color: rgba(255,255,255,.4);
+    letter-spacing: .5px;
+  }
+  .score-detail {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,.55);
+    margin-top: 2px;
+    min-height: 16px;
+  }
+
+  /* 手牌区 */
+  .hand-zone {
+    padding: 16px 24px 12px;
+    background: rgba(0,0,0,.2);
+    border-top: 1px solid rgba(255,255,255,.06);
+    flex-shrink: 0;
+  }
+  .hand-zone-label {
+    font-size: 10px;
+    color: rgba(255,255,255,.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .hand-cards {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    min-height: 130px;
+  }
+
+  /* 扑克牌 */
+  .poker-card {
+    width: 82px;
+    height: 118px;
+    background: var(--color-card-bg);
+    border-radius: var(--radius-card);
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.08);
+    transition: transform var(--ease-card), box-shadow var(--ease-card);
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .poker-card .corner {
+    position: absolute;
+    line-height: 1;
+    font-weight: 700;
+  }
+  .poker-card .corner.tl { top: 5px; left: 6px; text-align: left; }
+  .poker-card .corner.br {
+    bottom: 5px;
+    right: 6px;
+    text-align: right;
+    transform: rotate(180deg);
+  }
+  .poker-card .corner .rank { font-size: 14px; display: block; }
+  .poker-card .corner .suit { font-size: 11px; display: block; }
+  .poker-card .center-suit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    line-height: 1;
+  }
+  .poker-card.red .corner,
+  .poker-card.red .center-suit { color: var(--color-card-red); }
+  .poker-card.black .corner,
+  .poker-card.black .center-suit { color: #1a1a1a; }
+
+  .poker-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,.22), 0 0 0 1px rgba(0,0,0,.08);
+  }
+  .poker-card.selected {
+    transform: translateY(-12px);
+    box-shadow: 0 0 0 2.5px var(--color-accent), 0 8px 20px rgba(232,104,42,.35);
+  }
+  .poker-card.selected:hover {
+    transform: translateY(-14px);
+  }
+  .poker-card.disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+  .poker-card.disabled:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.08);
+  }
+
+  /* 操作栏 */
+  .action-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    padding: 14px 24px;
+    background: rgba(0,0,0,.3);
+    border-top: 1px solid rgba(255,255,255,.06);
+    flex-shrink: 0;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    border-radius: var(--radius-btn);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 10px 26px;
+    transition: transform 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
+    letter-spacing: .3px;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-2px); }
+  .btn:active:not(:disabled) { transform: translateY(0); }
+  .btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+  .btn-play {
+    background: var(--color-accent);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(232,104,42,.45);
+  }
+  .btn-play:hover:not(:disabled) {
+    box-shadow: 0 6px 18px rgba(232,104,42,.6);
+  }
+  .btn-discard {
+    background: var(--color-discard);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(168,50,50,.4);
+  }
+  .btn-discard:hover:not(:disabled) {
+    box-shadow: 0 6px 18px rgba(168,50,50,.55);
+  }
+  .btn-restart {
+    background: transparent;
+    color: rgba(255,255,255,.7);
+    border: 1.5px solid rgba(255,255,255,.3);
+  }
+  .btn-restart:hover {
+    border-color: rgba(255,255,255,.6);
+    color: #fff;
+  }
+
+  /* 弹窗 */
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease;
+    z-index: 10;
+  }
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal {
+    background: #0d0d0d;
+    border-radius: 16px;
+    padding: 40px 56px;
+    text-align: center;
+    min-width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  }
+  .modal.win { border: 2px solid var(--color-gold); }
+  .modal.lose { border: 2px solid var(--color-discard); }
+  .modal-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .modal.win .modal-title { color: var(--color-gold); }
+  .modal.lose .modal-title { color: var(--color-discard); }
+  .modal-body {
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .modal .btn-play {
+    padding: 12px 36px;
+    font-size: 15px;
+  }
+</style>
+</head>
+<body>
+
+<div class="game-viewport">
+
+  <!-- HUD -->
+  <div class="hud">
+    <div class="hud-item">
+      <div class="hud-label">目标分</div>
+      <div class="hud-value target" id="hud-target">300</div>
+    </div>
+    <div class="hud-item">
+      <div class="hud-label">当前分</div>
+      <div class="hud-value score" id="hud-score">0</div>
+    </div>
+    <div class="hud-item">
+      <div class="hud-label">剩余出牌</div>
+      <div class="hud-value plays" id="hud-plays">4</div>
+    </div>
+    <div class="hud-item">
+      <div class="hud-label">剩余弃牌</div>
+      <div class="hud-value discards" id="hud-discards">3</div>
+    </div>
+  </div>
+
+  <!-- 出牌区 -->
+  <div class="play-zone">
+    <div class="hand-type-badge" id="hand-type-badge">同花顺</div>
+    <div class="play-cards" id="play-cards"></div>
+    <div class="zone-hint" id="zone-hint">选中 1–5 张牌后点击「出牌」</div>
+    <div class="score-detail" id="score-detail"></div>
+  </div>
+
+  <!-- 手牌区 -->
+  <div class="hand-zone">
+    <div class="hand-zone-label">手牌 · 8 张</div>
+    <div class="hand-cards" id="hand-cards"></div>
+  </div>
+
+  <!-- 操作栏 -->
+  <div class="action-bar">
+    <button class="btn btn-play" id="btn-play">出牌</button>
+    <button class="btn btn-discard" id="btn-discard">弃牌</button>
+    <button class="btn btn-restart" id="btn-restart">重新开始</button>
+  </div>
+
+  <!-- 弹窗 -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <div class="modal-title" id="modal-title">胜利</div>
+      <div class="modal-body" id="modal-body"></div>
+      <button class="btn btn-play" id="modal-restart">重新开始</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+// ============ 常量 ============
+const SUITS = ['♠', '♥', '♦', '♣'];
+const RED_SUITS = new Set(['♥', '♦']);
+const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+const RANK_VALUE = {
+  'A': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
+  '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10
+};
+const RANK_ORDER = {
+  'A': 14, 'K': 13, 'Q': 12, 'J': 11, '10': 10, '9': 9, '8': 8,
+  '7': 7, '6': 6, '5': 5, '4': 4, '3': 3, '2': 2
+};
+
+const HAND_TYPES = {
+  ROYAL_FLUSH:    { name: '皇家同花顺', base: 100, mult: 8 },
+  STRAIGHT_FLUSH: { name: '同花顺',     base: 100, mult: 8 },
+  FOUR_KIND:      { name: '四条',       base: 60,  mult: 7 },
+  FULL_HOUSE:     { name: '葫芦',       base: 40,  mult: 4 },
+  FLUSH:          { name: '同花',       base: 35,  mult: 4 },
+  STRAIGHT:       { name: '顺子',       base: 30,  mult: 4 },
+  THREE_KIND:     { name: '三条',       base: 30,  mult: 3 },
+  TWO_PAIR:       { name: '两对',       base: 20,  mult: 2 },
+  PAIR:           { name: '对子',       base: 10,  mult: 2 },
+  HIGH_CARD:      { name: '高牌',       base: 5,   mult: 1 }
+};
+
+const TARGET_SCORE = 300;
+const HAND_SIZE = 8;
+const MAX_SELECT = 5;
+const INIT_HANDS = 4;
+const INIT_DISCARDS = 3;
+
+// ============ 游戏状态 ============
+const state = {
+  deck: [],
+  hand: [],
+  selected: [],
+  score: 0,
+  handsLeft: INIT_HANDS,
+  discardsLeft: INIT_DISCARDS,
+  gameStatus: 'playing' // playing | win | lose
+};
+
+// ============ 工具 ============
+function buildDeck() {
+  const deck = [];
+  for (const suit of SUITS) {
+    for (const rank of RANKS) {
+      deck.push({ suit, rank, value: RANK_VALUE[rank] });
+    }
+  }
+  return deck;
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function draw(n) {
+  return state.deck.splice(0, n);
+}
+
+function cardId(c) { return c.suit + c.rank; }
+
+// ============ 牌型识别 ============
+function evaluateHand(cards) {
+  if (!cards || cards.length === 0) return null;
+
+  const ranks = cards.map(c => c.rank);
+  const suits = cards.map(c => c.suit);
+  const counts = {};
+  for (const r of ranks) counts[r] = (counts[r] || 0) + 1;
+  const countValues = Object.values(counts).sort((a, b) => b - a);
+  const isFlush = cards.length === 5 && suits.every(s => s === suits[0]);
+  const isStraight = checkStraight(ranks);
+  const isRoyal = isStraight && isFlush &&
+    ['10', 'J', 'Q', 'K', 'A'].every(r => ranks.includes(r));
+
+  if (isRoyal) return HAND_TYPES.ROYAL_FLUSH;
+  if (isStraight && isFlush) return HAND_TYPES.STRAIGHT_FLUSH;
+  if (countValues[0] === 4) return HAND_TYPES.FOUR_KIND;
+  if (countValues[0] === 3 && countValues[1] === 2) return HAND_TYPES.FULL_HOUSE;
+  if (isFlush) return HAND_TYPES.FLUSH;
+  if (isStraight) return HAND_TYPES.STRAIGHT;
+  if (countValues[0] === 3) return HAND_TYPES.THREE_KIND;
+  if (countValues[0] === 2 && countValues[1] === 2) return HAND_TYPES.TWO_PAIR;
+  if (countValues[0] === 2) return HAND_TYPES.PAIR;
+  return HAND_TYPES.HIGH_CARD;
+}
+
+function checkStraight(ranks) {
+  if (ranks.length !== 5) return false;
+  const orders = ranks.map(r => RANK_ORDER[r]).sort((a, b) => a - b);
+  // A-2-3-4-5 小顺子
+  if (orders.join(',') === '2,3,4,5,14') return true;
+  for (let i = 1; i < orders.length; i++) {
+    if (orders[i] - orders[i - 1] !== 1) return false;
+  }
+  return true;
+}
+
+function calcScore(cards) {
+  const type = evaluateHand(cards);
+  if (!type) return { type: null, score: 0, sum: 0 };
+  const sum = cards.reduce((s, c) => s + c.value, 0);
+  return {
+    type,
+    sum,
+    score: (type.base + sum) * type.mult
+  };
+}
+
+// ============ 游戏流程 ============
+function newGame() {
+  state.deck = shuffle(buildDeck());
+  state.hand = draw(HAND_SIZE);
+  state.selected = [];
+  state.score = 0;
+  state.handsLeft = INIT_HANDS;
+  state.discardsLeft = INIT_DISCARDS;
+  state.gameStatus = 'playing';
+  render();
+}
+
+function toggleSelect(card) {
+  if (state.gameStatus !== 'playing') return;
+  const idx = state.selected.findIndex(c => cardId(c) === cardId(card));
+  if (idx >= 0) {
+    state.selected.splice(idx, 1);
+  } else {
+    if (state.selected.length >= MAX_SELECT) return;
+    state.selected.push(card);
+  }
+  render();
+}
+
+function playHand() {
+  if (state.gameStatus !== 'playing') return;
+  if (state.selected.length === 0 || state.handsLeft <= 0) return;
+
+  const { score } = calcScore(state.selected);
+  state.score += score;
+  state.handsLeft -= 1;
+
+  // 移除手牌中已出的牌
+  const usedIds = new Set(state.selected.map(cardId));
+  state.hand = state.hand.filter(c => !usedIds.has(cardId(c)));
+  state.selected = [];
+
+  // 补牌
+  const need = HAND_SIZE - state.hand.length;
+  if (need > 0) state.hand.push(...draw(need));
+
+  // 判定
+  if (state.score >= TARGET_SCORE) {
+    state.gameStatus = 'win';
+  } else if (state.handsLeft <= 0) {
+    state.gameStatus = 'lose';
+  }
+  render();
+}
+
+function discard() {
+  if (state.gameStatus !== 'playing') return;
+  if (state.selected.length === 0 || state.discardsLeft <= 0) return;
+
+  state.discardsLeft -= 1;
+  const usedIds = new Set(state.selected.map(cardId));
+  state.hand = state.hand.filter(c => !usedIds.has(cardId(c)));
+  state.selected = [];
+
+  const need = HAND_SIZE - state.hand.length;
+  if (need > 0) state.hand.push(...draw(need));
+  render();
+}
+
+// ============ 渲染 ============
+const el = {
+  hudScore: document.getElementById('hud-score'),
+  hudPlays: document.getElementById('hud-plays'),
+  hudDiscards: document.getElementById('hud-discards'),
+  handCards: document.getElementById('hand-cards'),
+  playCards: document.getElementById('play-cards'),
+  handTypeBadge: document.getElementById('hand-type-badge'),
+  zoneHint: document.getElementById('zone-hint'),
+  scoreDetail: document.getElementById('score-detail'),
+  btnPlay: document.getElementById('btn-play'),
+  btnDiscard: document.getElementById('btn-discard'),
+  btnRestart: document.getElementById('btn-restart'),
+  modalOverlay: document.getElementById('modal-overlay'),
+  modal: document.getElementById('modal'),
+  modalTitle: document.getElementById('modal-title'),
+  modalBody: document.getElementById('modal-body'),
+  modalRestart: document.getElementById('modal-restart')
+};
+
+function createCardEl(card, isSelected, onClick) {
+  const div = document.createElement('div');
+  const isRed = RED_SUITS.has(card.suit);
+  div.className = `poker-card ${isRed ? 'red' : 'black'}${isSelected ? ' selected' : ''}`;
+  div.innerHTML = `
+    <div class="corner tl"><span class="rank">${card.rank}</span><span class="suit">${card.suit}</span></div>
+    <div class="center-suit">${card.suit}</div>
+    <div class="corner br"><span class="rank">${card.rank}</span><span class="suit">${card.suit}</span></div>
+  `;
+  if (onClick) div.addEventListener('click', onClick);
+  return div;
+}
+
+function render() {
+  // HUD
+  el.hudScore.textContent = state.score;
+  el.hudPlays.textContent = state.handsLeft;
+  el.hudDiscards.textContent = state.discardsLeft;
+
+  // 手牌
+  el.handCards.innerHTML = '';
+  for (const card of state.hand) {
+    const selected = state.selected.some(c => cardId(c) === cardId(card));
+    el.handCards.appendChild(createCardEl(card, selected, () => toggleSelect(card)));
+  }
+
+  // 出牌区
+  el.playCards.innerHTML = '';
+  const selectedCount = state.selected.length;
+  for (let i = 0; i < MAX_SELECT; i++) {
+    if (i < selectedCount) {
+      const card = state.selected[i];
+      const node = createCardEl(card, false, () => toggleSelect(card));
+      node.style.width = '88px';
+      node.style.height = '128px';
+      // 出牌区内的牌：调整中心符号与角标尺寸
+      node.querySelector('.center-suit').style.fontSize = '48px';
+      node.querySelectorAll('.corner .rank').forEach(s => s.style.fontSize = '16px');
+      node.querySelectorAll('.corner .suit').forEach(s => s.style.fontSize = '13px');
+      el.playCards.appendChild(node);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = 'play-placeholder';
+      ph.textContent = '+';
+      el.playCards.appendChild(ph);
+    }
+  }
+
+  // 牌型 & 提示
+  if (selectedCount > 0) {
+    const { type, sum, score } = calcScore(state.selected);
+    el.handTypeBadge.textContent = type.name;
+    el.handTypeBadge.classList.add('visible');
+    el.zoneHint.textContent = `已选 ${selectedCount} 张`;
+    el.scoreDetail.textContent = `(${type.base} + ${sum}) × ${type.mult} = ${score}`;
+  } else {
+    el.handTypeBadge.classList.remove('visible');
+    el.zoneHint.textContent = '选中 1–5 张牌后点击「出牌」';
+    el.scoreDetail.textContent = '';
+  }
+
+  // 按钮可用性
+  const playing = state.gameStatus === 'playing';
+  el.btnPlay.disabled = !playing || selectedCount === 0 || state.handsLeft <= 0;
+  el.btnDiscard.disabled = !playing || selectedCount === 0 || state.discardsLeft <= 0;
+
+  // 弹窗
+  if (state.gameStatus === 'win') {
+    showModal('win', '胜利', `累计得分 ${state.score} / ${TARGET_SCORE}\n剩余出牌 ${state.handsLeft} 次`);
+  } else if (state.gameStatus === 'lose') {
+    showModal('lose', '失败', `累计得分 ${state.score} / ${TARGET_SCORE}\n出牌机会已耗尽`);
+  } else {
+    hideModal();
+  }
+}
+
+function showModal(kind, title, body) {
+  el.modal.classList.remove('win', 'lose');
+  el.modal.classList.add(kind);
+  el.modalTitle.textContent = title;
+  el.modalBody.textContent = body;
+  el.modalOverlay.classList.add('show');
+}
+
+function hideModal() {
+  el.modalOverlay.classList.remove('show');
+}
+
+// ============ 事件绑定 ============
+el.btnPlay.addEventListener('click', playHand);
+el.btnDiscard.addEventListener('click', discard);
+el.btnRestart.addEventListener('click', newGame);
+el.modalRestart.addEventListener('click', newGame);
+
+// 启动
+newGame();
+</script>
+
+</body>
+</html>
