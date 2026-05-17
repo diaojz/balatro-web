@@ -1,0 +1,165 @@
+/* ============================================================
+   全局重置与变量
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --green-table: #2d5a3d;
+  --green-dark:  #1e3d2a;
+  --green-light: #3a7a52;
+  --orange:      #e8682a;
+  --orange-dark: #c4541f;
+  --gold:        #d4a017;
+  --card-bg:     #fbfaf7;
+  --card-border: #d4cec3;
+  --text-dark:   #1a1a1a;
+  --text-light:  #f5f0e8;
+  --text-muted:  #8a8070;
+  --rare-color:  #fb923c;
+  --common-color: #94a3b8;
+  --red:         #dc2626;
+  --blue:        #2563eb;
+
+  font-family: -apple-system, "PingFang SC", system-ui, sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1a1a2e;
+  color: var(--text-light);
+  display: grid;
+  place-items: center;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+/* ============================================================
+   游戏视口（响应式，限制最大尺寸）
+   ============================================================ */
+.game-viewport {
+  width: min(100vw, 1920px);
+  height: min(100vh, 1200px);
+  background: var(--green-table);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ============================================================
+   通用按钮
+   ============================================================ */
+.btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: filter 0.15s, transform 0.1s;
+  font-family: inherit;
+}
+
+.btn:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-orange {
+  background: var(--orange);
+  color: #fff;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: #1a1a1a;
+}
+
+.btn-green {
+  background: var(--green-light);
+  color: #fff;
+}
+
+.btn-gray {
+  background: #4a4a5a;
+  color: #ddd;
+}
+
+.btn-red {
+  background: #dc2626;
+  color: #fff;
+}
+
+/* ============================================================
+   Modal 遮罩
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: #2a2a3e;
+  border: 2px solid var(--orange);
+  border-radius: 12px;
+  padding: 32px;
+  min-width: 320px;
+  text-align: center;
+}
+
+/* ============================================================
+   扑克牌基础样式
+   ============================================================ */
+.poker-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 8px;
+  color: var(--text-dark);
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.poker-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.poker-card.selected {
+  border-color: var(--orange);
+  transform: translateY(-12px);
+  box-shadow: 0 12px 28px rgba(232,104,42,0.5);
+}
+
+.suit-H, .suit-D { color: var(--red); }
+.suit-S, .suit-C { color: #1a1a1a; }

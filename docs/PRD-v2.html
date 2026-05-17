@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD · 小丑牌 Web V2.0</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Inter", sans-serif;
+    background: #fbfaf7;
+    color: #1a1a1a;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .container { max-width: 920px; margin: 0 auto; padding: 0 24px 100px; }
+
+  nav {
+    position: sticky; top: 0;
+    background: rgba(251,250,247,0.93);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e8e5df;
+    z-index: 100; padding: 10px 0;
+  }
+  nav ul { display: flex; gap: 20px; list-style: none; max-width: 920px; margin: 0 auto; padding: 0 24px; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: #666; font-size: 13px; }
+  nav a:hover { color: #e8682a; }
+
+  .header { padding: 40px 0 32px; }
+  .badge {
+    display: inline-block; background: #fef0e7; color: #c0511e;
+    font-size: 12px; font-weight: 600; padding: 4px 12px;
+    border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.3px;
+  }
+  h1 { font-size: 28px; font-weight: 700; color: #111; margin-bottom: 8px; }
+  .subtitle { color: #666; font-size: 15px; }
+
+  section { margin-top: 52px; scroll-margin-top: 60px; }
+  h2 {
+    font-size: 18px; font-weight: 700; color: #111;
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid #e8682a;
+    display: flex; align-items: center; gap: 8px;
+  }
+  h2 .num {
+    background: #e8682a; color: #fff; font-size: 11px; font-weight: 700;
+    width: 22px; height: 22px; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  h3 { font-size: 14px; font-weight: 600; color: #444; margin: 24px 0 10px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { background: #f3f1ec; text-align: left; padding: 8px 12px; font-weight: 600; color: #555; font-size: 12.5px; }
+  td { padding: 8px 12px; border-bottom: 1px solid #ede9e2; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  .card { background: #fff; border: 1px solid #e8e5df; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  .card-orange { background: #fef6f2; border: 1px solid #f4c4a8; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+
+  pre {
+    background: #f5f3ef; border: 1px solid #e4e1da; border-radius: 8px;
+    padding: 16px; font-size: 12px; line-height: 1.8; overflow-x: auto;
+    font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace; color: #333;
+    margin-bottom: 16px;
+  }
+  .key  { color: #7c3aed; }
+  .val  { color: #059669; }
+  .cmt  { color: #9ca3af; font-style: italic; }
+  .str  { color: #d97706; }
+
+  .p-tag {
+    display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px;
+    border-radius: 4px; letter-spacing: 0.3px; white-space: nowrap;
+  }
+  .p0 { background: #fee2e2; color: #b91c1c; }
+  .p1 { background: #fef3c7; color: #92400e; }
+
+  .not-do { list-style: none; }
+  .not-do li { padding: 5px 0; font-size: 13.5px; color: #666; display: flex; gap: 8px; align-items: flex-start; }
+  .not-do li::before { content: "x"; color: #ccc; font-weight: 700; flex-shrink: 0; }
+
+  .formula {
+    background: #fef6f2; border: 1.5px solid #f4c4a8; border-radius: 8px;
+    padding: 14px 18px; font-size: 14px; font-weight: 600; color: #b84e1a;
+    margin: 12px 0; font-family: "SF Mono", monospace;
+  }
+
+  .rarity-tag {
+    display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 7px;
+    border-radius: 4px; letter-spacing: 0.2px;
+  }
+  .common { background: #e8edf5; color: #3b5a8c; }
+  .rare   { background: #fff0e6; color: #c2410c; }
+
+  .decision { list-style: none; }
+  .decision li {
+    padding: 12px 16px; margin-bottom: 8px;
+    background: #fff; border: 1px solid #e8e5df; border-radius: 8px;
+    font-size: 13.5px;
+  }
+  .decision li strong.q { color: #e8682a; margin-right: 4px; }
+  .decision li strong.a { color: #16a34a; }
+
+  .example-box {
+    background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 8px;
+    padding: 14px 18px; margin: 10px 0; font-size: 13.5px;
+  }
+  .example-box .ex-title { font-weight: 700; color: #15803d; margin-bottom: 6px; font-size: 13px; }
+  .example-box .ex-calc { font-family: "SF Mono", monospace; color: #1e3a2f; font-size: 13px; line-height: 2; }
+  .example-box .ex-result { font-weight: 700; color: #e8682a; font-size: 14px; margin-top: 4px; }
+
+  .flow-step {
+    display: flex; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid #ede9e2; align-items: flex-start;
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .step-num {
+    background: #e8682a; color: #fff; font-size: 11px; font-weight: 700;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-body { font-size: 13.5px; color: #444; line-height: 1.7; }
+  .step-body strong { color: #111; }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="#s1">① 项目目标</a></li>
+    <li><a href="#s2">② 功能范围</a></li>
+    <li><a href="#s3">③ 数据结构</a></li>
+    <li><a href="#s4">④ 计分管道</a></li>
+    <li><a href="#s5">⑤ 核心流程与决策</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <div class="header">
+    <div class="badge">Version V2.0 · PRD · 重构版</div>
+    <h1>小丑牌 Web · V2.0</h1>
+    <p class="subtitle">Vue 3 + Vite + TypeScript 重构 · 销售牌系统 · 开发执行版 · 2026-05-16</p>
+  </div>
+
+  <!-- ① 项目目标 -->
+  <section id="s1">
+    <h2><span class="num">1</span>项目目标</h2>
+    <div class="card-orange">
+      <p style="font-size:14px;color:#7c2d12;line-height:1.8;">
+        将小丑牌游戏从单文件 HTML 重构为 <strong>Vue 3 + Vite + TypeScript</strong> 标准项目，实现"打牌计分 → 达分过关 → 商店购买销售牌 → 下一关"的完整循环，并通过销售牌效果叠加让玩家体验指数级分数增长的核心乐趣。
+      </p>
+    </div>
+
+    <h3>技术约束（V2.0 硬性要求）</h3>
+    <div class="card">
+      <ul style="font-size:13.5px;color:#555;line-height:2.2;padding-left:20px;">
+        <li>框架：<strong>Vue 3 Composition API + Vite + TypeScript</strong>，不允许选项式 API</li>
+        <li>状态管理：<strong>Pinia</strong>，拆分 gameStore（牌局）和 salesStore（销售牌），不允许裸 reactive 跨组件共享</li>
+        <li>部署：GitHub Pages，CI/CD 走 <code>.github/workflows/deploy.yml</code>（Vite build → gh-pages 分支）</li>
+        <li>视觉沿用 V1 风格：扑克桌绿 <code>#2d5a3d</code>，橙强调 <code>#e8682a</code>，不引入外部 UI 库</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ② 功能范围 -->
+  <section id="s2">
+    <h2><span class="num">2</span>功能范围</h2>
+
+    <div class="card" style="padding:0;">
+      <table>
+        <tr>
+          <th style="width:36px;"></th>
+          <th style="width:48px;">编号</th>
+          <th style="width:180px;">功能</th>
+          <th>做什么</th>
+          <th style="width:200px;">验收点</th>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
+          <td>F1</td>
+          <td><strong>Vue 框架重构</strong></td>
+          <td>单文件 HTML 整体替换为 Vue 3 + Vite + TS 标准项目。组件划分：<code>&lt;App&gt; &lt;Hud&gt; &lt;HandCard&gt; &lt;TableSlot&gt; &lt;Shop&gt; &lt;SalesCard&gt; &lt;SalesSlot&gt;</code>。Pinia 管理全部状态。TypeScript interface 定义 Card / SalesCard / HandType / ScoreContext。写 deploy.yml 自动发布 GitHub Pages。</td>
+          <td>npm run dev 可本地跑；npm run build 无 TS 报错；推送 main 后 Actions 自动发布到 gh-pages</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
+          <td>F2</td>
+          <td><strong>销售牌系统</strong></td>
+          <td>20 张销售牌牌池，2 档稀有度（Common / Rare）。商店展示 3 张随机销售牌 + Reroll 按钮（$5）。购买写入销售槽（最多 5 格）。已装备的销售牌可卖出（半价向下取整）。每张含 id / name / desc / price / sellValue / rarity / effect 字段。稀有度 Common 蓝灰配色，Rare 橙红 <code>#fb923c</code> 配色。悬停弹出 tooltip 显示效果描述。购买和卖出有过渡动画。</td>
+          <td>商店出现 3 张销售牌；购买后金钱减少、销售槽出现该牌；点已装备的牌弹出卖出确认；卖出返钱为 price 的一半向下取整；Reroll 花 $5 重新随机 3 张；5 槽满后商店购买按钮置灰</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
+          <td>F3</td>
+          <td><strong>基础打牌</strong></td>
+          <td>标准 52 张牌洗牌，发 8 张手牌。玩家选 1-5 张点击出牌。出牌触发计分（含销售牌效果）。弃牌不计分只消耗弃牌次数。一局固定 4 次出牌 / 3 次弃牌。牌型识别：高牌 / 一对 / 两对 / 三条 / 顺子 / 同花 / 葫芦 / 四条 / 同花顺 / 同花五条（五张同花同顺）。</td>
+          <td>10 种牌型识别正确；出牌后手牌补充到 8 张（牌不够则不补）；弃牌次数归零后弃牌按钮禁用；出牌次数归零后出牌按钮禁用</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
+          <td>F4</td>
+          <td><strong>简化金钱系统</strong></td>
+          <td>打赢一关固定奖励 $5。金钱显示在 HUD 右上角（金色字体）。金钱用于商店购买销售牌和 Reroll。没有利息、没有剩余手牌奖励、没有 Cash Out 弹窗。</td>
+          <td>赢关后 money += 5；HUD 金钱实时更新；购买时金钱不足则按钮置灰</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="p-tag p0">P0</span></td>
+          <td>F5</td>
+          <td><strong>简化关卡循环</strong></td>
+          <td>第 1 关目标分 300。打到目标分 → 赢关，获得 $5，进入商店。退出商店 → 下一关，目标分 = 上一关 × 1.5（向上取整）。出牌次数耗尽未达目标分 → 失败画面，显示已到达第几关，提供"重新开始"。没有 Ante 分级，没有 Boss 效果。</td>
+          <td>第 1 关目标 300 / 第 2 关 450 / 第 3 关 675，依此类推；失败后重开，money=4、level=1、销售槽清空、初始 $4 重置为 0</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>不做（V2.0 明确排除）</h3>
+    <ul class="not-do">
+      <li>Ante 推进 / Small Blind / Big Blind / Boss Blind 三级结构</li>
+      <li>Boss 限制效果（The Hook / The Psychic 等）</li>
+      <li>Cash Out 结算弹窗（金钱明细面板）</li>
+      <li>利息系统 / 剩余手牌奖励 / 跳过盲注</li>
+      <li>4 档稀有度（V2.0 只做 Common / Rare 2 档）</li>
+      <li>Coming Soon 占位格（商店就是 3 张销售牌 + Reroll）</li>
+      <li>塔罗 / 星球 / Spectral 消耗牌</li>
+      <li>增强牌 / 印记 / 版本（Enhancement / Seal / Edition）</li>
+    </ul>
+  </section>
+
+
+  <!-- ③ 数据结构 -->
+  <section id="s3">
+    <h2><span class="num">3</span>项目结构与数据类型</h2>
+
+    <h3>目录结构（关键约束：游戏代码独立目录）</h3>
+    <div class="card-orange" style="margin-bottom:14px;">
+      <p style="font-size:13.5px;color:#7c2d12;">
+        <strong>仓库根目录混存了文档、Claude Code 配置、历史代码与游戏代码会显得混乱。</strong>本版本起，强制把游戏代码（Vue 项目）整体放在 <code style="font-family:monospace;background:#fff5ec;padding:1px 5px;border-radius:3px;border:1px solid #f4c4a8;">game/</code> 子目录内，文档放在 <code style="font-family:monospace;background:#fff5ec;padding:1px 5px;border-radius:3px;border:1px solid #f4c4a8;">docs/</code>，V1 历史单文件 HTML 放在 <code style="font-family:monospace;background:#fff5ec;padding:1px 5px;border-radius:3px;border:1px solid #f4c4a8;">legacy/</code>。GitHub Actions 部署工作流读取 <code style="font-family:monospace;background:#fff5ec;padding:1px 5px;border-radius:3px;border:1px solid #f4c4a8;">game/dist</code> 作为 Pages 产物。
+      </p>
+    </div>
+    <pre><span class="cmt">小丑牌/                                <span style="color:#999;">← 仓库根</span></span>
+├── <span class="key">.github/workflows/deploy.yml</span>   <span class="cmt"># 读 game/dist → 部署到 GitHub Pages</span>
+├── <span class="key">README.md</span> · <span class="key">CLAUDE.md</span> · <span class="key">.gitignore</span>
+├── <span class="key">docs/</span>                            <span class="cmt"># 所有需求/设计文档</span>
+│   ├── <span class="key">PRD-v2.html</span>
+│   ├── <span class="key">DESIGN-v2.html</span>
+│   ├── <span class="key">PRD.html</span>                     <span class="cmt"># V1 历史 PRD</span>
+│   └── <span class="key">DESIGN.html</span>                  <span class="cmt"># V1 历史 DESIGN</span>
+├── <span class="key">legacy/</span>                          <span class="cmt"># V1 单文件历史代码</span>
+│   └── <span class="key">index-v1.html</span>
+└── <span class="key">game/</span>                            <span class="cmt"># V2 Vue 项目（独立、可单独 npm 操作）</span>
+    ├── <span class="key">index.html</span>                   <span class="cmt"># Vite 入口</span>
+    ├── <span class="key">vite.config.ts</span>               <span class="cmt"># base: '/balatro-web/'</span>
+    ├── <span class="key">package.json</span> · <span class="key">tsconfig.json</span>
+    ├── <span class="key">tests/</span>
+    │   └── <span class="key">scoring.test.ts</span>          <span class="cmt"># Vitest 计分例 1/2/3</span>
+    └── <span class="key">src/</span>
+        ├── <span class="key">main.ts</span>                  <span class="cmt"># createApp + Pinia 挂载</span>
+        ├── <span class="key">App.vue</span>                  <span class="cmt"># 根组件，phase 路由</span>
+        ├── <span class="key">components/</span>
+        │   ├── <span class="key">Hud.vue</span>              <span class="cmt"># 顶部状态栏（分数/目标/出牌次/金钱）</span>
+        │   ├── <span class="key">HandCard.vue</span>         <span class="cmt"># 手牌卡片，支持选中态</span>
+        │   ├── <span class="key">TableSlot.vue</span>        <span class="cmt"># 出牌区 5 格</span>
+        │   ├── <span class="key">SalesCard.vue</span>        <span class="cmt"># 销售牌卡片（商店和槽位共用）</span>
+        │   ├── <span class="key">SalesSlot.vue</span>        <span class="cmt"># 已装备销售牌的 5 格槽位区</span>
+        │   ├── <span class="key">Shop.vue</span>             <span class="cmt"># 商店界面（3 张 + Reroll + 继续）</span>
+        │   ├── <span class="key">ScoreDetail.vue</span>      <span class="cmt"># 计分明细：X Chips × Y Mult = Z</span>
+        │   └── <span class="key">GameOver.vue</span>         <span class="cmt"># 失败/胜利画面</span>
+        ├── <span class="key">stores/</span>
+        │   ├── <span class="key">gameStore.ts</span>         <span class="cmt"># 牌局状态（手牌/出牌次数/分数/关卡）</span>
+        │   └── <span class="key">salesStore.ts</span>        <span class="cmt"># 销售牌状态（牌池/槽位/金钱）</span>
+        ├── <span class="key">types/index.ts</span>           <span class="cmt"># 所有 TS interface / type</span>
+        ├── <span class="key">logic/</span>
+        │   ├── <span class="key">evaluateHand.ts</span>      <span class="cmt"># 牌型识别，返回 HandResult</span>
+        │   ├── <span class="key">calcScore.ts</span>         <span class="cmt"># 计分管道，含销售牌触发</span>
+        │   └── <span class="key">salesCards.ts</span>        <span class="cmt"># 20 张销售牌的完整定义</span>
+        └── <span class="key">style/main.css</span>           <span class="cmt"># 全局样式（绿桌面、橙强调色）</span></pre>
+
+    <h3>本地开发命令（全部在 game/ 目录里跑）</h3>
+    <pre><span class="cmt"># 安装依赖</span>
+cd game && npm install
+
+<span class="cmt"># 开发服务器</span>
+npm run dev
+
+<span class="cmt"># 跑计分单元测试（必须全过）</span>
+npm run test
+
+<span class="cmt"># 生产构建（产物在 game/dist/）</span>
+npm run build</pre>
+
+    <h3>关键 TypeScript Interface</h3>
+    <pre><span class="cmt">// src/types/index.ts</span>
+
+<span class="key">interface</span> <span class="val">Card</span> {
+  <span class="key">id</span>:    <span class="val">string</span>          <span class="cmt">// 唯一标识，如 "H_A"</span>
+  <span class="key">suit</span>:  <span class="str">'H' | 'D' | 'C' | 'S'</span>  <span class="cmt">// 红心/方块/梅花/黑桃</span>
+  <span class="key">rank</span>:  <span class="str">'A' | '2' | ... | 'K'</span>
+  <span class="key">value</span>: <span class="val">number</span>         <span class="cmt">// A=11, J/Q/K=10, 2-10 按面值</span>
+}
+
+<span class="key">type</span> <span class="val">HandType</span> =
+  <span class="str">'HIGH_CARD'</span> | <span class="str">'PAIR'</span> | <span class="str">'TWO_PAIR'</span> | <span class="str">'THREE_OF_A_KIND'</span> |
+  <span class="str">'STRAIGHT'</span> | <span class="str">'FLUSH'</span> | <span class="str">'FULL_HOUSE'</span> | <span class="str">'FOUR_OF_A_KIND'</span> |
+  <span class="str">'STRAIGHT_FLUSH'</span> | <span class="str">'FLUSH_FIVE'</span>
+
+<span class="key">interface</span> <span class="val">HandResult</span> {
+  <span class="key">type</span>:         <span class="val">HandType</span>
+  <span class="key">baseChips</span>:    <span class="val">number</span>
+  <span class="key">baseMult</span>:     <span class="val">number</span>
+  <span class="key">scoringCards</span>: <span class="val">Card[]</span>  <span class="cmt">// 参与计分的牌（计分卡，非踢脚卡）</span>
+}
+
+<span class="key">interface</span> <span class="val">ScoreContext</span> {
+  <span class="key">handType</span>:     <span class="val">HandType</span>
+  <span class="key">scoringCards</span>: <span class="val">Card[]</span>
+  <span class="key">allCards</span>:     <span class="val">Card[]</span>  <span class="cmt">// 本次出的全部牌</span>
+}
+
+<span class="key">interface</span> <span class="val">SalesCardDef</span> {
+  <span class="key">id</span>:        <span class="val">string</span>
+  <span class="key">name</span>:      <span class="val">string</span>
+  <span class="key">desc</span>:      <span class="val">string</span>
+  <span class="key">price</span>:     <span class="val">number</span>
+  <span class="key">sellValue</span>: <span class="val">number</span>          <span class="cmt">// = Math.floor(price / 2)</span>
+  <span class="key">rarity</span>:    <span class="str">'common' | 'rare'</span>
+  <span class="key">effect</span>:    <span class="val">SalesCardEffect</span>
+}
+
+<span class="cmt">// 效果函数：接收计分上下文，返回本张牌贡献的 chips/mult/xMult</span>
+<span class="key">type</span> <span class="val">SalesCardEffect</span> = (ctx: <span class="val">ScoreContext</span>) => {
+  <span class="key">addChips</span>?: <span class="val">number</span>
+  <span class="key">addMult</span>?:  <span class="val">number</span>
+  <span class="key">xMult</span>?:    <span class="val">number</span>
+}</pre>
+
+    <h3>Pinia Store 字段</h3>
+    <pre><span class="cmt">// gameStore.ts —— 牌局状态</span>
+{
+  <span class="key">deck</span>:         <span class="val">Card[]</span>         <span class="cmt">// 剩余牌堆</span>
+  <span class="key">hand</span>:         <span class="val">Card[]</span>         <span class="cmt">// 当前手牌（最多 8 张）</span>
+  <span class="key">selected</span>:     <span class="val">Card[]</span>         <span class="cmt">// 已选中准备出的牌</span>
+  <span class="key">score</span>:        <span class="val">number</span>         <span class="cmt">// 本关已累计分数</span>
+  <span class="key">targetScore</span>:  <span class="val">number</span>         <span class="cmt">// 本关目标分</span>
+  <span class="key">level</span>:        <span class="val">number</span>         <span class="cmt">// 当前关卡编号（从 1 开始）</span>
+  <span class="key">handsLeft</span>:    <span class="val">number</span>         <span class="cmt">// 剩余出牌次数（初始 4）</span>
+  <span class="key">discardsLeft</span>: <span class="val">number</span>         <span class="cmt">// 剩余弃牌次数（初始 3）</span>
+  <span class="key">phase</span>:        <span class="str">'playing' | 'shop' | 'lose'</span>
+  <span class="key">lastScore</span>:    <span class="val">ScoreDetail | null</span>  <span class="cmt">// 上一手计分明细，供 ScoreDetail 组件展示</span>
+}
+
+<span class="cmt">// salesStore.ts —— 销售牌状态</span>
+{
+  <span class="key">slots</span>:        <span class="val">Array&lt;SalesCardDef | null&gt;</span>  <span class="cmt">// 5 格装备槽，null 表示空</span>
+  <span class="key">shopPool</span>:     <span class="val">SalesCardDef[]</span>             <span class="cmt">// 本次商店随机展示的 3 张</span>
+  <span class="key">money</span>:        <span class="val">number</span>
+}
+
+<span class="cmt">// ScoreDetail —— 传给 ScoreDetail.vue 的计分明细</span>
+{
+  <span class="key">handName</span>:    <span class="val">string</span>   <span class="cmt">// 如 "葫芦"</span>
+  <span class="key">chips</span>:       <span class="val">number</span>   <span class="cmt">// 最终 chips（含销售牌加成）</span>
+  <span class="key">mult</span>:        <span class="val">number</span>   <span class="cmt">// 最终 mult（含销售牌加成）</span>
+  <span class="key">xMult</span>:       <span class="val">number</span>   <span class="cmt">// 所有 xMult 之积</span>
+  <span class="key">total</span>:       <span class="val">number</span>   <span class="cmt">// 最终分数</span>
+}</pre>
+
+    <h3>20 张销售牌完整清单</h3>
+    <div class="card" style="padding:0;">
+      <table>
+        <tr>
+          <th style="width:28px;">#</th>
+          <th style="width:90px;">名称</th>
+          <th style="width:60px;">稀有度</th>
+          <th style="width:44px;">价格</th>
+          <th style="width:44px;">回收</th>
+          <th>效果描述</th>
+          <th style="width:160px;">计算公式（effect 返回值）</th>
+        </tr>
+        <tr>
+          <td>01</td>
+          <td><strong>雕琢</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$4</td><td>$2</td>
+          <td>每次出牌恒定 +30 Chips</td>
+          <td><code>{ addChips: 30 }</code></td>
+        </tr>
+        <tr>
+          <td>02</td>
+          <td><strong>怒火</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$4</td><td>$2</td>
+          <td>每次出牌恒定 +4 Mult</td>
+          <td><code>{ addMult: 4 }</code></td>
+        </tr>
+        <tr>
+          <td>03</td>
+          <td><strong>贪婪</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>出牌含方块，每张 +3 Mult</td>
+          <td><code>{ addMult: allCards.filter(c=>c.suit==='D').length * 3 }</code></td>
+        </tr>
+        <tr>
+          <td>04</td>
+          <td><strong>色欲</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>出牌含红桃，每张 +3 Mult</td>
+          <td><code>{ addMult: allCards.filter(c=>c.suit==='H').length * 3 }</code></td>
+        </tr>
+        <tr>
+          <td>05</td>
+          <td><strong>暴食</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>出牌含梅花，每张 +3 Mult</td>
+          <td><code>{ addMult: allCards.filter(c=>c.suit==='C').length * 3 }</code></td>
+        </tr>
+        <tr>
+          <td>06</td>
+          <td><strong>嫉妒</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>出牌含黑桃，每张 +3 Mult</td>
+          <td><code>{ addMult: allCards.filter(c=>c.suit==='S').length * 3 }</code></td>
+        </tr>
+        <tr>
+          <td>07</td>
+          <td><strong>半月</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>只打 1 张牌时 +20 Mult</td>
+          <td><code>allCards.length === 1 ? { addMult: 20 } : {}</code></td>
+        </tr>
+        <tr>
+          <td>08</td>
+          <td><strong>卡文迪什</strong></td>
+          <td><span class="rarity-tag rare">Rare</span></td>
+          <td>$8</td><td>$4</td>
+          <td>&times;3 Mult；每局结算后 1/100 概率永久销毁</td>
+          <td><code>{ xMult: 3 }</code>（销毁判定在结算后独立处理）</td>
+        </tr>
+        <tr>
+          <td>09</td>
+          <td><strong>超新星</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>该牌型本关已出次数 + Mult（上限 +8）</td>
+          <td><code>{ addMult: Math.min(playCountOf(handType), 8) }</code></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><strong>钢琴</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$4</td><td>$2</td>
+          <td>打出对子时 +8 Mult</td>
+          <td><code>handType === 'PAIR' ? { addMult: 8 } : {}</code></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><strong>黑桃骑士</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>出牌每含 1 张黑桃 +30 Chips</td>
+          <td><code>{ addChips: allCards.filter(c=>c.suit==='S').length * 30 }</code></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><strong>红心皇后</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>出牌每含 1 张红桃 +30 Chips</td>
+          <td><code>{ addChips: allCards.filter(c=>c.suit==='H').length * 30 }</code></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><strong>玻璃工匠</strong></td>
+          <td><span class="rarity-tag rare">Rare</span></td>
+          <td>$8</td><td>$4</td>
+          <td>打出同花时 &times;1.5 Mult</td>
+          <td><code>isFlush(handType) ? { xMult: 1.5 } : {}</code></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><strong>时间沙漏</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$5</td><td>$2</td>
+          <td>剩余弃牌次数每张 +5 Mult</td>
+          <td><code>{ addMult: ctx.discardsLeft * 5 }</code></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><strong>节俭管家</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$4</td><td>$2</td>
+          <td>当前金钱每 $1 贡献 +0.5 Mult（向下取整）</td>
+          <td><code>{ addMult: Math.floor(ctx.money * 0.5) }</code></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><strong>三角洲</strong></td>
+          <td><span class="rarity-tag rare">Rare</span></td>
+          <td>$8</td><td>$4</td>
+          <td>打出葫芦时 &times;2 Mult</td>
+          <td><code>handType === 'FULL_HOUSE' ? { xMult: 2 } : {}</code></td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><strong>七星灯</strong></td>
+          <td><span class="rarity-tag rare">Rare</span></td>
+          <td>$7</td><td>$3</td>
+          <td>牌型 &ge; 三条时 +50 Chips</td>
+          <td><code>isThreeOrBetter(handType) ? { addChips: 50 } : {}</code></td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td><strong>镜中花</strong></td>
+          <td><span class="rarity-tag common">Common</span></td>
+          <td>$6</td><td>$3</td>
+          <td>所有已装备的 +Mult 销售牌效果各再 +1</td>
+          <td>在计分管道最后扫描槽位，统计 addMult 型销售牌数量 N，<code>{ addMult: N }</code></td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td><strong>月光宝盒</strong></td>
+          <td><span class="rarity-tag rare">Rare</span></td>
+          <td>$9</td><td>$4</td>
+          <td>打出顺子时 +100 Chips</td>
+          <td><code>handType === 'STRAIGHT' ? { addChips: 100 } : {}</code></td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td><strong>终焉之握</strong></td>
+          <td><span class="rarity-tag rare">Rare</span></td>
+          <td>$10</td><td>$5</td>
+          <td>目标分 &ge; 1000 时 &times;2 Mult</td>
+          <td><code>ctx.targetScore >= 1000 ? { xMult: 2 } : {}</code></td>
+        </tr>
+      </table>
+    </div>
+    <p style="font-size:12.5px;color:#888;margin-top:8px;">
+      注：sellValue = Math.floor(price / 2)。共 14 张 Common、6 张 Rare。Rare 牌仅通过 Reroll 有概率刷出（Reroll 时 Rare 出现概率 20%，Common 出现概率 80%）。花色类销售牌（贪婪/色欲/暴食/嫉妒/黑桃骑士/红心皇后）统计 allCards（本次出的全部牌），而非 scoringCards。
+    </p>
+  </section>
+
+
+  <!-- ④ 计分管道 -->
+  <section id="s4">
+    <h2><span class="num">4</span>计分管道详解</h2>
+
+    <h3>计分公式</h3>
+    <div class="formula">最终得分 = (hand_chips + Σ scoring_card_chips + Σ addChips) × (hand_mult + Σ addMult) × Π xMult</div>
+
+    <h3>触发顺序规则（必须严格按此实现）</h3>
+    <div class="card" style="font-size:13.5px;color:#444;line-height:2;">
+      <ol style="padding-left:20px;">
+        <li><strong>初始化</strong>：chips = hand_baseChips；mult = hand_baseMult；xMultProduct = 1</li>
+        <li><strong>计分牌加 chips</strong>：遍历 scoringCards，chips += card.value（踢脚牌不参与）</li>
+        <li><strong>销售牌加成（按槽位 0→4 顺序）</strong>：对每张已装备的销售牌调用 effect(ctx)，addChips 加到 chips，addMult 加到 mult，xMult 累乘到 xMultProduct</li>
+        <li><strong>最终得分</strong>：total = Math.floor(chips × mult × xMultProduct)</li>
+      </ol>
+      <p style="margin-top:12px;color:#e8682a;font-weight:600;font-size:13px;">
+        关键约束：所有 addChips 和 addMult 是加法先做，所有 xMult 是乘法最后做。不允许在遍历销售牌过程中中途做 xMult。
+      </p>
+    </div>
+
+    <h3>牌型基础值表</h3>
+    <div class="card" style="padding:0;">
+      <table>
+        <tr><th>牌型</th><th>中文名</th><th>base Chips</th><th>base Mult</th></tr>
+        <tr><td>HIGH_CARD</td><td>高牌</td><td>5</td><td>1</td></tr>
+        <tr><td>PAIR</td><td>一对</td><td>10</td><td>2</td></tr>
+        <tr><td>TWO_PAIR</td><td>两对</td><td>20</td><td>2</td></tr>
+        <tr><td>THREE_OF_A_KIND</td><td>三条</td><td>30</td><td>3</td></tr>
+        <tr><td>STRAIGHT</td><td>顺子</td><td>30</td><td>4</td></tr>
+        <tr><td>FLUSH</td><td>同花</td><td>35</td><td>4</td></tr>
+        <tr><td>FULL_HOUSE</td><td>葫芦</td><td>40</td><td>4</td></tr>
+        <tr><td>FOUR_OF_A_KIND</td><td>四条</td><td>60</td><td>7</td></tr>
+        <tr><td>STRAIGHT_FLUSH</td><td>同花顺</td><td>100</td><td>8</td></tr>
+        <tr><td>FLUSH_FIVE</td><td>同花五条</td><td>120</td><td>14</td></tr>
+      </table>
+    </div>
+
+    <h3>计算例子（开发对照实现用）</h3>
+
+    <div class="example-box">
+      <div class="ex-title">例 1：基础场景——一对 5，装备"怒火"(+4 Mult) 和"雕琢"(+30 Chips)，无 xMult</div>
+      <div class="ex-calc">
+        手牌：5♥ 5♦ 7♠ K♣ 3♥，scoringCards = 5♥ 5♦（踢脚牌 7♠ K♣ 3♥ 不加 chips）<br>
+        hand_baseChips = 10，hand_baseMult = 2<br>
+        scoringCard chips：5 + 5 = 10<br>
+        chips 初值 = 10 + 10 = 20<br>
+        销售牌"怒火"（槽位 0）：addMult=4，mult = 2 + 4 = 6<br>
+        销售牌"雕琢"（槽位 1）：addChips=30，chips = 20 + 30 = 50<br>
+        xMultProduct = 1（无 xMult 销售牌）
+      </div>
+      <div class="ex-result">得分 = Math.floor(50 × 6 × 1) = 300</div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">例 2：花色加成——同花 5 张红桃，装备"色欲"(每红桃 +3 Mult) 和"玻璃工匠"(同花 ×1.5)</div>
+      <div class="ex-calc">
+        手牌：A♥ K♥ 7♥ 5♥ 3♥（同花，5 张全部参与计分）<br>
+        hand_baseChips = 35，hand_baseMult = 4<br>
+        scoringCard chips：11 + 10 + 7 + 5 + 3 = 36<br>
+        chips 初值 = 35 + 36 = 71<br>
+        销售牌"色欲"（槽位 0）：allCards 含 5 张红桃 → addMult = 5×3 = 15，mult = 4 + 15 = 19<br>
+        销售牌"玻璃工匠"（槽位 1）：isFlush → xMult=1.5，xMultProduct = 1×1.5 = 1.5<br>
+        chips = 71（无 addChips）<br>
+        小数处理：最终得分用 Math.floor 向下取整
+      </div>
+      <div class="ex-result">得分 = Math.floor(71 × 19 × 1.5) = Math.floor(2023.5) = 2023</div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">例 3：复杂叠加——葫芦（K♥ K♦ K♣ 4♠ 4♥），装备"怒火"(+4 Mult)、"三角洲"(葫芦 ×2) 和"卡文迪什"(×3)</div>
+      <div class="ex-calc">
+        手牌：K♥ K♦ K♣ 4♠ 4♥（葫芦，5 张全部参与计分）<br>
+        hand_baseChips = 40，hand_baseMult = 4<br>
+        scoringCard chips：10 + 10 + 10 + 4 + 4 = 38<br>
+        chips 初值 = 40 + 38 = 78<br>
+        销售牌"怒火"（槽位 0）：addMult=4，mult = 4 + 4 = 8<br>
+        销售牌"三角洲"（槽位 1）：handType === FULL_HOUSE → xMult=2，xMultProduct = 1×2 = 2<br>
+        销售牌"卡文迪什"（槽位 2）：xMult=3，xMultProduct = 2×3 = 6<br>
+        chips = 78（无 addChips）<br>
+        关键约束：addMult 全部加完后，xMult 统一在最后做乘法
+      </div>
+      <div class="ex-result">得分 = Math.floor(78 × 8 × 6) = 3744</div>
+    </div>
+  </section>
+
+
+  <!-- ⑤ 核心流程与决策 -->
+  <section id="s5">
+    <h2><span class="num">5</span>核心流程与决策记录</h2>
+
+    <h3>玩家视角 7 步循环</h3>
+    <div class="card">
+      <div class="flow-step">
+        <span class="step-num">1</span>
+        <div class="step-body">
+          <strong>开局</strong>：level=1，targetScore=300，money=0，销售槽全空，洗牌，发 8 张手牌，handsLeft=4，discardsLeft=3，phase='playing'
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">2</span>
+        <div class="step-body">
+          <strong>出牌 / 弃牌</strong>：玩家点选 1-5 张手牌。点"出牌"触发计分管道，score 增加，补牌到 8 张，handsLeft--。点"弃牌"丢弃所选牌，补牌，discardsLeft--。HUD 实时显示 score / targetScore / handsLeft / discardsLeft / money。
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">3</span>
+        <div class="step-body">
+          <strong>计分展示</strong>：出牌后 ScoreDetail 显示"牌型名 · X Chips × Y Mult × Z = 得分"，停留约 1.5 秒后消失，不阻塞操作。
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">4</span>
+        <div class="step-body">
+          <strong>达分判定</strong>：每次出牌后检查 score >= targetScore。达分 → money += 5，phase='shop'，进入商店。handsLeft 归零且未达分 → phase='lose'。
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">5</span>
+        <div class="step-body">
+          <strong>商店</strong>：展示 3 张随机销售牌（从 20 张池中抽取，Common 概率 80%，Rare 概率 20%，Reroll 时重新抽取）。点销售牌买入（money -= price，写入空闲槽位）。点已装备的销售牌卖出（money += sellValue，槽位清空）。点"Reroll"（money -= 5）重新随机 3 张。点"继续"进入下一关。
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">6</span>
+        <div class="step-body">
+          <strong>下一关初始化</strong>：level++，targetScore = Math.ceil(上一关 targetScore × 1.5)，重新洗牌，发 8 张，handsLeft=4，discardsLeft=3，score=0，phase='playing'。销售槽保留。
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">7</span>
+        <div class="step-body">
+          <strong>失败 / 重开</strong>：失败画面显示"已到达第 N 关，本关目标分 M"。点"重新开始"：level=1，targetScore=300，money=0，销售槽清空，重新洗牌，phase='playing'。
+        </div>
+      </div>
+    </div>
+
+    <h3>关键决策记录（2026-05-16 已拍板）</h3>
+    <ul class="decision">
+      <li>
+        <strong class="q">D1 · 稀有度简化为 2 档</strong>
+        <strong class="a">→ Common / Rare</strong><br>
+        原版 4 档（Common / Uncommon / Rare / Legendary）对课堂演示过于复杂。2 档足够体现收集差异，UI 颜色对比（蓝灰 vs 橙红）视觉清晰。
+      </li>
+      <li>
+        <strong class="q">D2 · 卖出价格</strong>
+        <strong class="a">→ 半价向下取整（Math.floor(price / 2)）</strong><br>
+        与 Balatro 原版一致。计算规则简单，开发无歧义。$5 价格 → 卖出 $2，不是 $2.5。
+      </li>
+      <li>
+        <strong class="q">D3 · 关卡奖励固定 $5</strong>
+        <strong class="a">→ 去掉剩余手牌/弃牌奖励和利息</strong><br>
+        课堂时间有限，固定 $5 让玩家专注于销售牌组合逻辑，减少"要留弃牌次数赚钱"的旁支决策。
+      </li>
+      <li>
+        <strong class="q">D4 · 销售牌池 20 张</strong>
+        <strong class="a">→ 涵盖 +Chips / +Mult / xMult / 条件触发 / 全局加成 5 种效果类型</strong><br>
+        20 张在课堂演示时够形成明显组合差异，又不至于稀释商店刷新的期望值。牌池未来可按 salesCards.ts 文件直接扩展，不改计分逻辑。
+      </li>
+      <li>
+        <strong class="q">D5 · 没有游戏通关上限</strong>
+        <strong class="a">→ 目标分无限 × 1.5 递增，失败为唯一终点</strong><br>
+        无限递增让玩家自然感受到销售牌叠加的指数级效果，符合 Roguelike 教学目的。通关画面可留 V3 做。
+      </li>
+    </ul>
+  </section>
+
+</div>
+
+</body>
+</html>

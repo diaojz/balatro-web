@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小丑牌 V2.0 · 设计预览</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#1a1a2e;font-family:-apple-system,"PingFang SC",system-ui,sans-serif;color:#f0ece3;font-size:13px;line-height:1.6}
+.page{max-width:1100px;margin:0 auto;padding:28px 20px}
+.sec{margin-bottom:44px}
+h1{font-size:22px;font-weight:800;color:#fbfaf7;margin-bottom:4px}
+h2{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#e8682a;margin-bottom:14px}
+.sub{font-size:12px;color:#94a3b8;margin-bottom:18px}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-right:6px}
+.tag-v{background:#1a3a1a;color:#4ade80;border:1px solid #4ade80}
+.tag-t{background:#1a2a3a;color:#60a5fa;border:1px solid #60a5fa}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{text-align:center;width:82px}
+.sw-color{height:48px;border-radius:8px;margin-bottom:5px;border:1px solid rgba(255,255,255,.08)}
+.sw-hex{font-family:monospace;font-size:9.5px;color:#94a3b8}
+.sw-name{font-size:10.5px;font-weight:600;color:#f0ece3;margin-top:2px}
+/* 销售牌基础 */
+.jcard{width:96px;height:122px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 5px 20px;position:relative;cursor:pointer;transition:transform 180ms ease,box-shadow 180ms ease;flex-shrink:0}
+.jcard:hover{transform:translateY(-4px)}
+.jcard .icon{font-size:28px;line-height:1}
+.jcard .jname{font-size:9px;font-weight:700;color:#fff;text-align:center;line-height:1.3;padding:0 3px}
+.jcard .jeff{font-size:7.5px;color:rgba(255,255,255,.7);text-align:center;line-height:1.35;padding:0 3px;margin-top:1px}
+.jcard .jprice{position:absolute;bottom:5px;right:6px;font-family:monospace;font-size:9.5px;font-weight:700;color:#d4a017}
+.jcard .jsell{position:absolute;bottom:5px;left:6px;font-family:monospace;font-size:8px;color:#86efac;display:none}
+.common{background:#22253a;box-shadow:0 0 0 2.5px #94a3b8,0 4px 14px rgba(0,0,0,.5)}
+.rare{background:#2e1c10;box-shadow:0 0 0 2.5px #fb923c,0 4px 14px rgba(251,146,60,.35)}
+.jcard.hover-demo{transform:translateY(-4px)}
+.common.hover-demo{box-shadow:0 0 0 2.5px #cbd5e1,0 8px 24px rgba(0,0,0,.6)}
+.rare.hover-demo{box-shadow:0 0 0 2.5px #fdba74,0 8px 24px rgba(251,146,60,.55)}
+.jcard.equipped .jsell{display:block}
+.jcard.bought{opacity:.5;filter:grayscale(.8)}
+.jcard.bought::after{content:"✓ 已购买";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:700;color:#4ade80;background:rgba(0,0,0,.7);padding:3px 6px;border-radius:4px;white-space:nowrap}
+.jcard.no-money{opacity:.45;filter:grayscale(1)}
+.jcard.no-money .jprice{color:#a83232}
+.tooltip{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:#0f0f1a;border:1px solid #374151;border-radius:8px;padding:8px 10px;width:140px;font-size:9.5px;color:#e2e8f0;line-height:1.5;z-index:10;display:none;white-space:normal;text-align:left}
+.jcard:hover .tooltip{display:block}
+/* 20张网格 */
+.grid20{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:600px){.grid20{grid-template-columns:repeat(4,1fr)}}
+.jc{width:100%;aspect-ratio:.78;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 3px 16px;position:relative;cursor:pointer;transition:transform 150ms ease}
+.jc:hover{transform:translateY(-3px)}
+.jc .icon{font-size:20px;line-height:1}
+.jc .jname{font-size:7.5px;font-weight:700;color:#fff;text-align:center;line-height:1.2}
+.jc .jeff{font-size:6.5px;color:rgba(255,255,255,.68);text-align:center;line-height:1.25;padding:0 2px}
+.jc .jprice{position:absolute;bottom:3px;right:4px;font-family:monospace;font-size:8px;font-weight:700;color:#d4a017}
+.jc .rb{position:absolute;top:3px;left:3px;font-size:6px;font-weight:700;padding:1px 3px;border-radius:3px}
+.rb-c{background:#1e2235;color:#94a3b8;border:1px solid #4a5568}
+.rb-r{background:#2e1c10;color:#fb923c;border:1px solid #fb923c}
+/* 商店 */
+.shop-screen{background:#13151f;border-radius:14px;border:1px solid #2d3748;overflow:hidden;max-width:680px}
+.shop-top{background:#0d0f1a;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2d3748}
+.shop-title{font-size:14px;font-weight:700;color:#fbfaf7}
+.money-badge{background:#1a1a00;border:1.5px solid #d4a017;color:#d4a017;font-weight:700;font-size:13px;padding:3px 10px;border-radius:6px;font-family:monospace}
+.shop-body{padding:14px}
+.shop-cards{display:flex;gap:12px;justify-content:center;margin-bottom:14px}
+.shop-actions{display:flex;justify-content:space-between;align-items:center}
+.btn-reroll{background:#1a2a1a;color:#4ade80;border:1.5px solid #4ade80;font-size:11px;font-weight:700;padding:6px 13px;border-radius:7px;cursor:pointer}
+.btn-continue{background:#e8682a;color:#fff;border:none;font-size:11px;font-weight:700;padding:6px 16px;border-radius:7px;cursor:pointer}
+.shop-eq{padding:11px 16px;border-top:1px solid #2d3748}
+.slot-label{font-size:9.5px;color:#64748b;margin-bottom:7px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.slots{display:flex;gap:7px}
+.slot{width:68px;height:88px;border-radius:8px;border:1.5px dashed #374151;display:flex;align-items:center;justify-content:center;font-size:17px;color:#374151;flex-shrink:0}
+.slot.filled{border:none}
+/* 打牌界面 */
+.game-screen{background:#13151f;border-radius:14px;border:1px solid #2d3748;max-width:760px;overflow:hidden}
+.hud{background:#0d0f1a;display:flex;border-bottom:1px solid #2d3748}
+.hud-cell{flex:1;padding:7px 4px;text-align:center;border-right:1px solid #1e2235}
+.hud-cell:last-child{border-right:none}
+.hud-label{font-size:8px;color:#64748b;text-transform:uppercase;letter-spacing:1px}
+.hud-val{font-size:14px;font-weight:700;color:#fbfaf7}
+.hud-val.gold{color:#d4a017}
+.game-mid{display:flex}
+.joker-col{width:78px;padding:9px 7px;background:#0d0f1a;border-right:1px solid #1e2235;display:flex;flex-direction:column;gap:6px;align-items:center}
+.jslot-sm{width:58px;height:74px;border-radius:7px;border:1.5px dashed #2d3748;display:flex;align-items:center;justify-content:center;font-size:13px;color:#2d3748}
+.jslot-sm.has-card{border:none}
+.jcard-tiny{width:58px;height:74px;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 3px 13px;position:relative;flex-shrink:0}
+.jcard-tiny .icon{font-size:17px}
+.jcard-tiny .jname{font-size:6px;font-weight:700;color:#fff;text-align:center}
+.jcard-tiny .jprice{position:absolute;bottom:3px;right:3px;font-family:monospace;font-size:6.5px;color:#d4a017}
+.play-area{flex:1;padding:12px 11px}
+.score-area{background:#0a0c14;border-radius:8px;padding:9px 13px;margin-bottom:11px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.score-chips{font-size:17px;font-weight:700;color:#60a5fa}
+.score-x{font-size:13px;color:#64748b;font-weight:700}
+.score-mult{font-size:17px;font-weight:700;color:#f87171;animation:jglow .2s ease-out 3}
+@keyframes jglow{0%,100%{color:#4ade80;text-shadow:0 0 8px #4ade80}50%{color:#fff;text-shadow:0 0 16px #4ade80}}
+.score-eq{font-size:13px;color:#64748b}
+.score-total{font-size:17px;font-weight:800;color:#fbfaf7}
+.table-slots{display:flex;gap:6px;margin-bottom:11px}
+.tslot{width:54px;height:76px;border-radius:7px;border:1.5px dashed #2d3748;background:#0a0c14;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pcard{width:50px;height:72px;border-radius:6px;background:#fbfaf7;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:5px 4px;cursor:pointer;transition:transform 120ms;border:1.5px solid #e2e8f0}
+.pcard:hover{transform:translateY(-3px)}
+.pcard .rank{font-size:13px;font-weight:800;line-height:1}
+.pcard .suit{font-size:15px;line-height:1}
+.pcard.red .rank,.pcard.red .suit{color:#a83232}
+.pcard.black .rank,.pcard.black .suit{color:#1a1a1a}
+.pcard.selected{transform:translateY(-8px);box-shadow:0 0 0 2px #d4a017,0 6px 20px rgba(212,160,23,.4)}
+.hand-area{display:flex;gap:4px;flex-wrap:wrap}
+.play-btns{display:flex;gap:7px;justify-content:center;padding:9px 11px;border-top:1px solid #1e2235}
+.btn-play{background:#e8682a;color:#fff;border:none;font-size:11px;font-weight:700;padding:6px 18px;border-radius:7px;cursor:pointer}
+.btn-discard{background:#1a2a3a;color:#60a5fa;border:1.5px solid #60a5fa;font-size:11px;font-weight:700;padding:6px 14px;border-radius:7px;cursor:pointer}
+/* Modal */
+.modal-row{display:flex;gap:14px;flex-wrap:wrap}
+.modal{border-radius:14px;padding:26px 22px;text-align:center;width:230px}
+.modal-lose{background:#1a0a0a;border:2px solid #a83232}
+.modal-win{background:#1a1400;border:2px solid #d4a017}
+.modal h3{font-size:17px;font-weight:800;margin-bottom:5px}
+.modal-lose h3{color:#f87171}
+.modal-win h3{color:#d4a017}
+.modal p{font-size:11.5px;color:#94a3b8;margin-bottom:16px}
+.btn-restart{width:100%;padding:8px;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;border:none}
+.modal-lose .btn-restart{background:#a83232;color:#fff}
+.modal-win .btn-restart{background:#d4a017;color:#1a1400}
+/* 状态合集 */
+.state-group{text-align:center}
+.state-label{font-size:9px;color:#64748b;margin-top:5px;text-transform:uppercase;letter-spacing:1px}
+.btn-demo{display:inline-block;font-size:11px;font-weight:700;padding:6px 14px;border-radius:7px;cursor:pointer;border:none}
+.btn-default{background:#e8682a;color:#fff}
+.btn-hover{background:#d4561e;color:#fff;box-shadow:0 4px 12px rgba(232,104,42,.4)}
+.btn-disabled{background:#374151;color:#64748b;cursor:not-allowed}
+.slot-demo{width:68px;height:88px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.slot-empty{border:1.5px dashed #374151;color:#374151;font-size:19px}
+/* 开发要点 */
+.dev-notes{background:#0d0f1a;border-radius:12px;border:1px solid #2d3748;padding:18px 20px}
+.dev-notes li{font-size:12px;color:#cbd5e1;line-height:1.75;padding:3px 0;border-bottom:1px solid #1e2235;list-style:none}
+.dev-notes li:last-child{border-bottom:none}
+.dev-notes code{font-family:monospace;font-size:11px;background:#1e2235;color:#93c5fd;padding:1px 5px;border-radius:3px}
+.divider{height:1px;background:linear-gradient(to right,transparent,#2d3748,transparent);margin:36px 0}
+.note{font-size:9.5px;color:#64748b;margin-bottom:9px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="sec">
+  <h1>小丑牌 V2.0 · 设计预览</h1>
+  <p class="sub"><span class="tag tag-v">Vue 3 + Vite + TypeScript</span><span class="tag tag-t">销售牌精简版 · 20 张池</span>打开此文件即是设计 demo，所见即所得</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- 1. 色板 -->
+<div class="sec">
+  <h2>核心色板</h2>
+  <div class="swatches">
+    <div class="sw"><div class="sw-color" style="background:#2d5a3d"></div><div class="sw-hex">#2d5a3d</div><div class="sw-name">桌面绿</div></div>
+    <div class="sw"><div class="sw-color" style="background:#e8682a"></div><div class="sw-hex">#e8682a</div><div class="sw-name">橙强调</div></div>
+    <div class="sw"><div class="sw-color" style="background:#fbfaf7;border-color:#bbb"></div><div class="sw-hex">#fbfaf7</div><div class="sw-name">暖白卡面</div></div>
+    <div class="sw"><div class="sw-color" style="background:#94a3b8"></div><div class="sw-hex">#94a3b8</div><div class="sw-name">Common 蓝灰</div></div>
+    <div class="sw"><div class="sw-color" style="background:#fb923c"></div><div class="sw-hex">#fb923c</div><div class="sw-name">Rare 橙红</div></div>
+    <div class="sw"><div class="sw-color" style="background:#d4a017"></div><div class="sw-hex">#d4a017</div><div class="sw-name">金钱金</div></div>
+    <div class="sw"><div class="sw-color" style="background:#a83232"></div><div class="sw-hex">#a83232</div><div class="sw-name">失败警示</div></div>
+    <div class="sw"><div class="sw-color" style="background:#1a1a2e"></div><div class="sw-hex">#1a1a2e</div><div class="sw-name">背景深蓝</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 2. 销售牌设计 -->
+<div class="sec">
+  <h2>销售牌卡片设计</h2>
+  <div style="display:flex;gap:36px;flex-wrap:wrap">
+    <!-- Common vs Rare -->
+    <div>
+      <div class="note">▸ Common（蓝灰边框）vs Rare（橙边框）</div>
+      <div style="display:flex;gap:12px">
+        <div>
+          <div class="jcard common"><span class="icon">⚒️</span><span class="jname">雕琢</span><span class="jeff">+30 Chips</span><span class="jprice">$4</span><div class="tooltip">每次出牌获得 +30 基础筹码，永久生效，无条件。</div></div>
+          <div style="font-size:9px;color:#94a3b8;text-align:center;margin-top:4px">Common</div>
+        </div>
+        <div>
+          <div class="jcard rare"><span class="icon">🃏</span><span class="jname">卡文迪什</span><span class="jeff">×3 Mult 1/100 消失</span><span class="jprice">$8</span><div class="tooltip">每次出牌 ×3 Mult，但每局有 1/100 概率在结算后永久销毁。</div></div>
+          <div style="font-size:9px;color:#fb923c;text-align:center;margin-top:4px">Rare</div>
+        </div>
+      </div>
+    </div>
+    <!-- 四态 -->
+    <div>
+      <div class="note">▸ 卡片四态（以"半月"为例）</div>
+      <div style="display:flex;gap:9px;align-items:flex-end">
+        <div class="state-group">
+          <div class="jcard common" style="width:78px;height:100px"><span class="icon" style="font-size:21px">🌙</span><span class="jname">半月</span><span class="jeff">单张出牌+20 Mult</span><span class="jprice">$5</span></div>
+          <div class="state-label">默认</div>
+        </div>
+        <div class="state-group">
+          <div class="jcard common hover-demo" style="width:78px;height:100px"><span class="icon" style="font-size:21px">🌙</span><span class="jname">半月</span><span class="jeff">单张出牌+20 Mult</span><span class="jprice">$5</span></div>
+          <div class="state-label">悬停</div>
+        </div>
+        <div class="state-group">
+          <div class="jcard common bought" style="width:78px;height:100px"><span class="icon" style="font-size:21px">🌙</span><span class="jname">半月</span><span class="jeff">单张出牌+20 Mult</span><span class="jprice">$5</span></div>
+          <div class="state-label">已购买</div>
+        </div>
+        <div class="state-group">
+          <div class="jcard common no-money" style="width:78px;height:100px"><span class="icon" style="font-size:21px">🌙</span><span class="jname">半月</span><span class="jeff">单张出牌+20 Mult</span><span class="jprice">$5</span></div>
+          <div class="state-label">金钱不足</div>
+        </div>
+        <div class="state-group">
+          <div class="jcard common equipped" style="width:78px;height:100px"><span class="icon" style="font-size:21px">🌙</span><span class="jname">半月</span><span class="jeff">单张出牌+20 Mult</span><span class="jprice">$5</span><span class="jsell">卖 $2</span></div>
+          <div class="state-label">已装备</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 3. 20张全览 -->
+<div class="sec">
+  <h2>20 张销售牌全览</h2>
+  <p class="sub">C = Common（蓝灰）&nbsp;&nbsp;R = Rare（橙）&nbsp;&nbsp;悬停可上浮</p>
+  <div class="grid20">
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">⚒️</span><span class="jname">雕琢</span><span class="jeff">+30 Chips</span><span class="jprice">$4</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">😤</span><span class="jname">怒火</span><span class="jeff">+4 Mult</span><span class="jprice">$4</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">💎</span><span class="jname">贪婪</span><span class="jeff">含方块每张+3 Mult</span><span class="jprice">$5</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">♥️</span><span class="jname">色欲</span><span class="jeff">含红桃每张+3 Mult</span><span class="jprice">$5</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">♣️</span><span class="jname">暴食</span><span class="jeff">含梅花每张+3 Mult</span><span class="jprice">$5</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">♠️</span><span class="jname">嫉妒</span><span class="jeff">含黑桃每张+3 Mult</span><span class="jprice">$5</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">🌙</span><span class="jname">半月</span><span class="jeff">只打1张时+20 Mult</span><span class="jprice">$5</span></div>
+    <div class="jc rare"><span class="rb rb-r">R</span><span class="icon">🃏</span><span class="jname">卡文迪什</span><span class="jeff">×3 Mult 1/100消失</span><span class="jprice">$8</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">💫</span><span class="jname">超新星</span><span class="jeff">牌型已出次数+Mult</span><span class="jprice">$5</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">🎹</span><span class="jname">钢琴</span><span class="jeff">打出对子+8 Mult</span><span class="jprice">$4</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">⚔️</span><span class="jname">黑桃骑士</span><span class="jeff">每黑桃+30 Chips</span><span class="jprice">$5</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">👑</span><span class="jname">红心皇后</span><span class="jeff">每红桃+30 Chips</span><span class="jprice">$5</span></div>
+    <div class="jc rare"><span class="rb rb-r">R</span><span class="icon">🔮</span><span class="jname">玻璃工匠</span><span class="jeff">同花×1.5 Mult</span><span class="jprice">$8</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">⏳</span><span class="jname">时间沙漏</span><span class="jeff">剩余弃牌每张+5 Mult</span><span class="jprice">$5</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">💰</span><span class="jname">节俭管家</span><span class="jeff">每$1金钱+0.5 Mult</span><span class="jprice">$4</span></div>
+    <div class="jc rare"><span class="rb rb-r">R</span><span class="icon">🔺</span><span class="jname">三角洲</span><span class="jeff">葫芦×2 Mult</span><span class="jprice">$8</span></div>
+    <div class="jc rare"><span class="rb rb-r">R</span><span class="icon">✨</span><span class="jname">七星灯</span><span class="jeff">≥三条时+50 Chips</span><span class="jprice">$7</span></div>
+    <div class="jc common"><span class="rb rb-c">C</span><span class="icon">🪞</span><span class="jname">镜中花</span><span class="jeff">所有+Mult销售牌+1效果</span><span class="jprice">$6</span></div>
+    <div class="jc rare"><span class="rb rb-r">R</span><span class="icon">📦</span><span class="jname">月光宝盒</span><span class="jeff">顺子+100 Chips</span><span class="jprice">$9</span></div>
+    <div class="jc rare"><span class="rb rb-r">R</span><span class="icon">🌑</span><span class="jname">终焉之握</span><span class="jeff">目标≥1000时×2 Mult</span><span class="jprice">$10</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 4. 关键界面 -->
+<div class="sec">
+  <h2>关键界面预览</h2>
+
+  <!-- 商店 -->
+  <div style="margin-bottom:26px">
+    <div class="note">▸ 商店界面</div>
+    <div class="shop-screen">
+      <div class="shop-top"><span class="shop-title">🏪 商店</span><span class="money-badge">💰 $18</span></div>
+      <div class="shop-body">
+        <div class="shop-cards">
+          <div class="jcard rare" style="width:98px;height:124px"><span class="icon">🔮</span><span class="jname">玻璃工匠</span><span class="jeff">同花×1.5 Mult</span><span class="jprice">$8</span></div>
+          <div class="jcard common" style="width:98px;height:124px"><span class="icon">⏳</span><span class="jname">时间沙漏</span><span class="jeff">剩余弃牌每张+5 Mult</span><span class="jprice">$5</span></div>
+          <div class="jcard common bought" style="width:98px;height:124px"><span class="icon">⚒️</span><span class="jname">雕琢</span><span class="jeff">+30 Chips</span><span class="jprice">$4</span></div>
+        </div>
+        <div class="shop-actions"><div class="btn-reroll">🔄 重洗 $5</div><div class="btn-continue">继续下一局 →</div></div>
+      </div>
+      <div class="shop-eq">
+        <div class="slot-label">已装备销售牌（5 槽）</div>
+        <div class="slots">
+          <div class="slot filled"><div class="jcard-tiny common"><span class="icon">⚒️</span><span class="jname">雕琢</span><span class="jprice">卖$2</span></div></div>
+          <div class="slot filled"><div class="jcard-tiny common"><span class="icon">🌙</span><span class="jname">半月</span><span class="jprice">卖$2</span></div></div>
+          <div class="slot">+</div><div class="slot">+</div><div class="slot">+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 打牌界面 -->
+  <div style="margin-bottom:26px">
+    <div class="note">▸ 打牌主界面（左侧 = 销售牌槽，中部 = 计分 + 表格 + 手牌）</div>
+    <div class="game-screen">
+      <div class="hud">
+        <div class="hud-cell"><div class="hud-label">目标</div><div class="hud-val">500</div></div>
+        <div class="hud-cell"><div class="hud-label">当前分</div><div class="hud-val" style="color:#4ade80">320</div></div>
+        <div class="hud-cell"><div class="hud-label">出牌</div><div class="hud-val">3</div></div>
+        <div class="hud-cell"><div class="hud-label">弃牌</div><div class="hud-val">2</div></div>
+        <div class="hud-cell"><div class="hud-label">金钱</div><div class="hud-val gold">$18</div></div>
+        <div class="hud-cell"><div class="hud-label">第几局</div><div class="hud-val">2</div></div>
+      </div>
+      <div class="game-mid">
+        <div class="joker-col">
+          <div style="font-size:6.5px;color:#64748b;text-transform:uppercase;letter-spacing:1px">销售牌</div>
+          <div class="jslot-sm has-card"><div class="jcard-tiny common"><span class="icon">⚒️</span><span class="jname">雕琢</span><span class="jprice">卖$2</span></div></div>
+          <div class="jslot-sm has-card"><div class="jcard-tiny rare"><span class="icon">🃏</span><span class="jname">卡文迪什</span><span class="jprice">卖$4</span></div></div>
+          <div class="jslot-sm">+</div><div class="jslot-sm">+</div><div class="jslot-sm">+</div>
+        </div>
+        <div class="play-area">
+          <div class="score-area">
+            <span class="score-chips">230 Chips</span>
+            <span class="score-x">×</span>
+            <span class="score-mult">7 Mult</span>
+            <span class="score-eq">=</span>
+            <span class="score-total">1610</span>
+          </div>
+          <div style="font-size:8.5px;color:#64748b;margin-bottom:5px">表格（已打出）</div>
+          <div class="table-slots">
+            <div class="tslot"><div class="pcard black"><span class="rank">A</span><span class="suit">♠</span></div></div>
+            <div class="tslot"><div class="pcard black"><span class="rank">K</span><span class="suit">♠</span></div></div>
+            <div class="tslot"><div class="pcard black"><span class="rank">Q</span><span class="suit">♠</span></div></div>
+            <div class="tslot"></div><div class="tslot"></div>
+          </div>
+          <div style="font-size:8.5px;color:#64748b;margin-bottom:5px">手牌（选中↑浮起）</div>
+          <div class="hand-area">
+            <div class="pcard red selected"><span class="rank">A</span><span class="suit">♥</span></div>
+            <div class="pcard black"><span class="rank">9</span><span class="suit">♠</span></div>
+            <div class="pcard red"><span class="rank">7</span><span class="suit">♦</span></div>
+            <div class="pcard black"><span class="rank">J</span><span class="suit">♣</span></div>
+            <div class="pcard red"><span class="rank">3</span><span class="suit">♥</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="play-btns"><button class="btn-play">出牌</button><button class="btn-discard">弃牌</button></div>
+    </div>
+  </div>
+
+  <!-- 模态框 -->
+  <div>
+    <div class="note">▸ 失败 / 胜利 Modal</div>
+    <div class="modal-row">
+      <div class="modal modal-lose"><h3>💀 失败</h3><p>本局得分 320，距目标 500 还差 180 分</p><button class="btn-restart">再来一局</button></div>
+      <div class="modal modal-win"><h3>🏆 胜利！</h3><p>本局得分 1610，超过目标 500！获得 $8 奖励</p><button class="btn-restart">进入商店</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 5. 交互状态合集 -->
+<div class="sec">
+  <h2>交互状态合集</h2>
+  <div style="display:flex;gap:32px;flex-wrap:wrap">
+    <div>
+      <div class="note">▸ 按钮三态</div>
+      <div style="display:flex;gap:8px;align-items:flex-end">
+        <div class="state-group"><button class="btn-demo btn-default">出牌</button><div class="state-label">默认</div></div>
+        <div class="state-group"><button class="btn-demo btn-hover">出牌</button><div class="state-label">悬停</div></div>
+        <div class="state-group"><button class="btn-demo btn-disabled" disabled>出牌</button><div class="state-label">禁用</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="note">▸ 销售牌槽位二态</div>
+      <div style="display:flex;gap:10px;align-items:flex-end">
+        <div class="state-group"><div class="slot-demo slot-empty">+</div><div class="state-label">空槽</div></div>
+        <div class="state-group"><div class="slot-demo"><div class="jcard-tiny common" style="width:68px;height:88px"><span class="icon">⚒️</span><span class="jname">雕琢</span><span class="jprice">卖$2</span></div></div><div class="state-label">已装备</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="note">▸ HUD 横条</div>
+      <div class="hud" style="border-radius:8px;border:1px solid #2d3748;max-width:480px">
+        <div class="hud-cell"><div class="hud-label">目标</div><div class="hud-val">500</div></div>
+        <div class="hud-cell"><div class="hud-label">当前分</div><div class="hud-val" style="color:#4ade80">0</div></div>
+        <div class="hud-cell"><div class="hud-label">出牌</div><div class="hud-val">4</div></div>
+        <div class="hud-cell"><div class="hud-label">弃牌</div><div class="hud-val">4</div></div>
+        <div class="hud-cell"><div class="hud-label">金钱</div><div class="hud-val gold">$4</div></div>
+        <div class="hud-cell"><div class="hud-label">第几局</div><div class="hud-val">1</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 6. 给开发的实现要点 -->
+<div class="sec">
+  <h2>给开发的实现要点</h2>
+  <div class="dev-notes">
+    <ul style="padding:0">
+      <li>① Vue 3 组件一律用 <code>&lt;script setup lang="ts"&gt;</code>，推荐命名：<code>SalesCard.vue</code> / <code>SalesShop.vue</code> / <code>Hud.vue</code> / <code>HandCard.vue</code> / <code>GameBoard.vue</code></li>
+      <li>② 计分管道用 pure function：<code>calcScore(hand, jokers, ctx) → ScoreResult</code>，方便 Vitest 单元测试，不要把逻辑散在组件 computed 里</li>
+      <li>③ 销售牌效果用函数式：<code>effect: (ctx: ScoreContext) => ScoreContext</code>，所有 20 张牌统一挂此接口，主循环顺序调用即可</li>
+      <li>④ 大屏布局：<code>body { display:grid; place-items:center }</code>，<code>.game-viewport</code> 用 <code>min(100vw, 1080px)</code>，超宽屏不变形</li>
+      <li>⑤ HUD 避免闪烁：直接绑定 <code>reactive</code> state（<code>gameState.score</code> 等），不要用 <code>v-html</code> 或 <code>innerHTML</code></li>
+      <li>⑥ 销售牌槽位用 <code>&lt;TransitionGroup name="slot"&gt;</code> 做装备/出售动画，配合 <code>translate + opacity</code> 过渡</li>
+      <li>⑦ 销售牌触发高亮：计分管道返回 <code>triggeredJokerIds: string[]</code>，组件根据此列表短暂加 <code>.glow</code> class（200ms 脉冲）</li>
+      <li>⑧ GitHub Pages 部署：Vite 配置 <code>base: '/balatro-web/'</code>，Actions 跑 build 后推 gh-pages 分支</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
